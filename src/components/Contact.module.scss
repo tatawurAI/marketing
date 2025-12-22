@@ -4,9 +4,13 @@
 .section {
   position: relative;
   padding: $spacing-24 0;
-  background: linear-gradient(to bottom, $background-off, rgba($primary, 0.05));
+  background: linear-gradient(
+    to bottom,
+    $background-off,
+    rgba($primary, 0.05)
+  );
   overflow: hidden;
-  
+
   @include md {
     padding: $spacing-32 0;
   }
@@ -16,7 +20,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  
+
   .glow {
     position: absolute;
     top: 50%;
@@ -24,16 +28,25 @@
     transform: translate(-50%, -50%);
     width: 800px;
     height: 800px;
-    background: linear-gradient(to right, rgba($secondary, 0.1), transparent, rgba($accent, 0.1));
+    background: linear-gradient(
+      to right,
+      rgba($secondary, 0.1),
+      transparent,
+      rgba($accent, 0.1)
+    );
     border-radius: 50%;
     filter: blur(48px);
   }
-  
+
   .dots {
     position: absolute;
     inset: 0;
     opacity: 0.02;
-    background-image: radial-gradient(circle at 1px 1px, $primary 1px, transparent 0);
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      $primary 1px,
+      transparent 0
+    );
     background-size: 32px 32px;
   }
 }
@@ -42,11 +55,11 @@
   @include container;
   padding: 0 $spacing-4;
   position: relative;
-  
+
   @include sm {
     padding: 0 $spacing-6;
   }
-  
+
   @include lg {
     padding: 0 $spacing-8;
   }
@@ -85,10 +98,6 @@
 .contentGrid {
   display: grid;
   gap: $spacing-12;
-  
-  @include lg {
-    grid-template-columns: 3fr 2fr;
-  }
 }
 
 .formCard {
@@ -97,7 +106,7 @@
   border-radius: $border-radius-3xl;
   box-shadow: $shadow-xl;
   border: 1px solid rgba($neutral-light, 0.5);
-  
+
   @include md {
     padding: $spacing-10;
   }
@@ -112,7 +121,7 @@
 .formRow {
   display: grid;
   gap: $spacing-6;
-  
+
   @include md {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -129,7 +138,7 @@
   font-weight: 500;
   color: $neutral-dark;
   margin-bottom: $spacing-2;
-  
+
   .required {
     color: $red-500;
   }
@@ -210,10 +219,10 @@
   border-radius: $border-radius-xl;
   background: rgba($background-off, 0.5);
   transition: background $transition-normal $transition-ease;
-  
+
   &:hover {
     background: rgba($secondary, 0.1);
-    
+
     .contactText .value {
       color: $secondary;
     }
@@ -228,15 +237,15 @@
   align-items: center;
   justify-content: center;
   box-shadow: $shadow-md;
-  
+
   svg {
     color: white;
   }
-  
+
   &.secondary {
     background: linear-gradient(to bottom right, $secondary, $secondary-600);
   }
-  
+
   &.primary {
     background: linear-gradient(to bottom right, $primary, $primary-600);
   }
@@ -248,7 +257,7 @@
     color: rgba($neutral-dark, 0.6);
     margin-bottom: 0;
   }
-  
+
   .value {
     font-weight: 500;
     color: $neutral-dark;
@@ -270,15 +279,15 @@
   justify-content: center;
   box-shadow: $shadow-lg;
   transition: all $transition-normal $transition-ease;
-  
+
   svg {
     color: white;
   }
-  
+
   &.linkedin {
-    background: linear-gradient(to bottom right, #0077B5, #005885);
+    background: linear-gradient(to bottom right, #0077b5, #005885);
   }
-  
+
   &:hover {
     box-shadow: $shadow-xl;
     transform: scale(1.05);
@@ -287,7 +296,11 @@
 
 .responseCard {
   padding: $spacing-6;
-  background: linear-gradient(to bottom right, rgba($accent, 0.1), rgba($accent, 0.05));
+  background: linear-gradient(
+    to bottom right,
+    rgba($accent, 0.1),
+    rgba($accent, 0.05)
+  );
   border-radius: $border-radius-2xl;
   border: 1px solid rgba($accent, 0.2);
 }
@@ -308,7 +321,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -322,10 +336,9 @@
     color: $neutral-dark;
     margin-bottom: $spacing-1;
   }
-  
+
   .responseDesc {
     font-size: $text-sm;
     color: rgba($neutral-dark, 0.7);
   }
 }
-
