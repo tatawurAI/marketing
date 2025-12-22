@@ -15,18 +15,6 @@ import {
   Layers,
 } from 'lucide-react';
 
-const education = [
-  { degree: 'M.S. in Computer Science', school: 'University of Pennsylvania' },
-  {
-    degree: 'M.S. in Structural Engineering',
-    school: 'University of Texas at Austin',
-  },
-  {
-    degree: 'B.S. in Architectural Engineering',
-    school: 'University of Texas at Austin',
-  },
-];
-
 const expertise = [
   { icon: Bot, label: 'AI/ML & Computer Vision' },
   { icon: Factory, label: 'Robotics & Autonomous Systems' },
@@ -36,20 +24,6 @@ const expertise = [
   { icon: CircuitBoard, label: 'Embedded Systems & IoT' },
   { icon: Layers, label: 'Microservices & Event-Driven Systems' },
   { icon: Briefcase, label: 'Technical Leadership & Strategy' },
-];
-
-const experience = [
-  {
-    company: 'ICON',
-    role: 'VP of Software Products',
-    type: 'Construction Tech',
-  },
-  {
-    company: 'Walter P Moore',
-    role: 'Software Engineer',
-    type: 'Engineering Firm',
-  },
-  { company: 'Arup', role: 'Structural Engineer', type: 'Global Engineering' },
 ];
 
 export function About() {
