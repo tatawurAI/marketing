@@ -1,42 +1,49 @@
-import type { Metadata } from 'next'
-import { Outfit, DM_Sans, JetBrains_Mono, Aref_Ruqaa } from 'next/font/google'
-import '@/styles/globals.scss'
+import type { Metadata } from 'next';
+import { Outfit, DM_Sans, JetBrains_Mono, Aref_Ruqaa } from 'next/font/google';
+import '@/styles/globals.scss';
 
 const outfit = Outfit({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-outfit',
   weight: ['400', '500', '600', '700'],
-})
+});
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-dm-sans',
   weight: ['400', '500', '600'],
-})
+});
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-jetbrains-mono',
   weight: ['400', '500'],
-})
+});
 
 const arefRuqaa = Aref_Ruqaa({
   subsets: ['arabic'],
   display: 'swap',
   variable: '--font-arabic',
   weight: ['400', '700'],
-})
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://tatawur.ai'),
   title: {
-    default: 'Tatawur AI | Evolving Construction Through Intelligent Automation',
+    default:
+      'Tatawur AI | Evolving Construction Through Intelligent Automation',
     template: '%s | Tatawur AI',
   },
-  description: 'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions. Transform your construction business with Tatawur AI.',
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
+  },
+  description:
+    'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions. Transform your construction business with Tatawur AI.',
   keywords: [
     'AEC consulting',
     'construction technology',
@@ -58,7 +65,8 @@ export const metadata: Metadata = {
     url: 'https://tatawur.ai',
     siteName: 'Tatawur AI',
     title: 'Tatawur AI | Evolving Construction Through Intelligent Automation',
-    description: 'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions.',
+    description:
+      'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions.',
     images: [
       {
         url: '/og-image.png',
@@ -71,7 +79,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Tatawur AI | Evolving Construction Through Intelligent Automation',
-    description: 'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions.',
+    description:
+      'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions.',
     images: ['/og-image.png'],
   },
   robots: {
@@ -88,19 +97,19 @@ export const metadata: Metadata = {
   verification: {
     google: 'your-google-verification-code',
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${outfit.variable} ${dmSans.variable} ${jetbrainsMono.variable} ${arefRuqaa.variable}`}>
-      <body>
-        {children}
-      </body>
+    <html
+      lang="en"
+      className={`${outfit.variable} ${dmSans.variable} ${jetbrainsMono.variable} ${arefRuqaa.variable}`}
+    >
+      <body>{children}</body>
     </html>
-  )
+  );
 }
-
