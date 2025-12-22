@@ -10,11 +10,6 @@ const footerLinks = [
   { name: 'Contact', href: '#contact' },
 ];
 
-const legalLinks = [
-  { name: 'Privacy Policy', href: '/privacy' },
-  { name: 'Terms of Service', href: '/terms' },
-];
-
 export function Footer() {
   const handleScroll = (href: string) => {
     if (href.startsWith('#')) {
@@ -96,20 +91,6 @@ export function Footer() {
                       }}
                       className={styles.link}
                     >
-                      {link.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Legal */}
-            <div className={styles.linksSection}>
-              <h4>Legal</h4>
-              <ul className={styles.linksList}>
-                {legalLinks.map((link) => (
-                  <li key={link.name}>
-                    <a href={link.href} className={styles.link}>
                       {link.name}
                     </a>
                   </li>
