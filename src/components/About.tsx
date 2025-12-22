@@ -2,6 +2,7 @@
 
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
+import Image from 'next/image'
 import { 
   GraduationCap, 
   Briefcase, 
@@ -11,7 +12,6 @@ import {
   Cpu,
   LayoutPanelTop,
   CircuitBoard,
-  User,
   Factory
 } from 'lucide-react'
 
@@ -68,21 +68,18 @@ export function About() {
             className="lg:col-span-2"
           >
             <div className="relative">
-              {/* Profile image placeholder */}
-              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 border border-neutral-light/50 shadow-2xl">
-                {/* Placeholder content */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-xl">
-                      <User size={64} className="text-white" strokeWidth={1} />
-                    </div>
-                    <p className="text-sm text-neutral-dark/40 font-medium">Profile Photo</p>
-                  </div>
-                </div>
+              {/* Profile image */}
+              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-neutral-light/50 shadow-2xl">
+                <Image
+                  src="/tarek-profile.jpeg"
+                  alt="Tarek - Founder of Tatawur AI"
+                  fill
+                  className="object-cover object-top"
+                  priority
+                />
                 
-                {/* Decorative elements */}
-                <div className="absolute top-4 right-4 w-24 h-24 bg-gradient-to-br from-accent/30 to-accent/10 rounded-full blur-2xl" />
-                <div className="absolute bottom-4 left-4 w-32 h-32 bg-gradient-to-br from-secondary/30 to-secondary/10 rounded-full blur-2xl" />
+                {/* Subtle overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/10 via-transparent to-transparent" />
               </div>
 
               {/* Floating badge */}
