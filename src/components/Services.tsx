@@ -2,60 +2,63 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Layers, Bot, Factory, Users, ArrowRight } from 'lucide-react';
+import { Compass, Boxes, Brain, Bot, ArrowRight } from 'lucide-react';
 import styles from './Services.module.scss';
 
 const services = [
   {
-    icon: Layers,
-    title: 'Software Strategy & Architecture',
+    icon: Compass,
+    title: 'Design & Plan Automation',
     description:
-      'From roadmaps to implementation, we help you build software that scales.',
+      'Transform weeks of manual work into automated workflows—from schematic design through fabrication-ready outputs.',
     features: [
-      'Software product strategy and roadmap development',
-      'System architecture design for construction technology platforms',
-      'Technical due diligence and technology stack evaluation',
-      'API and integration architecture planning',
-      'Cloud infrastructure and scalability planning',
+      'AI-assisted design generation and optimization',
+      'Automated drawing production and documentation',
+      'Design-to-fabrication data pipelines',
+      'Parametric systems that adapt to project constraints',
+      'Scale your output without scaling your team',
     ],
     color: 'primary',
   },
   {
-    icon: Bot,
-    title: 'AI & Automation Implementation',
-    description: 'Practical AI solutions that deliver measurable results.',
+    icon: Boxes,
+    title: 'Digital Twin & Simulation',
+    description:
+      'Build a living digital replica that connects your model to schedules, quantities, and the systems that drive your project.',
     features: [
-      'Workflow analysis and automation opportunity identification',
-      'Computer vision systems for construction monitoring and QA',
-      'Predictive analytics and data-driven insights',
-      'Natural language processing for document analysis',
-      'Custom AI model development and integration',
+      'Automated BOM generation and quantity takeoffs',
+      '4D scheduling and construction sequencing',
+      'Integrations with ERP, procurement, and project controls',
+      'Predictive simulation and scenario modeling',
+      'Real-time synchronization across design and field',
     ],
     color: 'secondary',
   },
   {
-    icon: Factory,
-    title: 'Construction Technology Solutions',
-    description: 'Building the software that builds the future.',
+    icon: Brain,
+    title: 'AI & Intelligent Systems',
+    description:
+      'Embed machine intelligence into your workflows—augmenting human expertise with systems that learn and adapt.',
     features: [
-      'Robotic construction system software development',
-      'BIM integration and computational design workflows',
-      'IoT and sensor integration for smart construction',
-      'Digital twin development and implementation',
-      'Construction automation platforms',
+      'Custom AI models trained on your domain data',
+      'Computer vision for quality control and progress tracking',
+      'Natural language interfaces for technical documentation',
+      'Predictive analytics for scheduling and risk assessment',
+      'Intelligent automation that improves over time',
     ],
     color: 'accent',
   },
   {
-    icon: Users,
-    title: 'Technical Leadership & Team Building',
-    description: 'Scaling engineering organizations for success.',
+    icon: Bot,
+    title: 'Robotics & Fabrication',
+    description:
+      'Bridge the gap between digital design and physical production with software that drives automated construction.',
     features: [
-      'Engineering team structure and scaling strategies',
-      'Technical hiring and talent development',
-      'Engineering culture and best practices implementation',
-      'Cross-functional collaboration frameworks',
-      'Agile/Scrum process optimization for construction tech',
+      'Robotic construction system integration',
+      'Automated fabrication workflow development',
+      'Machine control software and path planning',
+      'Real-time feedback loops between site and model',
+      'End-to-end digital-to-physical pipelines',
     ],
     color: 'primaryAlt',
   },
