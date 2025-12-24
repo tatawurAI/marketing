@@ -20,11 +20,7 @@ export function Logo({
   showText = true,
   className = '',
 }: LogoProps) {
-  const logoClasses = [
-    styles.logo,
-    styles[size],
-    className,
-  ]
+  const logoClasses = [styles.logo, styles[size], className]
     .filter(Boolean)
     .join(' ');
 
@@ -34,7 +30,7 @@ export function Logo({
     <div className={logoClasses}>
       <div className={styles.logoIcon}>
         <Image
-          src="/logo.png"
+          src="/logo.svg"
           alt="Tatawur AI"
           width={imageSize}
           height={imageSize}
@@ -51,4 +47,3 @@ export function Logo({
     </div>
   );
 }
-
