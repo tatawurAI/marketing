@@ -12,7 +12,7 @@ const valueProps = [
     title: 'Domain Expertise',
     description:
       'Deep understanding of AEC workflows, pain points, and industry standards from years of hands-on engineering experience',
-    color: 'accent',
+    color: 'secondary',
   },
   {
     icon: Code2,

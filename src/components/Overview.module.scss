@@ -5,7 +5,7 @@
   position: relative;
   padding: $spacing-8 0;
   overflow: hidden;
-  background: $bg-main;
+  background: $bg-card;
   
   @include md {
     padding: $spacing-12 0;
@@ -117,11 +117,6 @@
     stroke-width: 1.5;
   }
   
-  &.accent {
-    background: $primary;
-    box-shadow: $glow-primary;
-  }
-  
   &.primary {
     background: $primary;
     box-shadow: $glow-primary;
@@ -156,10 +151,6 @@
   
   .card:hover & {
     opacity: 0.05;
-  }
-  
-  &.accent {
-    background: $primary;
   }
   
   &.primary {

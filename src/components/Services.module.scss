@@ -127,16 +127,6 @@
     background: $secondary;
     box-shadow: $glow-gold;
   }
-  
-  &.accent {
-    background: $primary;
-    box-shadow: $glow-primary;
-  }
-  
-  &.primaryAlt {
-    background: $primary;
-    box-shadow: $glow-primary;
-  }
 }
 
 .serviceInfo {
@@ -185,16 +175,6 @@
     background: $secondary;
     box-shadow: 0 0 8px rgba($secondary, 0.5);
   }
-  
-  &.accent {
-    background: $primary;
-    box-shadow: 0 0 8px rgba($primary, 0.5);
-  }
-  
-  &.primaryAlt {
-    background: $primary;
-    box-shadow: 0 0 8px rgba($primary, 0.5);
-  }
 }
 
 .serviceOverlay {
@@ -215,14 +195,6 @@
   
   &.secondary {
     background: $secondary;
-  }
-  
-  &.accent {
-    background: $primary;
-  }
-  
-  &.primaryAlt {
-    background: $primary;
   }
 }
 

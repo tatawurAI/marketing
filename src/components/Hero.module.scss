@@ -12,7 +12,7 @@
 .background {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom right, $bg-main, $bg-card, rgba($primary, 0.1));
+  background: $bg-card;
 }
 
 .patterns {

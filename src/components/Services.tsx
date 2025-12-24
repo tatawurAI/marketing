@@ -46,7 +46,7 @@ const services = [
       'Predictive analytics for scheduling and risk assessment',
       'Intelligent automation that improves over time',
     ],
-    color: 'accent',
+    color: 'primary',
   },
   {
     icon: Bot,
@@ -60,7 +60,7 @@ const services = [
       'Real-time feedback loops between site and model',
       'End-to-end digital-to-physical pipelines',
     ],
-    color: 'primaryAlt',
+    color: 'secondary',
   },
 ];
 
