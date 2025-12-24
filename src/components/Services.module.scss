@@ -3,12 +3,12 @@
 
 .section {
   position: relative;
-  padding: $spacing-24 0;
-  background: linear-gradient(to bottom, $background-off, white);
+  padding: $spacing-8 0;
+  background: $background-off;
   overflow: hidden;
   
   @include md {
-    padding: $spacing-32 0;
+    padding: $spacing-12 0;
   }
 }
 

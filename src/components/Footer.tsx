@@ -47,7 +47,7 @@ export function Footer() {
                 }}
                 className={styles.logoLink}
               >
-                <Logo size="large" />
+                <Logo size="large" variant="light" />
               </a>
 
               <p className={styles.brandDescription}>
