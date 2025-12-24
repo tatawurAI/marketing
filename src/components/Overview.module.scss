@@ -5,7 +5,7 @@
   position: relative;
   padding: $spacing-8 0;
   overflow: hidden;
-  background: $background-off;
+  background: $bg-main;
   
   @include md {
     padding: $spacing-12 0;
@@ -24,9 +24,9 @@
     transform: translateX(-50%);
     width: 800px;
     height: 400px;
-    background: linear-gradient(to bottom, rgba($primary, 0.05), transparent);
+    background: linear-gradient(to bottom, rgba($primary, 0.15), transparent);
     border-radius: 50%;
-    filter: blur(48px);
+    filter: blur(80px);
   }
 }
 
@@ -55,8 +55,9 @@
   padding: $spacing-1 $spacing-4;
   padding-top: 6px;
   padding-bottom: 6px;
-  background: rgba($secondary, 0.1);
-  color: $secondary-700;
+  background: rgba($primary, 0.2);
+  color: $primary;
+  border: 1px solid rgba($primary, 0.3);
   border-radius: $border-radius-full;
   font-size: $text-sm;
   font-weight: 500;
@@ -64,12 +65,12 @@
 }
 
 .title {
-  color: $neutral-dark;
+  color: $text-main;
   margin-bottom: $spacing-6;
 }
 
 .description {
-  color: rgba($neutral-dark, 0.7);
+  color: $text-muted;
   font-size: $text-lg;
   line-height: $leading-relaxed;
 }
@@ -91,14 +92,14 @@
   position: relative;
   height: 100%;
   padding: $spacing-8;
-  background: white;
+  background: $bg-card;
   border-radius: $border-radius-3xl;
-  border: 1px solid rgba($neutral-light, 0.5);
-  box-shadow: $shadow-lg;
+  border: 1px solid $border-color;
   transition: all $transition-normal $transition-ease;
   
   &:hover {
-    box-shadow: $shadow-xl;
+    border-color: rgba($primary, 0.4);
+    box-shadow: $glow-primary;
     transform: translateY(-4px);
   }
 }
@@ -108,28 +109,27 @@
   padding: $spacing-4;
   border-radius: $border-radius-2xl;
   margin-bottom: $spacing-6;
-  box-shadow: $shadow-lg;
   
   svg {
     width: 28px;
     height: 28px;
-    color: white;
+    color: $text-dark;
     stroke-width: 1.5;
   }
   
   &.accent {
-    background: linear-gradient(to bottom right, $accent, rgba($accent, 0.7));
-    box-shadow: $shadow-lg, 0 0 0 0 rgba($accent, 0.2);
+    background: $primary;
+    box-shadow: $glow-primary;
   }
   
   &.primary {
-    background: linear-gradient(to bottom right, $primary, $primary-600);
-    box-shadow: $shadow-lg, 0 0 0 0 rgba($primary, 0.2);
+    background: $primary;
+    box-shadow: $glow-primary;
   }
   
   &.secondary {
-    background: linear-gradient(to bottom right, $secondary, $secondary-600);
-    box-shadow: $shadow-lg, 0 0 0 0 rgba($secondary, 0.2);
+    background: $secondary;
+    box-shadow: $glow-gold;
   }
 }
 
@@ -137,12 +137,12 @@
   font-size: $text-xl;
   font-family: $font-heading;
   font-weight: 600;
-  color: $neutral-dark;
+  color: $text-main;
   margin-bottom: $spacing-3;
 }
 
 .cardDescription {
-  color: rgba($neutral-dark, 0.7);
+  color: $text-muted;
   line-height: $leading-relaxed;
 }
 
@@ -155,28 +155,28 @@
   pointer-events: none;
   
   .card:hover & {
-    opacity: 0.1;
+    opacity: 0.05;
   }
   
   &.accent {
-    background: linear-gradient(to bottom right, $accent, rgba($accent, 0.7));
+    background: $primary;
   }
   
   &.primary {
-    background: linear-gradient(to bottom right, $primary, $primary-600);
+    background: $primary;
   }
   
   &.secondary {
-    background: linear-gradient(to bottom right, $secondary, $secondary-600);
+    background: $secondary;
   }
 }
 
 .additionalInfo {
   margin-top: $spacing-16;
   padding: $spacing-8;
-  background: linear-gradient(to bottom right, rgba($primary, 0.05), rgba($secondary, 0.05), rgba($accent, 0.05));
+  background: $bg-card;
   border-radius: $border-radius-3xl;
-  border: 1px solid rgba($primary, 0.1);
+  border: 1px solid $border-color;
   
   @include md {
     padding: $spacing-12;
@@ -191,7 +191,7 @@
 
 .additionalInfoText {
   font-size: $text-lg;
-  color: rgba($neutral-dark, 0.8);
+  color: $text-muted;
   line-height: $leading-relaxed;
   
   .highlight {
@@ -206,4 +206,3 @@
     }
   }
 }
-

@@ -4,21 +4,18 @@ import styles from './Logo.module.scss';
 
 interface LogoProps {
   size?: 'small' | 'medium' | 'large';
-  variant?: 'default' | 'light';
   showText?: boolean;
   className?: string;
 }
 
 export function Logo({
   size = 'medium',
-  variant = 'default',
   showText = true,
   className = '',
 }: LogoProps) {
   const logoClasses = [
     styles.logo,
     styles[size],
-    variant === 'light' ? styles.light : '',
     className,
   ]
     .filter(Boolean)

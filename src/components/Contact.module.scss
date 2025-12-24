@@ -4,7 +4,7 @@
 .section {
   position: relative;
   padding: $spacing-8 0;
-  background: $background-off;
+  background: $bg-card;
   overflow: hidden;
 
   @include md {
@@ -26,21 +26,21 @@
     height: 800px;
     background: linear-gradient(
       to right,
-      rgba($secondary, 0.1),
+      rgba($primary, 0.15),
       transparent,
-      rgba($accent, 0.1)
+      rgba($secondary, 0.1)
     );
     border-radius: 50%;
-    filter: blur(48px);
+    filter: blur(80px);
   }
 
   .dots {
     position: absolute;
     inset: 0;
-    opacity: 0.02;
+    opacity: 0.08;
     background-image: radial-gradient(
       circle at 1px 1px,
-      $primary 1px,
+      $border-color 1px,
       transparent 0
     );
     background-size: 32px 32px;
@@ -72,8 +72,9 @@
   padding: $spacing-1 $spacing-4;
   padding-top: 6px;
   padding-bottom: 6px;
-  background: rgba($secondary, 0.1);
-  color: $secondary-700;
+  background: rgba($primary, 0.2);
+  color: $primary;
+  border: 1px solid rgba($primary, 0.3);
   border-radius: $border-radius-full;
   font-size: $text-sm;
   font-weight: 500;
@@ -81,12 +82,12 @@
 }
 
 .title {
-  color: $neutral-dark;
+  color: $text-main;
   margin-bottom: $spacing-6;
 }
 
 .description {
-  color: rgba($neutral-dark, 0.7);
+  color: $text-muted;
   font-size: $text-lg;
   line-height: $leading-relaxed;
 }
@@ -110,14 +111,15 @@
   width: 56px;
   height: 56px;
   border-radius: $border-radius-xl;
-  background: linear-gradient(135deg, $primary, $primary-600);
+  background: $primary;
+  box-shadow: $glow-primary;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 
   svg {
-    color: white;
+    color: $text-dark;
   }
 }
 
@@ -129,13 +131,13 @@
 
 .emailLabel {
   font-size: $text-sm;
-  color: rgba($neutral-dark, 0.6);
+  color: $text-muted;
 }
 
 .emailAddress {
   font-size: $text-xl;
   font-weight: 600;
-  color: $neutral-dark;
+  color: $text-main;
   font-family: $font-heading;
   user-select: all;
 
@@ -145,17 +147,17 @@
 }
 
 .includeSection {
-  background: rgba($primary, 0.03);
+  background: $bg-main;
   border-radius: $border-radius-2xl;
   padding: $spacing-6;
-  border: 1px solid rgba($primary, 0.08);
+  border: 1px solid $border-color;
 }
 
 .includeTitle {
   font-size: $text-lg;
   font-family: $font-heading;
   font-weight: 600;
-  color: $neutral-dark;
+  color: $text-main;
   margin-bottom: $spacing-4;
 }
 
@@ -169,7 +171,7 @@
     display: flex;
     align-items: flex-start;
     gap: $spacing-3;
-    color: rgba($neutral-dark, 0.7);
+    color: $text-muted;
     font-size: $text-base;
     line-height: $leading-relaxed;
 
@@ -178,7 +180,8 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: $secondary;
+      background: $primary;
+      box-shadow: 0 0 8px rgba($primary, 0.5);
       margin-top: 10px;
       flex-shrink: 0;
     }
@@ -191,7 +194,7 @@
 }
 
 .connectText {
-  color: rgba($neutral-dark, 0.6);
+  color: $text-muted;
   font-size: $text-sm;
   margin-bottom: $spacing-3;
 }
@@ -201,10 +204,10 @@
   align-items: center;
   gap: $spacing-2;
   padding: $spacing-3 $spacing-5;
-  background: white;
+  background: $bg-main;
   border-radius: $border-radius-full;
-  border: 1px solid rgba($neutral-light, 0.5);
-  color: $neutral-dark;
+  border: 1px solid $border-color;
+  color: $text-main;
   font-weight: 500;
   transition: all $transition-normal $transition-ease;
 
@@ -214,7 +217,7 @@
 
   &:hover {
     border-color: #0077b5;
-    background: rgba(#0077b5, 0.05);
+    box-shadow: 0 0 15px rgba(#0077b5, 0.3);
   }
 }
 
@@ -223,7 +226,7 @@
   align-items: center;
   justify-content: center;
   gap: $spacing-2;
-  color: rgba($neutral-dark, 0.6);
+  color: $text-muted;
   font-size: $text-sm;
 }
 
@@ -232,6 +235,7 @@
   height: 8px;
   border-radius: 50%;
   background: $green-500;
+  box-shadow: 0 0 10px rgba($green-500, 0.5);
   animation: pulse 2s infinite;
 }
 

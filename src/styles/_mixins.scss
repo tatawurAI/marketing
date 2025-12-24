@@ -138,24 +138,25 @@
 
 @mixin button-primary {
   @include button-base;
-  background: linear-gradient(to right, $primary, $primary-700);
-  color: white;
-  box-shadow: $shadow-xl, 0 0 0 0 rgba($primary, 0.25);
+  background: linear-gradient(to right, $primary, $primary-600);
+  color: $text-main;
+  box-shadow: $glow-primary;
 
   &:hover {
-    box-shadow: $shadow-2xl, 0 0 0 0 rgba($primary, 0.3);
+    box-shadow: $glow-primary, $shadow-xl;
+    filter: brightness(1.1);
   }
 }
 
 @mixin button-secondary {
   @include button-base;
-  background: white;
-  color: $primary;
-  border: 2px solid rgba($primary, 0.2);
+  background: $bg-card;
+  color: $text-main;
+  border: 1px solid $border-color;
 
   &:hover {
-    border-color: rgba($primary, 0.4);
-    background: rgba($primary, 0.05);
+    border-color: $primary;
+    background: rgba($primary, 0.1);
   }
 }
 
@@ -164,14 +165,15 @@
 // ============================================
 
 @mixin card {
-  background: white;
+  background: $bg-card;
   border-radius: $border-radius-3xl;
-  border: 1px solid rgba($neutral-light, 0.5);
+  border: 1px solid $border-color;
   box-shadow: $shadow-lg;
   transition: all $transition-normal $transition-ease;
 
   &:hover {
-    box-shadow: $shadow-xl;
+    box-shadow: $glow-primary;
+    border-color: rgba($primary, 0.3);
     transform: translateY(-4px);
   }
 }
@@ -182,8 +184,8 @@
 
 @mixin glass-effect {
   backdrop-filter: blur(12px);
-  background: rgba(white, 0.8);
-  border: 1px solid rgba(white, 0.2);
+  background: rgba($bg-card, 0.9);
+  border: 1px solid $border-color;
   box-shadow: $shadow-lg;
 }
 
@@ -192,7 +194,7 @@
 // ============================================
 
 @mixin gradient-text {
-  background: linear-gradient(to right, $primary, $secondary, $accent);
+  background: linear-gradient(to right, $primary, $secondary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -218,14 +220,15 @@
   width: 100%;
   padding: $spacing-3 $spacing-4;
   border-radius: $border-radius-xl;
-  border: 1px solid $neutral-light;
-  background: rgba($background-off, 0.5);
+  border: 1px solid $border-color;
+  background: $bg-card;
+  color: $text-main;
   outline: none;
   transition: all $transition-normal $transition-ease;
 
   &:focus {
-    border-color: $secondary;
-    box-shadow: 0 0 0 3px rgba($secondary, 0.2);
+    border-color: $primary;
+    box-shadow: $glow-primary;
   }
 }
 

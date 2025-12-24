@@ -4,9 +4,9 @@
 .section {
   position: relative;
   padding: $spacing-8 0;
-  background: $background-off;
+  background: $bg-main;
   overflow: hidden;
-
+  
   @include md {
     padding: $spacing-12 0;
   }
@@ -18,24 +18,20 @@
   right: 0;
   width: 500px;
   height: 500px;
-  background: linear-gradient(
-    to bottom left,
-    rgba($secondary, 0.05),
-    transparent
-  );
+  background: linear-gradient(to bottom left, rgba($primary, 0.1), transparent);
   border-radius: 50%;
-  filter: blur(48px);
+  filter: blur(80px);
 }
 
 .container {
   @include container;
   padding: 0 $spacing-4;
   position: relative;
-
+  
   @include sm {
     padding: 0 $spacing-6;
   }
-
+  
   @include lg {
     padding: 0 $spacing-8;
   }
@@ -47,7 +43,7 @@
 
 .label {
   display: inline-block;
-  color: $secondary;
+  color: $primary;
   font-weight: 500;
   font-size: $text-sm;
   letter-spacing: 0.05em;
@@ -56,7 +52,7 @@
 }
 
 .title {
-  color: $neutral-dark;
+  color: $text-main;
 }
 
 .leadSection {
@@ -64,7 +60,7 @@
   flex-direction: column;
   gap: $spacing-8;
   margin-bottom: $spacing-12;
-
+  
   @include md {
     flex-direction: row;
     align-items: center;
@@ -73,11 +69,11 @@
 
 .leadText {
   font-size: $text-xl;
-  color: $neutral-dark;
+  color: $text-main;
   font-weight: 500;
   line-height: $leading-relaxed;
   flex: 1;
-
+  
   @include md {
     font-size: $text-2xl;
   }
@@ -87,13 +83,13 @@
   &Primary {
     color: $primary;
   }
-
+  
   &Secondary {
     color: $secondary;
   }
-
+  
   &Accent {
-    color: $accent;
+    color: $primary;
   }
 }
 
@@ -110,8 +106,9 @@
   height: 128px;
   border-radius: $border-radius-2xl;
   overflow: hidden;
-  box-shadow: $shadow-lg;
-
+  border: 2px solid $border-color;
+  box-shadow: $glow-primary;
+  
   @include md {
     width: 144px;
     height: 144px;
@@ -126,7 +123,7 @@
 .columns {
   display: grid;
   gap: $spacing-12;
-
+  
   @include lg {
     grid-template-columns: 1fr 1fr;
     gap: $spacing-16;
@@ -141,7 +138,7 @@
 }
 
 .bioText {
-  color: rgba($neutral-dark, 0.8);
+  color: $text-muted;
   line-height: 1.75;
 }
 
@@ -151,7 +148,7 @@
 
 .expertiseLabel {
   font-size: $text-sm;
-  color: rgba($neutral-dark, 0.6);
+  color: $text-muted;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 500;
@@ -169,28 +166,29 @@
   align-items: center;
   gap: $spacing-3;
   padding: $spacing-3;
-  background: white;
+  background: $bg-card;
   border-radius: $border-radius-xl;
-  border: 1px solid rgba($neutral-light, 0.3);
-  transition: border-color $transition-normal $transition-ease;
-
+  border: 1px solid $border-color;
+  transition: all $transition-normal $transition-ease;
+  
   &:hover {
-    border-color: rgba($secondary, 0.3);
-
+    border-color: rgba($primary, 0.4);
+    box-shadow: $glow-primary;
+    
     .expertiseIcon {
-      color: $neutral-dark;
+      color: $primary;
     }
   }
 }
 
 .expertiseIcon {
-  color: $secondary;
+  color: $primary;
   flex-shrink: 0;
   transition: color $transition-normal $transition-ease;
 }
 
 .expertiseText {
   font-size: $text-sm;
-  color: rgba($neutral-dark, 0.8);
+  color: $text-muted;
   transition: color $transition-normal $transition-ease;
 }

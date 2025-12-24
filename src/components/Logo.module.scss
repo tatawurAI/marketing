@@ -19,21 +19,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: $shadow-lg;
-    
-    .logo:not(.light) & {
-      background: linear-gradient(135deg, $primary 0%, $secondary 50%, $accent 100%);
-    }
-    
-    .logo.light & {
-      background: linear-gradient(135deg, $secondary 0%, $secondary-400 50%, $accent 100%);
-    }
+    background: linear-gradient(135deg, $primary 0%, $secondary 100%);
+    box-shadow: $glow-primary;
   }
   
   .arabicLogo {
     font-family: $font-arabic;
     font-weight: 700;
-    color: white;
+    color: $text-dark;
     line-height: 1;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
@@ -42,22 +35,15 @@
     position: absolute;
     inset: -4px;
     border-radius: $border-radius-xl;
-    opacity: 0.3;
-    filter: blur(6px);
+    opacity: 0.4;
+    filter: blur(8px);
     transition: opacity $transition-normal $transition-ease;
     z-index: -1;
-    
-    .logo:not(.light) & {
-      background: linear-gradient(135deg, $primary 0%, $secondary 50%, $accent 100%);
-    }
-    
-    .logo.light & {
-      background: linear-gradient(135deg, $secondary 0%, $accent 100%);
-    }
+    background: linear-gradient(135deg, $primary 0%, $secondary 100%);
   }
   
   .logo:hover & .iconGlow {
-    opacity: 0.5;
+    opacity: 0.6;
   }
 }
 
@@ -68,14 +54,7 @@
   .name {
     font-family: $font-heading;
     font-weight: 700;
-    
-    .logo:not(.light) & {
-      color: $primary;
-    }
-    
-    .logo.light & {
-      color: white;
-    }
+    color: $text-main;
   }
 }
 
@@ -124,4 +103,3 @@
     font-size: $text-2xl;
   }
 }
-

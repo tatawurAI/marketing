@@ -4,7 +4,7 @@
 .section {
   position: relative;
   padding: $spacing-8 0;
-  background: $background-off;
+  background: $bg-card;
   overflow: hidden;
   
   @include md {
@@ -20,8 +20,8 @@
   .dots {
     position: absolute;
     inset: 0;
-    opacity: 0.02;
-    background-image: radial-gradient(circle at 1px 1px, $primary 1px, transparent 0);
+    opacity: 0.1;
+    background-image: radial-gradient(circle at 1px 1px, $border-color 1px, transparent 0);
     background-size: 40px 40px;
   }
 }
@@ -51,8 +51,9 @@
   padding: $spacing-1 $spacing-4;
   padding-top: 6px;
   padding-bottom: 6px;
-  background: rgba($primary, 0.1);
+  background: rgba($primary, 0.2);
   color: $primary;
+  border: 1px solid rgba($primary, 0.3);
   border-radius: $border-radius-full;
   font-size: $text-sm;
   font-weight: 500;
@@ -60,12 +61,12 @@
 }
 
 .title {
-  color: $neutral-dark;
+  color: $text-main;
   margin-bottom: $spacing-6;
 }
 
 .description {
-  color: rgba($neutral-dark, 0.7);
+  color: $text-muted;
   font-size: $text-lg;
   line-height: $leading-relaxed;
 }
@@ -86,14 +87,14 @@
 .serviceCardInner {
   height: 100%;
   padding: $spacing-8;
-  background: white;
+  background: $bg-main;
   border-radius: $border-radius-3xl;
-  border: 1px solid rgba($neutral-light, 0.5);
-  box-shadow: $shadow-lg;
+  border: 1px solid $border-color;
   transition: all $transition-normal $transition-ease;
   
   &:hover {
-    box-shadow: $shadow-xl;
+    border-color: rgba($primary, 0.4);
+    box-shadow: $glow-primary;
     transform: translateY(-4px);
   }
 }
@@ -109,29 +110,32 @@
   flex-shrink: 0;
   padding: $spacing-4;
   border-radius: $border-radius-2xl;
-  box-shadow: $shadow-lg;
   
   svg {
     width: 28px;
     height: 28px;
-    color: white;
+    color: $text-dark;
     stroke-width: 1.5;
   }
   
   &.primary {
-    background: linear-gradient(to bottom right, $primary, $primary-600);
+    background: $primary;
+    box-shadow: $glow-primary;
   }
   
   &.secondary {
-    background: linear-gradient(to bottom right, $secondary, $secondary-600);
+    background: $secondary;
+    box-shadow: $glow-gold;
   }
   
   &.accent {
-    background: linear-gradient(to bottom right, $accent, $accent-600);
+    background: $primary;
+    box-shadow: $glow-primary;
   }
   
   &.primaryAlt {
-    background: linear-gradient(to bottom right, $primary-700, $primary);
+    background: $primary;
+    box-shadow: $glow-primary;
   }
 }
 
@@ -140,12 +144,12 @@
     font-size: $text-xl;
     font-family: $font-heading;
     font-weight: 600;
-    color: $neutral-dark;
+    color: $text-main;
     margin-bottom: $spacing-2;
   }
   
   .serviceDescription {
-    color: rgba($neutral-dark, 0.6);
+    color: $text-muted;
   }
 }
 
@@ -162,7 +166,7 @@
   align-items: flex-start;
   gap: $spacing-3;
   font-size: $text-sm;
-  color: rgba($neutral-dark, 0.7);
+  color: $text-muted;
 }
 
 .featureDot {
@@ -173,19 +177,23 @@
   margin-top: 8px;
   
   &.primary {
-    background: linear-gradient(to bottom right, $primary, $primary-600);
+    background: $primary;
+    box-shadow: 0 0 8px rgba($primary, 0.5);
   }
   
   &.secondary {
-    background: linear-gradient(to bottom right, $secondary, $secondary-600);
+    background: $secondary;
+    box-shadow: 0 0 8px rgba($secondary, 0.5);
   }
   
   &.accent {
-    background: linear-gradient(to bottom right, $accent, $accent-600);
+    background: $primary;
+    box-shadow: 0 0 8px rgba($primary, 0.5);
   }
   
   &.primaryAlt {
-    background: linear-gradient(to bottom right, $primary-700, $primary);
+    background: $primary;
+    box-shadow: 0 0 8px rgba($primary, 0.5);
   }
 }
 
@@ -198,23 +206,23 @@
   pointer-events: none;
   
   .serviceCard:hover & {
-    opacity: 0.05;
+    opacity: 0.03;
   }
   
   &.primary {
-    background: linear-gradient(to bottom right, $primary, $primary-600);
+    background: $primary;
   }
   
   &.secondary {
-    background: linear-gradient(to bottom right, $secondary, $secondary-600);
+    background: $secondary;
   }
   
   &.accent {
-    background: linear-gradient(to bottom right, $accent, $accent-600);
+    background: $primary;
   }
   
   &.primaryAlt {
-    background: linear-gradient(to bottom right, $primary-700, $primary);
+    background: $primary;
   }
 }
 
@@ -238,4 +246,3 @@
     transform: translateX(4px);
   }
 }
-
