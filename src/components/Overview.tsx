@@ -72,7 +72,7 @@ export function Overview() {
           className={styles.header}
         >
           <span className={styles.badge}>Why Tatawur AI</span>
-          <h2 className={styles.title}>Transforming AEC Workflows</h2>
+          <h2 className={styles.title}>Transforming AEC <span className={styles.gradient}>Workflows</span></h2>
           <p className={styles.description}>
             Tatawur AI brings together deep domain expertise in structural
             engineering and proven software leadership to help architecture,

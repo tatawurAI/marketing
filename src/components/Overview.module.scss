@@ -67,6 +67,10 @@
 .title {
   color: $text-main;
   margin-bottom: $spacing-6;
+
+  .gradient {
+    @include gradient-text;
+  }
 }
 
 .description {

@@ -5,20 +5,25 @@
   display: inline-flex;
   align-items: center;
   gap: $spacing-2;
-  
+
   &.large {
     gap: $spacing-3;
   }
-  
+
   &:hover {
     .logoIcon {
       transform: scale(1.05);
     }
-    
+
     .iconGlow {
       opacity: 0.6;
     }
   }
+}
+
+.fullLogo {
+  object-fit: contain;
+  height: auto;
 }
 
 .logoIcon {
@@ -30,7 +35,6 @@
 }
 
 .logoImage {
-  border-radius: $border-radius-lg;
   object-fit: contain;
 }
 
@@ -43,34 +47,4 @@
   transition: opacity $transition-normal $transition-ease;
   z-index: -1;
   background: linear-gradient(135deg, $primary 0%, $secondary 100%);
-}
-
-.logoText {
-  display: flex;
-  flex-direction: column;
-  
-  .name {
-    font-family: $font-heading;
-    font-weight: 700;
-    color: $text-main;
-  }
-}
-
-// Size variants
-.logo.small {
-  .name {
-    font-size: $text-lg;
-  }
-}
-
-.logo.medium {
-  .name {
-    font-size: $text-xl;
-  }
-}
-
-.logo.large {
-  .name {
-    font-size: $text-2xl;
-  }
 }

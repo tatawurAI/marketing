@@ -43,7 +43,7 @@ export function About() {
           className={styles.header}
         >
           <span className={styles.label}>About</span>
-          <h2 className={styles.title}>Meet Tarek - Founder of Tatawur AI</h2>
+          <h2 className={styles.title}>Meet Tarek - Founder of <span className={styles.gradient}>Tatawur AI</span></h2>
         </motion.div>
 
         {/* Lead paragraph with profile photo */}

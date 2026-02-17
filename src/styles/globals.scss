@@ -19,7 +19,7 @@ html {
 }
 
 body {
-  background: $bg-card;
+  background: $bg-main;
   color: $text-main;
   font-family: $font-body;
   -webkit-font-smoothing: antialiased;
@@ -95,7 +95,7 @@ button {
 }
 
 ::-webkit-scrollbar-track {
-  background: $bg-card;
+  background: $bg-main;
 }
 
 ::-webkit-scrollbar-thumb {

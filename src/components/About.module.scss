@@ -6,7 +6,7 @@
   padding: $spacing-8 0;
   background: $bg-card;
   overflow: hidden;
-  
+
   @include md {
     padding: $spacing-12 0;
   }
@@ -18,7 +18,11 @@
   right: 0;
   width: 500px;
   height: 500px;
-  background: linear-gradient(to bottom left, rgba($primary, 0.1), transparent);
+  background: linear-gradient(
+    to bottom left,
+    rgba($primary, 0.1),
+    transparent
+  );
   border-radius: 50%;
   filter: blur(80px);
 }
@@ -27,11 +31,11 @@
   @include container;
   padding: 0 $spacing-4;
   position: relative;
-  
+
   @include sm {
     padding: 0 $spacing-6;
   }
-  
+
   @include lg {
     padding: 0 $spacing-8;
   }
@@ -53,6 +57,10 @@
 
 .title {
   color: $text-main;
+
+  .gradient {
+    @include gradient-text;
+  }
 }
 
 .leadSection {
@@ -60,7 +68,7 @@
   flex-direction: column;
   gap: $spacing-8;
   margin-bottom: $spacing-12;
-  
+
   @include md {
     flex-direction: row;
     align-items: center;
@@ -73,7 +81,7 @@
   font-weight: 500;
   line-height: $leading-relaxed;
   flex: 1;
-  
+
   @include md {
     font-size: $text-2xl;
   }
@@ -83,11 +91,11 @@
   &Primary {
     color: $primary;
   }
-  
+
   &Secondary {
     color: $secondary;
   }
-  
+
   &Accent {
     color: $primary;
   }
@@ -108,7 +116,7 @@
   overflow: hidden;
   border: 2px solid $border-color;
   box-shadow: $glow-primary;
-  
+
   @include md {
     width: 144px;
     height: 144px;
@@ -123,7 +131,7 @@
 .columns {
   display: grid;
   gap: $spacing-12;
-  
+
   @include lg {
     grid-template-columns: 1fr 1fr;
     gap: $spacing-16;
@@ -170,11 +178,11 @@
   border-radius: $border-radius-xl;
   border: 1px solid $border-color;
   transition: all $transition-normal $transition-ease;
-  
+
   &:hover {
     border-color: rgba($primary, 0.4);
     box-shadow: $glow-primary;
-    
+
     .expertiseIcon {
       color: $primary;
     }
