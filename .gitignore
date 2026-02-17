@@ -64,5 +64,3 @@ secrets.json
 *.log
 *.local
 .cache/
-
-yarn.lock

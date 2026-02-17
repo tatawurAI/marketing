@@ -76,6 +76,13 @@
 .logoLink {
   display: inline-flex;
   margin-bottom: $spacing-6;
+  transition: opacity $transition-normal $transition-ease, transform $transition-normal $transition-ease;
+  opacity: 0.85;
+
+  &:hover {
+    opacity: 1;
+    transform: scale(1.05);
+  }
 }
 
 .brandDescription {

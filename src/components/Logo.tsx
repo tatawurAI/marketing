@@ -9,10 +9,16 @@ interface LogoProps {
   className?: string;
 }
 
-const sizeMap = {
+const iconSizeMap = {
   small: 40,
   medium: 44,
   large: 52,
+};
+
+const fullLogoHeight = {
+  small: 32,
+  medium: 36,
+  large: 44,
 };
 
 export function Logo({
@@ -24,7 +30,25 @@ export function Logo({
     .filter(Boolean)
     .join(' ');
 
-  const imageSize = sizeMap[size];
+  if (showText) {
+    const height = fullLogoHeight[size];
+    const width = Math.round(height * 4.52); // Full.svg aspect ratio: 452/100
+
+    return (
+      <div className={logoClasses}>
+        <Image
+          src="/logo-full.svg"
+          alt="Tatawur AI"
+          width={width}
+          height={height}
+          className={styles.fullLogo}
+          priority
+        />
+      </div>
+    );
+  }
+
+  const imageSize = iconSizeMap[size];
 
   return (
     <div className={logoClasses}>
@@ -39,11 +63,6 @@ export function Logo({
         />
         <div className={styles.iconGlow} />
       </div>
-      {showText && (
-        <div className={styles.logoText}>
-          <span className={styles.name}>Tatawur AI</span>
-        </div>
-      )}
     </div>
   );
 }
