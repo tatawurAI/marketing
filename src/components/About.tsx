@@ -22,8 +22,8 @@ const expertise = [
   { icon: Code2, label: 'Full-Stack Development' },
   { icon: LayoutPanelTop, label: 'BIM & Computational Design' },
   { icon: Layers, label: 'Scalable Systems Architecture' },
-  { icon: Users, label: 'Technical Leadership' },
   { icon: Target, label: 'Product Strategy' },
+  { icon: Users, label: 'Technical Leadership' },
 ];
 
 export function About() {
