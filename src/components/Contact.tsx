@@ -27,11 +27,11 @@ export function Contact() {
         >
           <span className={styles.badge}>Get In Touch</span>
           <h2 className={styles.title}>
-            Let&apos;s Build the Future Together
+            Let&apos;s Find Out What&apos;s Possible
           </h2>
           <p className={styles.description}>
-            Ready to transform your AEC workflows? Reach out to discuss how
-            Tatawur AI can help.
+            Every engagement starts with a conversation. Tell us about your
+            project and we&apos;ll take it from there.
           </p>
         </motion.div>
 
@@ -56,10 +56,10 @@ export function Contact() {
           {/* What to include */}
           <div className={styles.includeSection}>
             <h3 className={styles.includeTitle}>
-              What to include in your email:
+              To make our first conversation count, share:
             </h3>
             <ul className={styles.includeList}>
-              <li>A brief description of your project or challenge</li>
+              <li>What you&apos;re building and what&apos;s slowing you down</li>
               <li>Your timeline and goals</li>
               <li>Any specific technologies or workflows involved</li>
               <li>Your preferred way to connect (call, video, etc.)</li>

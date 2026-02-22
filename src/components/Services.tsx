@@ -10,7 +10,7 @@ const services = [
     icon: Compass,
     title: 'Design & Plan Automation',
     description:
-      'Transform weeks of manual work into automated workflows—from schematic design through fabrication-ready outputs.',
+      'Transform weeks of manual work into automated workflows, from schematic design through fabrication-ready outputs.',
     features: [
       'AI-assisted design generation and optimization',
       'Automated drawing production and documentation',
@@ -38,13 +38,13 @@ const services = [
     icon: Brain,
     title: 'AI & Intelligent Systems',
     description:
-      'Embed machine intelligence into your workflows—augmenting human expertise with systems that learn and adapt.',
+      'From product strategy to production deployment, embed machine intelligence into your workflows and build AI-powered tools your teams will actually use.',
     features: [
+      'Product strategy and roadmapping for AI-powered AEC initiatives',
       'Custom AI models trained on your domain data',
       'Computer vision for quality control and progress tracking',
       'Natural language interfaces for technical documentation',
       'Predictive analytics for scheduling and risk assessment',
-      'Intelligent automation that improves over time',
     ],
     color: 'primary',
   },
@@ -115,8 +115,8 @@ export function Services() {
           <span className={styles.badge}>What We Offer</span>
           <h2 className={styles.title}>Services</h2>
           <p className={styles.description}>
-            Comprehensive consulting solutions tailored to your digital
-            transformation needs
+            End-to-end consulting across design, engineering, and construction
+            tailored to where you are and where you want to go.
           </p>
         </motion.div>
 
@@ -137,7 +137,9 @@ export function Services() {
                 {/* Header */}
                 <div className={styles.serviceHeader}>
                   <div
-                    className={`${styles.serviceIcon} ${styles[service.color]}`}
+                    className={`${styles.serviceIcon} ${
+                      styles[service.color]
+                    }`}
                   >
                     <service.icon strokeWidth={1.5} />
                   </div>
@@ -154,7 +156,9 @@ export function Services() {
                   {service.features.map((feature, featureIndex) => (
                     <li key={featureIndex} className={styles.featureItem}>
                       <span
-                        className={`${styles.featureDot} ${styles[service.color]}`}
+                        className={`${styles.featureDot} ${
+                          styles[service.color]
+                        }`}
                       />
                       {feature}
                     </li>
@@ -163,7 +167,9 @@ export function Services() {
 
                 {/* Hover overlay */}
                 <div
-                  className={`${styles.serviceOverlay} ${styles[service.color]}`}
+                  className={`${styles.serviceOverlay} ${
+                    styles[service.color]
+                  }`}
                 />
               </div>
             </motion.div>
@@ -183,7 +189,7 @@ export function Services() {
             whileTap={{ scale: 0.98 }}
             className={styles.ctaButton}
           >
-            Ready to discuss your project?
+            Book a Consultation
             <ArrowRight size={18} className={styles.arrow} />
           </motion.button>
         </motion.div>

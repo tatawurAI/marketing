@@ -7,11 +7,11 @@ import {
   Bot,
   Code2,
   LayoutPanelTop,
-  CircuitBoard,
   Factory,
   Cloud,
   Layers,
   Users,
+  Target,
 } from 'lucide-react';
 import styles from './About.module.scss';
 
@@ -21,9 +21,9 @@ const expertise = [
   { icon: Cloud, label: 'Cloud Architecture & DevOps' },
   { icon: Code2, label: 'Full-Stack Development' },
   { icon: LayoutPanelTop, label: 'BIM & Computational Design' },
-  { icon: CircuitBoard, label: 'Embedded Systems & IoT' },
-  { icon: Layers, label: 'Microservices & Event-Driven' },
+  { icon: Layers, label: 'Scalable Systems Architecture' },
   { icon: Users, label: 'Technical Leadership' },
+  { icon: Target, label: 'Product Strategy' },
 ];
 
 export function About() {
@@ -45,7 +45,7 @@ export function About() {
           <span className={styles.label}>About</span>
           <h2 className={styles.title}>
             Meet Tarek - Founder of{' '}
-            <span className={styles.gradient}>Tatawur AI</span>
+            <span className={styles.gradient}>TATAWUR</span>
           </h2>
         </motion.div>
 
@@ -58,7 +58,7 @@ export function About() {
         >
           <p className={styles.leadText}>
             Tarek is uniquely positioned at the intersection of software, AI,
-            and the built environment—with deep technical expertise and a
+            and the built environment, with deep technical expertise and a
             proven track record of building novel products in uncharted
             territory.
           </p>
@@ -85,21 +85,22 @@ export function About() {
             className={styles.bioContent}
           >
             <p className={styles.bioText}>
-              During his tenure as VP of Software Products at ICON, Tarek led a
-              team of 30+ engineers developing the software platform behind
-              over 200 robotically-built homes—delivering computational
-              geometry engines, design automation tools, and real-time
-              operations software that scaled construction technology from
-              prototype to production.
+              At ICON, Tarek led product and engineering, building the software
+              organization behind the platform that powered over 200
+              robotically-built homes, delivering computational geometry
+              engines, design automation tools, and real-time operations
+              software that scaled construction technology from prototype to
+              production.
             </p>
 
             <p className={styles.bioText}>
-              Prior to software leadership, he worked as an engineer at Arup
-              and Walter P Moore, building BIM automation tools that reduced
-              design iteration time by over 50%. This foundation, combined with
-              graduate degrees in AI, computer science, and structural
-              engineering, enables him to translate complex technical
-              possibilities into practical solutions.
+              Before that, he worked as an engineer at Arup and Walter P Moore,
+              building BIM automation tools that reduced design iteration time
+              by over 50%. Combined with graduate degrees in AI, computer
+              science, and structural engineering, this breadth is exactly what
+              Tatawur AI brings to every engagement: the ability to see across
+              the full project lifecycle and build solutions that actually work
+              in the field.
             </p>
           </motion.div>
 

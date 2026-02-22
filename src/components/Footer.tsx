@@ -51,9 +51,9 @@ export function Footer() {
               </a>
 
               <p className={styles.brandDescription}>
-                Evolving Construction Through Intelligent Automation. Expert
-                consulting services bridging traditional AEC workflows with
-                cutting-edge software and AI solutions.
+                Evolving the Built Environment Through Intelligent Automation.
+                From schematic design to site execution: AI and automation for
+                every phase of AEC delivery.
               </p>
 
               {/* Social links */}

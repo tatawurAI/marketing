@@ -5,7 +5,7 @@ import {
   ArrowRight,
   Building2,
   Cpu,
-  Boxes,
+  Compass,
   Zap,
   Shield,
   Lightbulb,
@@ -89,7 +89,7 @@ export function Hero() {
           transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
           className={`${styles.floatingIcon} ${styles.icon3}`}
         >
-          <Boxes size={56} strokeWidth={1} />
+          <Compass size={56} strokeWidth={1} />
         </motion.div>
       </div>
 
@@ -105,7 +105,7 @@ export function Hero() {
           >
             <span className={styles.taglineDot} />
             <span className={styles.taglineText}>
-              AEC Digital Transformation Experts
+              Where AEC Expertise Meets AI Engineering
             </span>
           </motion.div>
 
@@ -116,7 +116,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className={styles.headline}
           >
-            <span className={styles.dark}>Evolving Construction </span>
+            <span className={styles.dark}>Evolving the Built Environment </span>
             <br />
             <span className={styles.dark}>Through </span>
             <span className={styles.gradient}>Intelligent Automation</span>
@@ -129,8 +129,9 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className={styles.subheadline}
           >
-            Expert consulting services bridging traditional AEC workflows with
-            cutting-edge software and AI solutions
+            From schematic design to site execution, we help AEC firms automate
+            workflows, embed intelligent systems, and build smarter at every
+            phase of delivery.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -146,7 +147,7 @@ export function Hero() {
               whileTap={{ scale: 0.98 }}
               className={styles.ctaPrimary}
             >
-              Get Started
+              Book a Consultation
               <ArrowRight size={18} className={styles.arrow} />
             </motion.button>
             <motion.button
@@ -155,7 +156,7 @@ export function Hero() {
               whileTap={{ scale: 0.98 }}
               className={styles.ctaSecondary}
             >
-              Learn More
+              Explore Our Services
             </motion.button>
           </motion.div>
 
@@ -170,17 +171,17 @@ export function Hero() {
               {
                 icon: Zap,
                 label: 'AI & Automation',
-                desc: 'Intelligent workflows',
+                desc: 'Cut weeks of manual work',
               },
               {
                 icon: Shield,
-                label: 'Software Strategy',
-                desc: 'Scalable solutions',
+                label: 'Product Strategy',
+                desc: 'Define what to build first',
               },
               {
                 icon: Lightbulb,
                 label: 'Innovation',
-                desc: 'Future-ready tech',
+                desc: 'Practical innovation, not hype',
               },
             ].map((item, index) => (
               <motion.div

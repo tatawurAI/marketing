@@ -11,21 +11,21 @@ const valueProps = [
     icon: HardHat,
     title: 'Domain Expertise',
     description:
-      'Deep understanding of AEC workflows, pain points, and industry standards from years of hands-on engineering experience',
+      'We don\'t just consult. We\'ve shipped production systems used on real job sites, from design automation tools to robotically-built homes.',
     color: 'secondary',
   },
   {
     icon: Code2,
     title: 'Technical Leadership',
     description:
-      'Proven track record building and scaling software products that power next-generation construction technology',
+      'We\'ve built and scaled software teams from the ground up, shipping tools now used across AEC projects worldwide.',
     color: 'primary',
   },
   {
     icon: Brain,
     title: 'AI Integration',
     description:
-      'Practical implementation of AI and automation to augment human capabilities and streamline complex processes',
+      'We don\'t bolt on AI. We design intelligent systems that make your teams faster and your outputs more reliable.',
     color: 'secondary',
   },
 ];
@@ -72,12 +72,14 @@ export function Overview() {
           className={styles.header}
         >
           <span className={styles.badge}>Why Tatawur AI</span>
-          <h2 className={styles.title}>Transforming AEC <span className={styles.gradient}>Workflows</span></h2>
+          <h2 className={styles.title}>
+            Transforming AEC <span className={styles.gradient}>Workflows</span>
+          </h2>
           <p className={styles.description}>
-            Tatawur AI brings together deep domain expertise in structural
+            Tatawur AI brings together deep domain expertise in architectural
             engineering and proven software leadership to help architecture,
-            engineering, and construction firms navigate their digital
-            transformation journey.
+            engineering, and construction firms cut costs, accelerate delivery,
+            and build a durable competitive advantage.
           </p>
         </motion.div>
 
@@ -123,8 +125,8 @@ export function Overview() {
           <div className={styles.additionalInfoInner}>
             <p className={styles.additionalInfoText}>
               With experience scaling software organizations from startup to
-              unicorn status and developing production-grade robotic
-              construction systems, we understand both the{' '}
+              unicorn status and developing production-grade construction
+              technology systems, we understand both the{' '}
               <span className={`${styles.highlight} ${styles.primary}`}>
                 technical possibilities
               </span>{' '}
