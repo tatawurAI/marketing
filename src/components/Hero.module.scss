@@ -25,8 +25,11 @@
   position: absolute;
   inset: 0;
   opacity: 0.15;
-  background-image: 
-    linear-gradient(to right, $border-color 1px, transparent 1px),
+  background-image: linear-gradient(
+      to right,
+      $border-color 1px,
+      transparent 1px
+    ),
     linear-gradient(to bottom, $border-color 1px, transparent 1px);
   background-size: 60px 60px;
 }
@@ -35,29 +38,41 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  
+
   &.shape1 {
     top: 25%;
     right: 25%;
     width: 288px;
     height: 288px;
-    background: linear-gradient(to bottom right, rgba($primary, 0.3), rgba($primary, 0.1));
+    background: linear-gradient(
+      to bottom right,
+      rgba($primary, 0.3),
+      rgba($primary, 0.1)
+    );
   }
-  
+
   &.shape2 {
     bottom: 25%;
     left: 25%;
     width: 384px;
     height: 384px;
-    background: linear-gradient(to bottom right, rgba($secondary, 0.2), rgba($secondary, 0.05));
+    background: linear-gradient(
+      to bottom right,
+      rgba($secondary, 0.2),
+      rgba($secondary, 0.05)
+    );
   }
-  
+
   &.shape3 {
     top: 33%;
     left: 33%;
     width: 256px;
     height: 256px;
-    background: linear-gradient(to bottom right, rgba($primary, 0.15), rgba($secondary, 0.1));
+    background: linear-gradient(
+      to bottom right,
+      rgba($primary, 0.15),
+      rgba($secondary, 0.1)
+    );
   }
 }
 
@@ -70,19 +85,19 @@
 
 .floatingIcon {
   position: absolute;
-  
+
   &.icon1 {
     top: 128px;
     right: 15%;
     color: rgba($primary, 0.4);
   }
-  
+
   &.icon2 {
     top: 50%;
     right: 10%;
     color: rgba($secondary, 0.3);
   }
-  
+
   &.icon3 {
     bottom: 128px;
     right: 20%;
@@ -122,7 +137,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     box-shadow: $glow-primary;
   }
@@ -133,19 +149,23 @@
 }
 
 .taglineText {
-  font-size: $text-sm;
+  font-size: $text-xs;
   font-weight: 500;
   color: $primary;
+
+  @include sm {
+    font-size: $text-sm;
+  }
 }
 
 .headline {
   text-wrap: balance;
   margin-bottom: $spacing-6;
-  
+
   .dark {
     color: $text-main;
   }
-  
+
   .gradient {
     @include gradient-text;
   }
@@ -157,7 +177,7 @@
   max-width: 672px;
   margin-bottom: $spacing-10;
   line-height: $leading-relaxed;
-  
+
   @include md {
     font-size: $text-xl;
   }
@@ -175,11 +195,11 @@
   display: flex;
   align-items: center;
   gap: $spacing-2;
-  
+
   .arrow {
     transition: transform $transition-normal $transition-ease;
   }
-  
+
   &:hover .arrow {
     transform: translateX(4px);
   }
@@ -198,7 +218,7 @@
   grid-template-columns: 1fr;
   gap: $spacing-6;
   max-width: 672px;
-  
+
   @include sm {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -220,11 +240,11 @@
   align-items: center;
   justify-content: center;
   transition: all $transition-normal $transition-ease;
-  
+
   svg {
     color: $primary;
   }
-  
+
   .focusItem:hover & {
     border-color: $primary;
     box-shadow: $glow-primary;
@@ -237,7 +257,7 @@
     color: $text-main;
     font-size: $text-sm;
   }
-  
+
   .desc {
     font-size: $text-xs;
     color: $text-muted;
@@ -245,10 +265,15 @@
 }
 
 .scrollIndicator {
+  display: none;
   position: absolute;
   bottom: $spacing-8;
   left: 50%;
   transform: translateX(-50%);
+
+  @include md {
+    display: block;
+  }
 }
 
 .scrollMouse {
@@ -268,4 +293,3 @@
   border-radius: 50%;
   box-shadow: $glow-primary;
 }
-

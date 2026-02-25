@@ -1,15 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import {
-  ArrowRight,
-  Building2,
-  Cpu,
-  Compass,
-  Zap,
-  Shield,
-  Lightbulb,
-} from 'lucide-react';
+import { ArrowRight, Zap, Shield, Lightbulb } from 'lucide-react';
 import styles from './Hero.module.scss';
 
 export function Hero() {
@@ -68,31 +60,6 @@ export function Hero() {
         />
       </div>
 
-      {/* Floating icons */}
-      <div className={styles.floatingIcons}>
-        <motion.div
-          animate={{ y: [-10, 10, -10], rotate: [0, 10, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-          className={`${styles.floatingIcon} ${styles.icon1}`}
-        >
-          <Building2 size={48} strokeWidth={1} />
-        </motion.div>
-        <motion.div
-          animate={{ y: [10, -10, 10], rotate: [0, -10, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-          className={`${styles.floatingIcon} ${styles.icon2}`}
-        >
-          <Cpu size={64} strokeWidth={1} />
-        </motion.div>
-        <motion.div
-          animate={{ y: [-15, 15, -15], rotate: [0, 15, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-          className={`${styles.floatingIcon} ${styles.icon3}`}
-        >
-          <Compass size={56} strokeWidth={1} />
-        </motion.div>
-      </div>
-
       {/* Content */}
       <div className={styles.content}>
         <div className={styles.contentInner}>
@@ -105,7 +72,7 @@ export function Hero() {
           >
             <span className={styles.taglineDot} />
             <span className={styles.taglineText}>
-              Where AEC Expertise Meets AI Engineering
+              Software That Understands How Buildings Get Built
             </span>
           </motion.div>
 
@@ -116,7 +83,9 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className={styles.headline}
           >
-            <span className={styles.dark}>Evolving the Built Environment </span>
+            <span className={styles.dark}>
+              Evolving the Built Environment{' '}
+            </span>
             <br />
             <span className={styles.dark}>Through </span>
             <span className={styles.gradient}>Intelligent Automation</span>
