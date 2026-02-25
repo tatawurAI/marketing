@@ -69,9 +69,9 @@ export const metadata: Metadata = {
       'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions.',
     images: [
       {
-        url: '/logo.svg',
-        width: 500,
-        height: 500,
+        url: '/logo.png',
+        width: 1831,
+        height: 400,
         alt: 'Tatawur AI - Evolving Construction',
       },
     ],
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     title: 'Tatawur AI | Evolving Construction Through Intelligent Automation',
     description:
       'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions.',
-    images: ['/logo.svg'],
+    images: ['/logo.png'],
   },
   robots: {
     index: true,

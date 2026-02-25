@@ -7,6 +7,7 @@ import styles from './Footer.module.scss';
 
 const footerLinks = [
   { name: 'Services', href: '#services' },
+  { name: 'Work', href: '#work' },
   { name: 'About', href: '#about' },
   { name: 'Contact', href: '#contact' },
 ];

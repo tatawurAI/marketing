@@ -1,0 +1,173 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.section {
+  position: relative;
+  padding: $spacing-8 0;
+  background: $bg-card;
+  overflow: hidden;
+
+  @include md {
+    padding: $spacing-12 0;
+  }
+}
+
+.backgroundAccent {
+  position: absolute;
+  top: 0;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba($primary, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.container {
+  @include container;
+  padding: 0 $spacing-4;
+  position: relative;
+
+  @include sm {
+    padding: 0 $spacing-6;
+  }
+
+  @include lg {
+    padding: 0 $spacing-8;
+  }
+}
+
+.header {
+  text-align: center;
+  max-width: 768px;
+  margin: 0 auto $spacing-16;
+}
+
+.badge {
+  display: inline-block;
+  padding: $spacing-1 $spacing-4;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  background: rgba($primary, 0.2);
+  color: $primary;
+  border: 1px solid rgba($primary, 0.3);
+  border-radius: $border-radius-full;
+  font-size: $text-sm;
+  font-weight: 500;
+  margin-bottom: $spacing-6;
+}
+
+.title {
+  color: $text-main;
+  margin-bottom: $spacing-6;
+}
+
+.gradient {
+  @include gradient-text;
+}
+
+.description {
+  color: $text-muted;
+  font-size: $text-lg;
+  line-height: $leading-relaxed;
+}
+
+.projectsGrid {
+  display: grid;
+  gap: $spacing-8;
+
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.projectCard {
+  position: relative;
+}
+
+.projectCardInner {
+  height: 100%;
+  padding: $spacing-8;
+  background: $bg-main;
+  border-radius: $border-radius-3xl;
+  border: 1px solid $border-color;
+  transition: all $transition-normal $transition-ease;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    border-color: rgba($primary, 0.4);
+    box-shadow: $glow-primary;
+    transform: translateY(-4px);
+  }
+}
+
+.cardHeader {
+  margin-bottom: $spacing-4;
+}
+
+.projectNumber {
+  display: block;
+  font-family: $font-mono;
+  font-size: $text-xs;
+  font-weight: 500;
+  color: $primary;
+  margin-bottom: $spacing-2;
+}
+
+.projectTitle {
+  font-size: $text-xl;
+  font-family: $font-heading;
+  font-weight: 600;
+  color: $text-main;
+  line-height: $leading-snug;
+}
+
+.tags {
+  margin-bottom: $spacing-5;
+  font-size: $text-xs;
+  color: $text-muted;
+  font-family: $font-mono;
+  letter-spacing: 0.02em;
+  line-height: $leading-relaxed;
+}
+
+.projectBody {
+  color: $text-muted;
+  font-size: $text-sm;
+  line-height: $leading-relaxed;
+}
+
+.projectLink {
+  display: inline-block;
+  margin-top: $spacing-4;
+  color: $primary;
+  font-size: $text-sm;
+  transition: color $transition-normal $transition-ease;
+
+  &:hover {
+    color: $secondary;
+  }
+}
+
+.linkArrow {
+  display: inline-block;
+  transition: transform $transition-normal $transition-ease;
+
+  .projectLink:hover & {
+    transform: translate(1px, -1px);
+  }
+}
+
+.projectOverlay {
+  position: absolute;
+  inset: 0;
+  border-radius: $border-radius-3xl;
+  opacity: 0;
+  background: $primary;
+  transition: opacity $transition-normal $transition-ease;
+  pointer-events: none;
+
+  .projectCardInner:hover & {
+    opacity: 0.03;
+  }
+}
