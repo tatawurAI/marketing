@@ -9,6 +9,7 @@ import styles from './Navigation.module.scss';
 const navItems = [
   { name: 'Home', href: '#home' },
   { name: 'Services', href: '#services' },
+  { name: 'Work', href: '#work' },
   { name: 'About', href: '#about' },
   { name: 'Contact', href: '#contact' },
 ];
@@ -86,7 +87,7 @@ export function Navigation() {
                 }}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.5 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={styles.ctaButton}
@@ -143,7 +144,7 @@ export function Navigation() {
                   }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
+                  transition={{ delay: 0.5 }}
                   className={styles.mobileCta}
                 >
                   Get Started
