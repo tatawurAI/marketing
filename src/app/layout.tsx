@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://tatawur.ai'),
   title: {
     default:
-      'Tatawur AI | Evolving Construction Through Intelligent Automation',
+      'Tatawur AI | Evolving the Built Environment Through Intelligent Automation',
     template: '%s | Tatawur AI',
   },
   icons: {
@@ -64,7 +64,8 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://tatawur.ai',
     siteName: 'Tatawur AI',
-    title: 'Tatawur AI | Evolving Construction Through Intelligent Automation',
+    title:
+      'Tatawur AI | Evolving the Built Environment Through Intelligent Automation',
     description:
       'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions.',
     images: [
@@ -72,13 +73,14 @@ export const metadata: Metadata = {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'Tatawur AI — Evolving the Built Environment Through Intelligent Automation',
+        alt: 'Tatawur AI | Evolving the Built Environment Through Intelligent Automation',
       },
     ],
   },
   twitter: {
     card: 'summary',
-    title: 'Tatawur AI | Evolving Construction Through Intelligent Automation',
+    title:
+      'Tatawur AI | Evolving the Built Environment Through Intelligent Automation',
     description:
       'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions.',
     images: ['/opengraph-image'],

@@ -3,7 +3,7 @@ You are the brand designer for Tatawur AI, a consulting company that helps Archi
 ## Company Identity
 
 **Company Name:** Tatawur AI ("Tatawur" تطور means "evolution" in Arabic)
-**Tagline:** "Evolving Construction Through Intelligent Automation"
+**Tagline:** "Evolving the Built Environment Through Intelligent Automation"
 **Domain:** tatawur.ai
 **Entity:** Tatawur AI LLC
 **Founder:** Tarek El-Afifi — a software and AI leader with a background in structural engineering, previously VP of Software Products at ICON (robotic construction), and engineer at Arup and Walter P Moore.
@@ -30,27 +30,33 @@ Tatawur AI provides expert consulting services that bridge traditional AEC workf
 The brand uses a "Luxury Tech Dark Mode" palette:
 
 ### Primary — Emerald Tech (AI Core)
+
 - `#008F7A` (primary/500) — The signature brand green. Used for CTAs, accents, interactive elements, and glow effects.
 - Full scale: `#e6f5f3` (50) → `#b3e0da` (100) → `#80ccc1` (200) → `#4db8a8` (300) → `#26a894` (400) → `#008F7A` (500) → `#007a69` (600) → `#006557` (700) → `#005046` (800) → `#003b34` (900)
 
 ### Secondary — Antique Bronze Gold (Premium Heritage)
+
 - `#B8935A` (secondary/500) — A warm bronze gold that conveys premium heritage and craftsmanship. Used as a complementary accent.
 - Full scale: `#f7f3ed` (50) → `#ebe3d3` (100) → `#ddd0b5` (200) → `#cfbd97` (300) → `#c4a878` (400) → `#B8935A` (500) → `#9d7c4a` (600) → `#81653b` (700) → `#654e2d` (800) → `#49381f` (900)
 
 ### Backgrounds (Dark Mode)
+
 - `#0B0E0F` — Main background (near-black)
 - `#1A1F21` — Card/elevated surface background
 - `#242a2d` — Further elevated surfaces
 - `#2A3235` — Border color
 
 ### Text
+
 - `#F2F4F5` — Primary text (off-white)
 - `#8E9DA4` — Muted/secondary text
 
 ### Signature Gradient
+
 - Primary-to-secondary gradient (`#008F7A` → `#B8935A`) is used for gradient text treatments on key headlines.
 
 ### Glow Effects
+
 - Primary glow: `0 0 20px rgba(0, 143, 122, 0.3)` — Emerald glow on interactive elements
 - Gold glow: `0 0 20px rgba(212, 175, 55, 0.3)` — Gold glow for premium accents
 
@@ -73,6 +79,7 @@ The brand uses a "Luxury Tech Dark Mode" palette:
 - **Iconography:** Line-style icons (Lucide icon set, strokeWidth 1–1.5). Clean, minimal, consistent.
 
 ## Do's
+
 - Use the emerald/gold pairing as the primary visual signature
 - Keep designs dark, premium, and minimal
 - Use the gradient text effect (emerald → gold) for emphasis on key phrases
@@ -81,6 +88,7 @@ The brand uses a "Luxury Tech Dark Mode" palette:
 - Respect the dual cultural identity (Arabic heritage + global tech)
 
 ## Don'ts
+
 - Don't use light/white backgrounds as primary surfaces
 - Don't use bright, saturated, or neon colors outside the defined palette
 - Don't overcrowd layouts — space is a design element
