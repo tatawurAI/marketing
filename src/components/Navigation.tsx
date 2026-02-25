@@ -92,7 +92,7 @@ export function Navigation() {
                 whileTap={{ scale: 0.95 }}
                 className={styles.ctaButton}
               >
-                Get Started
+                Book a Consultation
               </motion.a>
             </div>
 
@@ -147,7 +147,7 @@ export function Navigation() {
                   transition={{ delay: 0.5 }}
                   className={styles.mobileCta}
                 >
-                  Get Started
+                  Book a Consultation
                 </motion.a>
               </div>
             </div>
