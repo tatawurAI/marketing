@@ -7,9 +7,9 @@ import styles from './SelectedWork.module.scss';
 const projects = [
   {
     number: '01',
-    title: 'OSD Phase II SBIR: Generative AI to Streamline DoD Construction Approvals',
-    tags: ['Generative AI', 'BIM', 'Graph Neural Networks'],
-    body: 'Served as principal investigator on an Office of the Secretary of Defense-funded program to automate design review and compliance verification for military construction. Led development of a platform that converts Building Information Modeling data into graph-based structures and applies machine learning to verify compliance against the Unified Facilities Criteria and International Building Code, reducing design review cycles from weeks to hours. The system combines graph neural networks with deterministic AI models to support real-time design iteration and stakeholder collaboration across DoD construction projects.',
+    title: 'OSD Phase II SBIR: Generative AI for Construction Approvals',
+    tags: ['Knowledge Graphs', 'Agentic AI', 'BIM'],
+    body: 'Led a program to transform how the Department of Defense reviews military construction designs. Developed an AI assistant embedded directly within BIM authoring tools that encodes UFC and IBC building codes as a queryable knowledge graph, enabling continuous compliance analysis as architects work rather than treating review as a post-design gate. The system applies graph neural networks and LLM reasoning to surface violations with specific code citations and explicit uncertainty acknowledgment, shifting issue discovery from the construction site upstream, where they cost the least to fix.',
     link: {
       label: 'Publicly awarded contract',
       url: 'https://www.sbir.gov/awards/218464',
