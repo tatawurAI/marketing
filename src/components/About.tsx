@@ -20,7 +20,7 @@ const expertise = [
   { icon: Factory, label: 'Robotics & Autonomous Systems' },
   { icon: Cloud, label: 'Cloud Architecture & DevOps' },
   { icon: Code2, label: 'Full-Stack Development' },
-  { icon: LayoutPanelTop, label: 'BIM & Computational Design' },
+  { icon: LayoutPanelTop, label: 'Computational Design & Geometry' },
   { icon: Layers, label: 'Scalable Systems Architecture' },
   { icon: Target, label: 'Product Strategy' },
   { icon: Users, label: 'Technical Leadership' },
@@ -42,7 +42,7 @@ export function About() {
           transition={{ duration: 0.5 }}
           className={styles.header}
         >
-          <span className={styles.label}>About</span>
+          <span className={styles.badge}>About</span>
           <h2 className={styles.title}>
             Meet Tarek - Founder of{' '}
             <span className={styles.gradient}>TATAWUR</span>

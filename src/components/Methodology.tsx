@@ -13,7 +13,7 @@ const stages = [
     title: 'Discovery',
     color: 'primary',
     description:
-      'We audit your workflows, toolchains, and data to identify automation leverage points. Two to three weeks of structured interviews and direct system access to map where manual processes create cost, delay, or error across the full delivery lifecycle.',
+      'Structured interviews, direct system access, and time with your team to map workflows, surface product needs, and understand your technical landscape. We go broad before we go deep, making sure the solution we design fits the real problem.',
   },
   {
     number: '02',
@@ -31,7 +31,7 @@ const stages = [
     title: 'Build',
     color: 'primary',
     description:
-      'We ship working software. Iterative delivery with weekly checkpoints. No black-box development: you see every commit and can redirect at any checkpoint. From prototype to production-grade systems running on active job sites.',
+      'We ship working software. Iterative delivery with weekly checkpoints. No black-box development: you see every commit and can redirect at any checkpoint. From prototype to production-grade systems running in active deployments.',
   },
   {
     number: '04',
@@ -143,7 +143,7 @@ export function Methodology() {
             ))}
             {stages.map((stage, i) => (
               <g key={`node-${stage.nodeX}`}>
-                <circle cx={stage.nodeX} cy="100" r="7" fill={i % 2 === 0 ? '#008F7A' : '#B8935A'} />
+                <circle cx={stage.nodeX} cy="100" r="7" style={{ fill: i % 2 === 0 ? 'var(--primary)' : 'var(--secondary)' }} />
                 <rect x={stage.nodeX - 14} y={86} width="28" height="28" fill="#1A1F21" stroke="rgba(242,244,245,0.2)" strokeWidth="1" rx="0" />
                 <text x={stage.nodeX} y={104} textAnchor="middle" fontSize="10" fontFamily="monospace" fill="rgba(242,244,245,0.8)" fontWeight="400" letterSpacing="0.05em">
                   {stage.number}

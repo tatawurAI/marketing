@@ -65,6 +65,10 @@
   margin-bottom: $spacing-6;
 }
 
+.gradient {
+  @include gradient-text;
+}
+
 .description {
   color: $text-muted;
   font-size: $text-lg;

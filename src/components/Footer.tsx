@@ -52,9 +52,9 @@ export function Footer() {
               </a>
 
               <p className={styles.brandDescription}>
-                Evolving the Built Environment Through Intelligent Automation.
-                From schematic design to site execution: AI and automation for
-                every phase of AEC delivery.
+                Intelligent automation for engineering-intensive industries. From
+                computational design to physical deployment, AI and software
+                for every phase of delivery.
               </p>
 
               {/* Social links */}
