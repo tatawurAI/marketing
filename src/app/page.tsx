@@ -1,9 +1,9 @@
 import {
   Navigation,
   Hero,
-  Overview,
-  Services,
   SelectedWork,
+  Services,
+  Methodology,
   About,
   Contact,
   Footer
@@ -14,13 +14,12 @@ export default function Home() {
     <main className="min-h-screen">
       <Navigation />
       <Hero />
-      <Overview />
-      <Services />
       <SelectedWork />
+      <Services />
+      <Methodology />
       <About />
       <Contact />
       <Footer />
     </main>
   )
 }
-

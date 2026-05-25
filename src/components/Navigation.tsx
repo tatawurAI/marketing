@@ -7,9 +7,9 @@ import { Logo } from './Logo';
 import styles from './Navigation.module.scss';
 
 const navItems = [
-  { name: 'Home', href: '#home' },
-  { name: 'Services', href: '#services' },
   { name: 'Work', href: '#work' },
+  { name: 'Services', href: '#services' },
+  { name: 'How We Work', href: '#methodology' },
   { name: 'About', href: '#about' },
   { name: 'Contact', href: '#contact' },
 ];

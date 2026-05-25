@@ -9,13 +9,13 @@ interface LogoProps {
   className?: string;
 }
 
-const iconSizeMap = {
-  small: 40,
-  medium: 44,
-  large: 52,
+const fullLogoHeight = {
+  small: 32,
+  medium: 36,
+  large: 44,
 };
 
-const fullLogoHeight = {
+const markSize = {
   small: 32,
   medium: 36,
   large: 44,
@@ -32,12 +32,12 @@ export function Logo({
 
   if (showText) {
     const height = fullLogoHeight[size];
-    const width = Math.round(height * 4.52); // Full.svg aspect ratio: 452/100
+    const width = Math.round(height * 3.7); // tatawur-lockup-horizontal viewBox 370×100
 
     return (
       <div className={logoClasses}>
         <Image
-          src="/logo-full.svg"
+          src="/brand/tatawur-lockup-horizontal-ivory.svg"
           alt="Tatawur AI"
           width={width}
           height={height}
@@ -48,16 +48,16 @@ export function Logo({
     );
   }
 
-  const imageSize = iconSizeMap[size];
+  const sz = markSize[size];
 
   return (
     <div className={logoClasses}>
       <div className={styles.logoIcon}>
         <Image
-          src="/logo.svg"
+          src="/brand/tatawur-mark-ivory.svg"
           alt="Tatawur AI"
-          width={imageSize}
-          height={imageSize}
+          width={sz}
+          height={sz}
           className={styles.logoImage}
           priority
         />
