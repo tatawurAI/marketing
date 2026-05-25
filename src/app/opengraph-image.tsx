@@ -4,12 +4,12 @@ import { join } from 'path';
 
 export const runtime = 'nodejs';
 export const alt =
-  'Tatawur AI — Evolving the Built Environment Through Intelligent Automation';
+  'Tatawur AI: Evolving the Physical World Through Intelligent Automation';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function Image() {
-  const logoData = readFileSync(join(process.cwd(), 'public/logo-full.svg'));
+  const logoData = readFileSync(join(process.cwd(), 'public/brand/tatawur-lockup-horizontal-ivory.svg'));
   const logoBase64 = `data:image/svg+xml;base64,${logoData.toString(
     'base64',
   )}`;

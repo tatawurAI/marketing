@@ -34,27 +34,30 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://tatawur.ai'),
   title: {
     default:
-      'Tatawur AI | Evolving the Built Environment Through Intelligent Automation',
+      'Tatawur AI | Evolving the Physical World Through Intelligent Automation',
     template: '%s | Tatawur AI',
   },
   icons: {
-    icon: '/logo.svg',
-    shortcut: '/logo.svg',
-    apple: '/logo.svg',
+    icon: [
+      { url: '/brand/favicon.svg', type: 'image/svg+xml' },
+      { url: '/brand/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/brand/favicon-16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    apple: { url: '/brand/favicon-192.png', sizes: '192x192' },
   },
   description:
-    'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions. Transform your construction business with Tatawur AI.',
+    'Intelligent automation for engineering-intensive industries. Tatawur AI delivers expert consulting across computational design, AI systems, digital twins, and robotics.',
   keywords: [
-    'AEC consulting',
+    'AI consulting',
+    'intelligent automation',
+    'computational design',
+    'engineering software',
+    'digital twin',
+    'physical AI',
+    'robotics software',
     'construction technology',
-    'AI automation',
-    'software consulting',
-    'construction AI',
-    'BIM integration',
-    'digital transformation',
-    'construction robotics',
     'structural engineering',
-    'construction software',
+    'software consulting',
   ],
   authors: [{ name: 'Tatawur AI LLC' }],
   creator: 'Tatawur AI LLC',
@@ -65,24 +68,24 @@ export const metadata: Metadata = {
     url: 'https://tatawur.ai',
     siteName: 'Tatawur AI',
     title:
-      'Tatawur AI | Evolving the Built Environment Through Intelligent Automation',
+      'Tatawur AI | Evolving the Physical World Through Intelligent Automation',
     description:
-      'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions.',
+      'Intelligent automation for engineering-intensive industries. Expert consulting across computational design, AI systems, digital twins, and robotics.',
     images: [
       {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'Tatawur AI | Evolving the Built Environment Through Intelligent Automation',
+        alt: 'Tatawur AI | Evolving the Physical World Through Intelligent Automation',
       },
     ],
   },
   twitter: {
     card: 'summary',
     title:
-      'Tatawur AI | Evolving the Built Environment Through Intelligent Automation',
+      'Tatawur AI | Evolving the Physical World Through Intelligent Automation',
     description:
-      'Expert consulting services bridging traditional AEC workflows with cutting-edge software and AI solutions.',
+      'Intelligent automation for engineering-intensive industries. Expert consulting across computational design, AI systems, digital twins, and robotics.',
     images: ['/opengraph-image'],
   },
   robots: {

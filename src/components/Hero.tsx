@@ -72,7 +72,7 @@ export function Hero() {
           >
             <span className={styles.taglineDot} />
             <span className={styles.taglineText}>
-              Software That Understands How Buildings Get Built
+              Intelligent automation for engineering-intensive industries
             </span>
           </motion.div>
 
@@ -83,12 +83,8 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className={styles.headline}
           >
-            <span className={styles.dark}>
-              Evolving the Built Environment{' '}
-            </span>
-            <br />
-            <span className={styles.dark}>Through </span>
-            <span className={styles.gradient}>Intelligent Automation</span>
+            <span className={styles.dark}>Evolving the </span>
+            <span className={styles.gradient}>Physical World</span>
           </motion.h1>
 
           {/* Subheadline */}
@@ -98,9 +94,9 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className={styles.subheadline}
           >
-            From schematic design to site execution, we help AEC firms automate
-            workflows, embed intelligent systems, and build smarter at every
-            phase of delivery.
+            From computational design to physical deployment, we help engineering
+            teams automate workflows, embed intelligent systems, and build
+            smarter at every phase of delivery.
           </motion.p>
 
           {/* CTA Buttons */}

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 186.25 204.1" width="186.25" height="204.1">
+  <g transform="translate(93.125, 70) scale(0.46153846153846156)" color="#0F1620">
+      <path d="M0,-100 L70.711,-70.711 L100,0 L70.711,70.711 L0,100 L-70.711,70.711 L-100,0 L-70.711,-70.711 Z" fill="none" stroke="currentColor" stroke-opacity="0.92" stroke-width="1.8" stroke-linejoin="miter"></path>
+      <g stroke="currentColor" stroke-opacity="0.82" stroke-width="1.4" stroke-linecap="round">
+        <line x1="0" y1="-100" x2="70.711" y2="70.711"></line>
+        <line x1="70.711" y1="-70.711" x2="0" y2="100"></line>
+        <line x1="100" y1="0" x2="-70.711" y2="70.711"></line>
+        <line x1="70.711" y1="70.711" x2="-100" y2="0"></line>
+        <line x1="0" y1="100" x2="-70.711" y2="-70.711"></line>
+        <line x1="-70.711" y1="70.711" x2="0" y2="-100"></line>
+        <line x1="-100" y1="0" x2="70.711" y2="-70.711"></line>
+        <line x1="-70.711" y1="-70.711" x2="100" y2="0"></line>
+      </g>
+      <g stroke="currentColor" stroke-opacity="0.22" stroke-width="0.8">
+        <line x1="0" y1="0" x2="0" y2="-100"></line>
+        <line x1="0" y1="0" x2="70.711" y2="-70.711"></line>
+        <line x1="0" y1="0" x2="100" y2="0"></line>
+        <line x1="0" y1="0" x2="70.711" y2="70.711"></line>
+        <line x1="0" y1="0" x2="0" y2="100"></line>
+        <line x1="0" y1="0" x2="-70.711" y2="70.711"></line>
+        <line x1="0" y1="0" x2="-100" y2="0"></line>
+        <line x1="0" y1="0" x2="-70.711" y2="-70.711"></line>
+      </g>
+      <g fill="currentColor">
+        <circle cx="0" cy="-100" r="3"></circle>
+        <circle cx="70.711" cy="-70.711" r="3"></circle>
+        <circle cx="100" cy="0" r="3"></circle>
+        <circle cx="70.711" cy="70.711" r="3"></circle>
+        <circle cx="0" cy="100" r="3"></circle>
+        <circle cx="-70.711" cy="70.711" r="3"></circle>
+        <circle cx="-100" cy="0" r="3"></circle>
+        <circle cx="-70.711" cy="-70.711" r="3"></circle>
+        <circle cx="15.851" cy="-38.268" r="1.8" opacity="0.85"></circle>
+        <circle cx="38.268" cy="-15.851" r="1.8" opacity="0.85"></circle>
+        <circle cx="38.268" cy="15.851" r="1.8" opacity="0.85"></circle>
+        <circle cx="15.851" cy="38.268" r="1.8" opacity="0.85"></circle>
+        <circle cx="-15.851" cy="38.268" r="1.8" opacity="0.85"></circle>
+        <circle cx="-38.268" cy="15.851" r="1.8" opacity="0.85"></circle>
+        <circle cx="-38.268" cy="-15.851" r="1.8" opacity="0.85"></circle>
+        <circle cx="-15.851" cy="-38.268" r="1.8" opacity="0.85"></circle>
+        <circle cx="0" cy="0" r="3.4"></circle>
+      </g>
+  </g>
+  <text x="93.125" y="187.64" text-anchor="middle" font-family="Helvetica Neue, Inter, system-ui, sans-serif" font-weight="500" font-size="38" letter-spacing="1.52" fill="#0F1620">tatawur<tspan fill="#C99459">.ai</tspan></text>
+</svg>

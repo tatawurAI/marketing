@@ -10,9 +10,9 @@ const services = [
     icon: Compass,
     title: 'Design & Plan Automation',
     description:
-      'Transform weeks of manual work into automated workflows, from schematic design through fabrication-ready outputs.',
+      'Transform weeks of manual work into automated workflows, from computational geometry and parametric modeling through fabrication-ready outputs across engineering disciplines.',
     features: [
-      'AI-assisted design generation and optimization',
+      'AI-assisted design generation and geometric optimization',
       'Automated drawing production and documentation',
       'Design-to-fabrication data pipelines',
       'Parametric systems that adapt to project constraints',
@@ -24,7 +24,7 @@ const services = [
     icon: Boxes,
     title: 'Digital Twin & Simulation',
     description:
-      'Build a living digital replica that connects your model to schedules, quantities, and the systems that drive your project.',
+      'Build a living digital replica that connects your model to schedules, quantities, and the systems that drive your project, from construction sites to industrial operations and infrastructure assets.',
     features: [
       'Automated BOM generation and quantity takeoffs',
       '4D scheduling and construction sequencing',
@@ -40,7 +40,7 @@ const services = [
     description:
       'From product strategy to production deployment, embed machine intelligence into your workflows and build AI-powered tools your teams will actually use.',
     features: [
-      'Product strategy and roadmapping for AI-powered AEC initiatives',
+      'Product strategy and roadmapping for AI-powered engineering initiatives',
       'Custom AI models trained on your domain data',
       'Computer vision for quality control and progress tracking',
       'Natural language interfaces for technical documentation',
@@ -113,10 +113,9 @@ export function Services() {
           className={styles.header}
         >
           <span className={styles.badge}>What We Offer</span>
-          <h2 className={styles.title}>Services</h2>
+          <h2 className={styles.title}><span className={styles.gradient}>Services</span></h2>
           <p className={styles.description}>
-            End-to-end consulting across design, engineering, and construction
-            tailored to where you are and where you want to go.
+            End-to-end consulting tailored to where you are and where you want to go.
           </p>
         </motion.div>
 
