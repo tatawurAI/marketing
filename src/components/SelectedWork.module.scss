@@ -2,172 +2,132 @@
 @use '../styles/mixins' as *;
 
 .section {
-  position: relative;
-  padding: $spacing-8 0;
-  background: $bg-card;
-  overflow: hidden;
-
-  @include md {
-    padding: $spacing-12 0;
-  }
-}
-
-.backgroundAccent {
-  position: absolute;
-  top: 0;
-  right: -200px;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba($primary, 0.06) 0%, transparent 70%);
-  pointer-events: none;
+  background: var(--surface);
+  @include section-padding;
 }
 
 .container {
   @include container;
-  padding: 0 $spacing-4;
-  position: relative;
-
-  @include sm {
-    padding: 0 $spacing-6;
-  }
-
-  @include lg {
-    padding: 0 $spacing-8;
-  }
 }
 
 .header {
-  text-align: center;
-  max-width: 768px;
-  margin: 0 auto $spacing-16;
+  max-width: 640px;
+  margin-bottom: $spacing-16;
 }
 
 .badge {
-  display: inline-block;
-  padding: $spacing-1 $spacing-4;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  background: rgba($primary, 0.2);
-  color: $primary;
-  border: 1px solid rgba($primary, 0.3);
-  border-radius: $border-radius-full;
-  font-size: $text-sm;
-  font-weight: 500;
-  margin-bottom: $spacing-6;
+  @include section-badge;
 }
 
 .title {
-  color: $text-main;
-  margin-bottom: $spacing-6;
-}
-
-.gradient {
-  @include gradient-text;
-}
-
-.description {
-  color: $text-muted;
-  font-size: $text-lg;
-  line-height: $leading-relaxed;
-}
-
-.projectsGrid {
-  display: grid;
-  gap: $spacing-8;
-
-  @include md {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.projectCard {
-  position: relative;
-}
-
-.projectCardInner {
-  height: 100%;
-  padding: $spacing-8;
-  background: $bg-main;
-  border-radius: $border-radius-3xl;
-  border: 1px solid $border-color;
-  transition: all $transition-normal $transition-ease;
-  position: relative;
-  overflow: hidden;
-
-  &:hover {
-    border-color: rgba($primary, 0.4);
-    box-shadow: $glow-primary;
-    transform: translateY(-4px);
-  }
-}
-
-.cardHeader {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--text);
+  line-height: $leading-tight;
   margin-bottom: $spacing-4;
 }
 
+.description {
+  font-family: $font-body;
+  font-size: $text-lg;
+  line-height: $leading-relaxed;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+// Editorial list
+.projectsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.projectRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-4;
+  padding: $spacing-10 0;
+  border-bottom: 1px solid var(--border);
+  transition: border-color $transition-fast $transition-ease;
+
+  &:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  @include lg {
+    grid-template-columns: 64px 1fr;
+    gap: $spacing-8;
+    align-items: start;
+  }
+}
+
 .projectNumber {
-  display: block;
-  font-family: $font-mono;
-  font-size: $text-xs;
-  font-weight: 500;
-  color: $primary;
-  margin-bottom: $spacing-2;
+  font-family: $font-display;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.3;
+
+  @include lg {
+    padding-top: $spacing-1;
+  }
+}
+
+.projectContent {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
 }
 
 .projectTitle {
-  font-size: $text-xl;
-  font-family: $font-heading;
-  font-weight: 600;
-  color: $text-main;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  color: var(--text);
   line-height: $leading-snug;
+  margin: 0;
 }
 
 .tags {
-  margin-bottom: $spacing-5;
-  font-size: $text-xs;
-  color: $text-muted;
   font-family: $font-mono;
-  letter-spacing: 0.02em;
-  line-height: $leading-relaxed;
+  font-size: $text-xs;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 0;
 }
 
 .projectBody {
-  color: $text-muted;
-  font-size: $text-sm;
+  font-family: $font-body;
+  font-size: $text-base;
   line-height: $leading-relaxed;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 680px;
 }
 
 .projectLink {
-  display: inline-block;
-  margin-top: $spacing-4;
-  color: $primary;
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-1;
+  font-family: $font-body;
   font-size: $text-sm;
-  transition: color $transition-normal $transition-ease;
+  font-weight: 500;
+  color: var(--primary);
+  transition: color $transition-fast $transition-ease;
 
   &:hover {
-    color: $secondary;
+    color: var(--gold);
   }
 }
 
 .linkArrow {
   display: inline-block;
-  transition: transform $transition-normal $transition-ease;
+  transition: transform $transition-fast $transition-ease;
 
   .projectLink:hover & {
-    transform: translate(1px, -1px);
-  }
-}
-
-.projectOverlay {
-  position: absolute;
-  inset: 0;
-  border-radius: $border-radius-3xl;
-  opacity: 0;
-  background: $primary;
-  transition: opacity $transition-normal $transition-ease;
-  pointer-events: none;
-
-  .projectCardInner:hover & {
-    opacity: 0.03;
+    transform: translate(2px, -2px);
   }
 }

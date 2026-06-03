@@ -2,223 +2,135 @@
 @use '../styles/mixins' as *;
 
 .section {
-  position: relative;
-  padding: $spacing-8 0;
-  background: $bg-card;
-  overflow: hidden;
-  
-  @include md {
-    padding: $spacing-12 0;
-  }
-}
-
-.backgroundPattern {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  
-  .dots {
-    position: absolute;
-    inset: 0;
-    opacity: 0.1;
-    background-image: radial-gradient(circle at 1px 1px, $border-color 1px, transparent 0);
-    background-size: 40px 40px;
-  }
+  background: var(--bg);
+  @include section-padding;
 }
 
 .container {
   @include container;
-  padding: 0 $spacing-4;
-  position: relative;
-  
-  @include sm {
-    padding: 0 $spacing-6;
-  }
-  
-  @include lg {
-    padding: 0 $spacing-8;
-  }
 }
 
 .header {
-  text-align: center;
-  max-width: 768px;
-  margin: 0 auto $spacing-16;
+  max-width: 640px;
+  margin-bottom: $spacing-16;
 }
 
 .badge {
-  display: inline-block;
-  padding: $spacing-1 $spacing-4;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  background: rgba($primary, 0.2);
-  color: $primary;
-  border: 1px solid rgba($primary, 0.3);
-  border-radius: $border-radius-full;
-  font-size: $text-sm;
-  font-weight: 500;
-  margin-bottom: $spacing-6;
+  @include section-badge;
 }
 
 .title {
-  color: $text-main;
-  margin-bottom: $spacing-6;
-}
-
-.gradient {
-  @include gradient-text;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--text);
+  line-height: $leading-tight;
+  margin-bottom: $spacing-4;
 }
 
 .description {
-  color: $text-muted;
+  font-family: $font-body;
   font-size: $text-lg;
   line-height: $leading-relaxed;
+  color: var(--text-muted);
+  margin: 0;
 }
 
-.servicesGrid {
-  display: grid;
-  gap: $spacing-8;
-  
-  @include md {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.serviceCard {
-  position: relative;
-}
-
-.serviceCardInner {
-  height: 100%;
-  padding: $spacing-8;
-  background: $bg-main;
-  border-radius: $border-radius-3xl;
-  border: 1px solid $border-color;
-  transition: all $transition-normal $transition-ease;
-  
-  &:hover {
-    border-color: rgba($primary, 0.4);
-    box-shadow: $glow-primary;
-    transform: translateY(-4px);
-  }
-}
-
-.serviceHeader {
+// Numbered list layout
+.servicesList {
   display: flex;
-  align-items: flex-start;
-  gap: $spacing-5;
-  margin-bottom: $spacing-6;
+  flex-direction: column;
 }
 
-.serviceIcon {
+.serviceRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-6;
+  padding: $spacing-10 0;
+  border-bottom: 1px solid var(--border);
+
+  &:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  @include lg {
+    grid-template-columns: 80px 1fr 2fr;
+    gap: $spacing-8;
+    align-items: start;
+  }
+}
+
+.serviceNumber {
+  font-family: $font-display;
+  font-size: 4.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--gold);
+  opacity: 0.5;
   flex-shrink: 0;
-  padding: $spacing-4;
-  border-radius: $border-radius-2xl;
-  
-  svg {
-    width: 28px;
-    height: 28px;
-    color: $text-dark;
-    stroke-width: 1.5;
-  }
-  
-  &.primary {
-    background: $primary;
-    box-shadow: $glow-primary;
-  }
-  
-  &.secondary {
-    background: $secondary;
-    box-shadow: $glow-gold;
+
+  @include lg {
+    font-size: 5rem;
+    opacity: 0.4;
   }
 }
 
-.serviceInfo {
-  .serviceTitle {
-    font-size: $text-xl;
-    font-family: $font-heading;
-    font-weight: 600;
-    color: $text-main;
-    margin-bottom: $spacing-2;
+.serviceLeft {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+
+  @include lg {
+    padding-top: $spacing-3;
   }
-  
-  .serviceDescription {
-    color: $text-muted;
+}
+
+.serviceTitle {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  color: var(--text);
+  line-height: $leading-snug;
+  margin: 0;
+}
+
+.serviceRight {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-5;
+
+  @include lg {
+    padding-top: $spacing-3;
   }
+}
+
+.serviceDescription {
+  font-family: $font-body;
+  font-size: $text-base;
+  line-height: $leading-relaxed;
+  color: var(--text-muted);
+  margin: 0;
 }
 
 .featuresList {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: $spacing-3;
-  margin-bottom: $spacing-6;
+  gap: $spacing-2;
 }
 
 .featureItem {
   display: flex;
-  align-items: flex-start;
+  align-items: baseline;
   gap: $spacing-3;
+  font-family: $font-body;
   font-size: $text-sm;
-  color: $text-muted;
-}
+  color: var(--text-muted);
 
-.featureDot {
-  flex-shrink: 0;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin-top: 8px;
-  
-  &.primary {
-    background: $primary;
-    box-shadow: 0 0 8px rgba($primary, 0.5);
-  }
-  
-  &.secondary {
-    background: $secondary;
-    box-shadow: 0 0 8px rgba($secondary, 0.5);
-  }
-}
-
-.serviceOverlay {
-  position: absolute;
-  inset: 0;
-  border-radius: $border-radius-3xl;
-  opacity: 0;
-  transition: opacity $transition-normal $transition-ease;
-  pointer-events: none;
-  
-  .serviceCard:hover & {
-    opacity: 0.03;
-  }
-  
-  &.primary {
-    background: $primary;
-  }
-  
-  &.secondary {
-    background: $secondary;
-  }
-}
-
-.ctaSection {
-  margin-top: $spacing-16;
-  text-align: center;
-}
-
-.ctaButton {
-  @include button-primary;
-  padding: $spacing-4 $spacing-8;
-  display: inline-flex;
-  align-items: center;
-  gap: $spacing-2;
-  
-  .arrow {
-    transition: transform $transition-normal $transition-ease;
-  }
-  
-  &:hover .arrow {
-    transform: translateX(4px);
+  &::before {
+    content: '—';
+    color: var(--primary);
+    flex-shrink: 0;
+    font-size: $text-xs;
   }
 }

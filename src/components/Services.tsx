@@ -1,16 +1,15 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Compass, Boxes, Brain, Bot, ArrowRight } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
 import styles from './Services.module.scss';
 
 const services = [
   {
-    icon: Compass,
+    number: '01',
     title: 'Design & Plan Automation',
     description:
-      'Transform weeks of manual work into automated workflows, from computational geometry and parametric modeling through fabrication-ready outputs across engineering disciplines.',
+      'Transform weeks of manual work into automated workflows — from computational geometry and parametric modeling through fabrication-ready outputs.',
     features: [
       'AI-assisted design generation and geometric optimization',
       'Automated drawing production and documentation',
@@ -18,13 +17,12 @@ const services = [
       'Parametric systems that adapt to project constraints',
       'Scale your output without scaling your team',
     ],
-    color: 'primary',
   },
   {
-    icon: Boxes,
+    number: '02',
     title: 'Digital Twin & Simulation',
     description:
-      'Build a living digital replica that connects your model to schedules, quantities, and the systems that drive your project, from construction sites to industrial operations and infrastructure assets.',
+      'Build a living digital replica that connects your model to schedules, quantities, and the systems that drive your project.',
     features: [
       'Automated BOM generation and quantity takeoffs',
       '4D scheduling and construction sequencing',
@@ -32,13 +30,12 @@ const services = [
       'Predictive simulation and scenario modeling',
       'Real-time synchronization across design and field',
     ],
-    color: 'secondary',
   },
   {
-    icon: Brain,
+    number: '03',
     title: 'AI & Intelligent Systems',
     description:
-      'From product strategy to production deployment, embed machine intelligence into your workflows and build AI-powered tools your teams will actually use.',
+      'From product strategy to production deployment — embed machine intelligence into your workflows and build AI-powered tools your teams will actually use.',
     features: [
       'Product strategy and roadmapping for AI-powered engineering initiatives',
       'Custom AI models trained on your domain data',
@@ -46,10 +43,9 @@ const services = [
       'Natural language interfaces for technical documentation',
       'Predictive analytics for scheduling and risk assessment',
     ],
-    color: 'primary',
   },
   {
-    icon: Bot,
+    number: '04',
     title: 'Robotics & Fabrication',
     description:
       'Bridge the gap between digital design and physical production with software that drives automated construction.',
@@ -60,138 +56,59 @@ const services = [
       'Real-time feedback loops between site and model',
       'End-to-end digital-to-physical pipelines',
     ],
-    color: 'secondary',
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: 'easeOut' as const,
-    },
-  },
-};
-
 export function Services() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  const handleScroll = () => {
-    const element = document.querySelector('#contact');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
     <section id="services" className={styles.section}>
-      {/* Background patterns */}
-      <div className={styles.backgroundPattern}>
-        <div className={styles.dots} />
-      </div>
-
       <div ref={ref} className={styles.container}>
-        {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: 0.55 }}
           className={styles.header}
         >
           <span className={styles.badge}>What We Offer</span>
-          <h2 className={styles.title}><span className={styles.gradient}>Services</span></h2>
+          <h2 className={styles.title}>Services</h2>
           <p className={styles.description}>
             End-to-end consulting tailored to where you are and where you want to go.
           </p>
         </motion.div>
 
-        {/* Service cards */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className={styles.servicesGrid}
-        >
-          {services.map((service) => (
+        <div className={styles.servicesList}>
+          {services.map((service, index) => (
             <motion.div
-              key={service.title}
-              variants={cardVariants}
-              className={styles.serviceCard}
+              key={service.number}
+              initial={{ opacity: 0, y: 24 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+              transition={{ duration: 0.55, delay: 0.1 + index * 0.1 }}
+              className={styles.serviceRow}
             >
-              <div className={styles.serviceCardInner}>
-                {/* Header */}
-                <div className={styles.serviceHeader}>
-                  <div
-                    className={`${styles.serviceIcon} ${
-                      styles[service.color]
-                    }`}
-                  >
-                    <service.icon strokeWidth={1.5} />
-                  </div>
-                  <div className={styles.serviceInfo}>
-                    <h3 className={styles.serviceTitle}>{service.title}</h3>
-                    <p className={styles.serviceDescription}>
-                      {service.description}
-                    </p>
-                  </div>
-                </div>
+              <span className={styles.serviceNumber} aria-hidden="true">
+                {service.number}
+              </span>
 
-                {/* Features list */}
+              <div className={styles.serviceLeft}>
+                <h3 className={styles.serviceTitle}>{service.title}</h3>
+              </div>
+
+              <div className={styles.serviceRight}>
+                <p className={styles.serviceDescription}>{service.description}</p>
                 <ul className={styles.featuresList}>
-                  {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className={styles.featureItem}>
-                      <span
-                        className={`${styles.featureDot} ${
-                          styles[service.color]
-                        }`}
-                      />
+                  {service.features.map((feature) => (
+                    <li key={feature} className={styles.featureItem}>
                       {feature}
                     </li>
                   ))}
                 </ul>
-
-                {/* Hover overlay */}
-                <div
-                  className={`${styles.serviceOverlay} ${
-                    styles[service.color]
-                  }`}
-                />
               </div>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className={styles.ctaSection}
-        >
-          <motion.button
-            onClick={handleScroll}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className={styles.ctaButton}
-          >
-            Book a Consultation
-            <ArrowRight size={18} className={styles.arrow} />
-          </motion.button>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

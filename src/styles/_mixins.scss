@@ -5,27 +5,19 @@
 // ============================================
 
 @mixin sm {
-  @media (min-width: $breakpoint-sm) {
-    @content;
-  }
+  @media (min-width: $breakpoint-sm) { @content; }
 }
 
 @mixin md {
-  @media (min-width: $breakpoint-md) {
-    @content;
-  }
+  @media (min-width: $breakpoint-md) { @content; }
 }
 
 @mixin lg {
-  @media (min-width: $breakpoint-lg) {
-    @content;
-  }
+  @media (min-width: $breakpoint-lg) { @content; }
 }
 
 @mixin xl {
-  @media (min-width: $breakpoint-xl) {
-    @content;
-  }
+  @media (min-width: $breakpoint-xl) { @content; }
 }
 
 // ============================================
@@ -33,20 +25,25 @@
 // ============================================
 
 @mixin container {
-  max-width: 80rem;
+  max-width: $container-max;
   margin-left: auto;
   margin-right: auto;
+  padding-left: $container-px-mobile;
+  padding-right: $container-px-mobile;
+
+  @include lg {
+    padding-left: $container-px-desktop;
+    padding-right: $container-px-desktop;
+  }
 }
 
 @mixin section-padding {
-  padding: $spacing-16 $spacing-4;
-
-  @include md {
-    padding: $spacing-24 $spacing-6;
-  }
+  padding-top: $section-padding-mobile;
+  padding-bottom: $section-padding-mobile;
 
   @include lg {
-    padding: $spacing-32 $spacing-8;
+    padding-top: $section-padding-desktop;
+    padding-bottom: $section-padding-desktop;
   }
 }
 
@@ -61,59 +58,37 @@
 // ============================================
 
 @mixin heading-base {
-  font-family: $font-heading;
-  font-weight: 600;
-  letter-spacing: -0.025em;
+  font-family: $font-display;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: $leading-tight;
 }
 
 @mixin h1 {
   @include heading-base;
-  font-size: $text-4xl;
-
-  @include md {
-    font-size: $text-5xl;
-  }
-
-  @include lg {
-    font-size: $text-6xl;
-  }
+  font-size: clamp(2.5rem, 6vw, 5rem);
 }
 
 @mixin h2 {
   @include heading-base;
-  font-size: $text-3xl;
-
-  @include md {
-    font-size: $text-4xl;
-  }
-
-  @include lg {
-    font-size: $text-5xl;
-  }
+  font-size: clamp(2rem, 4vw, 3.5rem);
 }
 
 @mixin h3 {
   @include heading-base;
-  font-size: $text-2xl;
-
-  @include md {
-    font-size: $text-3xl;
-  }
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
 }
 
 @mixin h4 {
   @include heading-base;
-  font-size: $text-xl;
-
-  @include md {
-    font-size: $text-2xl;
-  }
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
 }
 
 @mixin body-text {
   font-family: $font-body;
   font-size: $text-base;
   line-height: $leading-relaxed;
+  color: var(--text-muted);
 
   @include md {
     font-size: $text-lg;
@@ -128,36 +103,49 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: $spacing-2;
+  font-family: $font-body;
   font-weight: 600;
-  border-radius: $border-radius-full;
+  font-size: $text-sm;
+  border-radius: $radius;
   transition: all $transition-normal $transition-ease;
   cursor: pointer;
   border: none;
   outline: none;
+  letter-spacing: 0.02em;
+  padding: 0.75rem 1.5rem;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--primary), 0 0 0 4px var(--bg);
+  }
 }
 
 @mixin button-primary {
   @include button-base;
-  background: linear-gradient(to right, $primary, $primary-600);
-  color: $text-main;
-  box-shadow: $glow-primary;
+  background: var(--primary);
+  color: var(--bg);
 
   &:hover {
-    box-shadow: $glow-primary, $shadow-xl;
-    filter: brightness(1.1);
+    background: $primary-600;
+    transform: scale(1.02);
   }
 }
 
-@mixin button-secondary {
+@mixin button-ghost {
   @include button-base;
-  background: $bg-card;
-  color: $text-main;
-  border: 1px solid $border-color;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
 
   &:hover {
-    border-color: $primary;
-    background: rgba($primary, 0.1);
+    border-color: var(--primary);
+    color: var(--primary);
   }
+}
+
+// Legacy compat
+@mixin button-secondary {
+  @include button-ghost;
 }
 
 // ============================================
@@ -165,76 +153,41 @@
 // ============================================
 
 @mixin card {
-  background: $bg-card;
-  border-radius: $border-radius-3xl;
-  border: 1px solid $border-color;
-  box-shadow: $shadow-lg;
-  transition: all $transition-normal $transition-ease;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: $radius;
+  transition: border-color $transition-normal $transition-ease;
 
   &:hover {
-    box-shadow: $glow-primary;
-    border-color: rgba($primary, 0.3);
-    transform: translateY(-4px);
+    border-color: rgba(0, 143, 122, 0.3);
   }
 }
 
 // ============================================
-// GLASS EFFECT
+// SECTION HEADER
 // ============================================
 
-@mixin glass-effect {
-  backdrop-filter: blur(12px);
-  background: rgba($bg-card, 0.9);
-  border: 1px solid $border-color;
-  box-shadow: $shadow-lg;
-}
-
-// ============================================
-// GRADIENTS
-// ============================================
-
-@mixin gradient-text {
-  background: linear-gradient(to right, $primary, $secondary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-@mixin gradient-primary {
-  background: linear-gradient(to bottom right, $primary, $primary-600);
-}
-
-@mixin gradient-secondary {
-  background: linear-gradient(to bottom right, $secondary, $secondary-600);
-}
-
-@mixin gradient-accent {
-  background: linear-gradient(to bottom right, $accent, $accent-600);
-}
-
-// ============================================
-// FORM INPUTS
-// ============================================
-
-@mixin input-base {
-  width: 100%;
-  padding: $spacing-3 $spacing-4;
-  border-radius: $border-radius-xl;
-  border: 1px solid $border-color;
-  background: $bg-card;
-  color: $text-main;
-  outline: none;
-  transition: all $transition-normal $transition-ease;
-
-  &:focus {
-    border-color: $primary;
-    box-shadow: $glow-primary;
-  }
+@mixin section-badge {
+  display: inline-block;
+  font-family: $font-body;
+  font-size: $text-xs;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: $spacing-4;
 }
 
 // ============================================
 // UTILITIES
 // ============================================
+
+@mixin glass-effect {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(15, 19, 21, 0.92);
+  border: 1px solid var(--border);
+}
 
 @mixin visually-hidden {
   position: absolute;
@@ -252,4 +205,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+// Legacy gradient mixins (kept for compat)
+@mixin gradient-text {
+  background: linear-gradient(to right, $primary, $gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin gradient-primary {
+  background: linear-gradient(to bottom right, $primary, $primary-600);
 }

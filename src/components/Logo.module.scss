@@ -4,21 +4,6 @@
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: $spacing-2;
-
-  &.large {
-    gap: $spacing-3;
-  }
-
-  &:hover {
-    .logoIcon {
-      transform: scale(1.05);
-    }
-
-    .iconGlow {
-      opacity: 0.6;
-    }
-  }
 }
 
 .fullLogo {
@@ -31,20 +16,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform $transition-normal $transition-ease;
 }
 
 .logoImage {
   object-fit: contain;
 }
 
+// iconGlow kept for backwards compat but unused in new design
 .iconGlow {
-  position: absolute;
-  inset: -4px;
-  border-radius: $border-radius-xl;
-  opacity: 0.4;
-  filter: blur(8px);
-  transition: opacity $transition-normal $transition-ease;
-  z-index: -1;
-  background: linear-gradient(135deg, $primary 0%, $secondary 100%);
+  display: none;
 }

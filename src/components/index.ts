@@ -1,10 +1,10 @@
-export { Navigation } from './Navigation'
-export { Hero } from './Hero'
-export { Services } from './Services'
-export { Methodology } from './Methodology'
-export { SelectedWork } from './SelectedWork'
-export { About } from './About'
-export { Contact } from './Contact'
-export { Footer } from './Footer'
-export { Logo } from './Logo'
-
+export { Navigation } from './Navigation';
+export { Hero } from './Hero';
+export { Problem } from './Problem';
+export { Services } from './Services';
+export { SelectedWork } from './SelectedWork';
+export { Methodology } from './Methodology';
+export { About } from './About';
+export { Contact } from './Contact';
+export { Footer } from './Footer';
+export { Logo } from './Logo';

@@ -1,0 +1,84 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.section {
+  background: var(--surface);
+  @include section-padding;
+}
+
+.container {
+  @include container;
+}
+
+.badge {
+  @include section-badge;
+}
+
+.title {
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  color: var(--text);
+  line-height: $leading-tight;
+  margin-bottom: $spacing-12;
+  max-width: 700px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-12;
+
+  @include lg {
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-16;
+    align-items: start;
+  }
+}
+
+// Left column
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+}
+
+.bodyText {
+  font-family: $font-body;
+  font-size: $text-lg;
+  line-height: $leading-relaxed;
+  color: var(--text-muted);
+}
+
+// Right column — pain points
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.painPoint {
+  padding: $spacing-6 0;
+  border-bottom: 1px solid var(--border);
+
+  &:first-child {
+    border-top: 1px solid var(--border);
+  }
+}
+
+.painLabel {
+  font-family: $font-body;
+  font-size: $text-sm;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  margin-bottom: $spacing-1;
+}
+
+.painDesc {
+  font-family: $font-body;
+  font-size: $text-base;
+  line-height: $leading-relaxed;
+  color: var(--text-muted);
+  margin: 0;
+}

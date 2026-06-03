@@ -2,217 +2,142 @@
 @use '../styles/mixins' as *;
 
 .section {
-  position: relative;
-  padding: $spacing-8 0;
-  background: $bg-card;
-  overflow: hidden;
-
-  @include md {
-    padding: $spacing-12 0;
-  }
-}
-
-.backgroundAccent {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 500px;
-  height: 500px;
-  background: linear-gradient(
-    to bottom left,
-    rgba($primary, 0.1),
-    transparent
-  );
-  border-radius: 50%;
-  filter: blur(80px);
+  background: var(--surface);
+  @include section-padding;
 }
 
 .container {
   @include container;
-  padding: 0 $spacing-4;
-  position: relative;
-
-  @include sm {
-    padding: 0 $spacing-6;
-  }
-
-  @include lg {
-    padding: 0 $spacing-8;
-  }
-}
-
-.header {
-  text-align: center;
-  max-width: 768px;
-  margin: 0 auto $spacing-10;
-}
-
-.label {
-  display: inline-block;
-  color: $primary;
-  font-weight: 500;
-  font-size: $text-sm;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: $spacing-1;
 }
 
 .badge {
-  display: inline-block;
-  padding: $spacing-1 $spacing-4;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  background: rgba($primary, 0.2);
-  color: $primary;
-  border: 1px solid rgba($primary, 0.3);
-  border-radius: $border-radius-full;
-  font-size: $text-sm;
-  font-weight: 500;
-  margin-bottom: $spacing-6;
+  @include section-badge;
 }
 
 .title {
-  color: $text-main;
+  font-family: $font-display;
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--text);
+  line-height: $leading-tight;
+  margin-bottom: $spacing-12;
+}
 
-  .gradient {
-    @include gradient-text;
+// Two-column layout: text left, photo right
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-12;
+  margin-bottom: $spacing-12;
+
+  @include lg {
+    grid-template-columns: 1fr 360px;
+    gap: $spacing-16;
+    align-items: start;
   }
 }
 
-.leadSection {
+.textCol {
   display: flex;
   flex-direction: column;
-  gap: $spacing-8;
-  margin-bottom: $spacing-12;
-
-  @include md {
-    flex-direction: row;
-    align-items: center;
-  }
+  gap: $spacing-6;
 }
 
 .leadText {
-  font-size: $text-xl;
-  color: $text-main;
-  font-weight: 500;
+  font-family: $font-body;
+  font-size: clamp($text-lg, 2vw, $text-xl);
   line-height: $leading-relaxed;
-  flex: 1;
+  color: var(--text);
+  font-weight: 400;
+  margin: 0;
+}
+
+.bioText {
+  font-family: $font-body;
+  font-size: $text-base;
+  line-height: $leading-relaxed;
+  color: var(--text-muted);
+  margin: 0;
 
   @include md {
-    font-size: $text-2xl;
+    font-size: $text-lg;
   }
 }
 
-.highlight {
-  &Primary {
-    color: $primary;
-  }
-
-  &Secondary {
-    color: $secondary;
-  }
-
-  &Accent {
-    color: $primary;
-  }
-}
-
-.photoWrapper {
+// Photo column
+.photoCol {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  justify-content: flex-start;
+
+  @include lg {
+    justify-content: flex-end;
+    padding-top: $spacing-2;
+  }
 }
 
 .photo {
   position: relative;
-  width: 128px;
-  height: 128px;
-  border-radius: $border-radius-2xl;
+  width: 280px;
+  height: 320px;
   overflow: hidden;
-  border: 2px solid $border-color;
-  box-shadow: $glow-primary;
+  border-radius: $radius;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
 
   @include md {
-    width: 144px;
-    height: 144px;
+    width: 320px;
+    height: 360px;
   }
 }
 
 .photoImage {
   object-fit: cover;
-  object-position: top;
+  object-position: top center;
 }
 
-.columns {
-  display: grid;
-  gap: $spacing-12;
-
-  @include lg {
-    grid-template-columns: 1fr 1fr;
-    gap: $spacing-16;
-  }
-}
-
-.bioContent {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-6;
-  max-width: 65ch;
-}
-
-.bioText {
-  color: $text-muted;
-  line-height: 1.75;
-}
-
-.expertiseColumn {
-  // Column container
+// Expertise tags
+.expertiseSection {
+  padding-top: $spacing-8;
+  border-top: 1px solid var(--border);
 }
 
 .expertiseLabel {
-  font-size: $text-sm;
-  color: $text-muted;
+  font-family: $font-body;
+  font-size: $text-xs;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 500;
-  margin-bottom: $spacing-4;
+  color: var(--text-muted);
+  margin-bottom: $spacing-5;
 }
 
-.expertiseGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: $spacing-3;
-}
-
-.expertiseCard {
+.expertiseTags {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   gap: $spacing-3;
-  padding: $spacing-3;
-  background: $bg-card;
-  border-radius: $border-radius-xl;
-  border: 1px solid $border-color;
-  transition: all $transition-normal $transition-ease;
+}
+
+.expertiseTag {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+  padding: $spacing-2 $spacing-4;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: $radius;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: var(--text-muted);
+  transition: border-color $transition-fast $transition-ease,
+              color $transition-fast $transition-ease;
+
+  svg {
+    color: var(--primary);
+    flex-shrink: 0;
+  }
 
   &:hover {
-    border-color: rgba($primary, 0.4);
-    box-shadow: $glow-primary;
-
-    .expertiseIcon {
-      color: $primary;
-    }
+    border-color: var(--primary);
+    color: var(--text);
   }
-}
-
-.expertiseIcon {
-  color: $primary;
-  flex-shrink: 0;
-  transition: color $transition-normal $transition-ease;
-}
-
-.expertiseText {
-  font-size: $text-sm;
-  color: $text-muted;
-  transition: color $transition-normal $transition-ease;
 }

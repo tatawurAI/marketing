@@ -1,91 +1,84 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Mail, Linkedin } from 'lucide-react';
+import { motion, useInView } from 'framer-motion';
+import { Linkedin } from 'lucide-react';
 import styles from './Contact.module.scss';
+
+const fadeUp = (delay: number) => ({
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: 'easeOut' as const, delay },
+  },
+});
 
 export function Contact() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
     <section id="contact" className={styles.section}>
-      {/* Background decoration */}
-      <div className={styles.backgroundDecoration}>
-        <div className={styles.glow} />
-        <div className={styles.dots} />
-      </div>
-
       <div ref={ref} className={styles.container}>
-        {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6 }}
-          className={styles.header}
+          variants={fadeUp(0)}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
         >
           <span className={styles.badge}>Get In Touch</span>
-          <h2 className={styles.title}>
-            Let&apos;s Find Out What&apos;s Possible
-          </h2>
+          <h2 className={styles.title}>Let&apos;s Find Out What&apos;s Possible</h2>
           <p className={styles.description}>
-            Every engagement starts with a conversation. Tell us about your
-            project and we&apos;ll take it from there.
+            Every engagement starts with a conversation. Tell us about your project
+            and we&apos;ll take it from there.
           </p>
         </motion.div>
 
-        {/* Contact content */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className={styles.contactContent}
+          variants={fadeUp(0.1)}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className={styles.emailDisplay}
         >
-          {/* Email info */}
-          <div className={styles.emailSection}>
-            <div className={styles.emailIcon}>
-              <Mail size={28} />
-            </div>
-            <div className={styles.emailInfo}>
-              <span className={styles.emailLabel}>Send an email to</span>
-              <span className={styles.emailAddress}>tarek@tatawur.ai</span>
-            </div>
-          </div>
+          <a href="mailto:tarek@tatawur.ai" className={styles.emailLink}>
+            tarek@tatawur.ai
+          </a>
+        </motion.div>
 
-          {/* What to include */}
-          <div className={styles.includeSection}>
-            <h3 className={styles.includeTitle}>
-              To make our first conversation count, share:
-            </h3>
-            <ul className={styles.includeList}>
-              <li>What you&apos;re building and what&apos;s slowing you down</li>
-              <li>Your timeline and goals</li>
-              <li>Any specific technologies or workflows involved</li>
-              <li>Your preferred way to connect (call, video, etc.)</li>
-            </ul>
-          </div>
+        <motion.div
+          variants={fadeUp(0.2)}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className={styles.includeSection}
+        >
+          <p className={styles.includeTitle}>What to include</p>
+          <ul className={styles.includeList}>
+            <li>What you&apos;re building and what&apos;s slowing you down</li>
+            <li>Your timeline and goals</li>
+            <li>Any specific technologies or workflows involved</li>
+            <li>Your preferred way to connect (call, video, etc.)</li>
+          </ul>
+        </motion.div>
 
-          {/* Connect section */}
-          <div className={styles.connectSection}>
-            <p className={styles.connectText}>
-              You can also connect with me on LinkedIn:
-            </p>
-            <a
-              href="https://linkedin.com/in/telafifi"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.linkedinLink}
-            >
-              <Linkedin size={20} />
-              <span>Tarek El-Afifi's LinkedIn Profile</span>
-            </a>
-          </div>
+        <motion.div
+          variants={fadeUp(0.3)}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className={styles.socialRow}
+        >
+          <a
+            href="https://linkedin.com/in/telafifi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.linkedinLink}
+          >
+            <Linkedin size={16} strokeWidth={1.5} />
+            <span>Tarek El-Afifi on LinkedIn</span>
+          </a>
 
-          {/* Response time */}
           <div className={styles.responseNote}>
-            <div className={styles.responseDot} />
-            <span>Typically respond within 24 hours</span>
+            <span className={styles.responseDot} aria-hidden="true" />
+            Typically respond within 24 hours
           </div>
         </motion.div>
       </div>

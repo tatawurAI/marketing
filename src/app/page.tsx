@@ -1,25 +1,27 @@
 import {
   Navigation,
   Hero,
-  SelectedWork,
+  Problem,
   Services,
+  SelectedWork,
   Methodology,
   About,
   Contact,
-  Footer
-} from '@/components'
+  Footer,
+} from '@/components';
 
 export default function Home() {
   return (
     <main className="min-h-screen">
       <Navigation />
       <Hero />
-      <SelectedWork />
+      <Problem />
       <Services />
+      <SelectedWork />
       <Methodology />
       <About />
       <Contact />
       <Footer />
     </main>
-  )
+  );
 }

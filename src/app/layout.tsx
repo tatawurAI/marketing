@@ -1,33 +1,27 @@
 import type { Metadata } from 'next';
-import { Outfit, DM_Sans, JetBrains_Mono, Aref_Ruqaa } from 'next/font/google';
+import { Fraunces, Syne, JetBrains_Mono } from 'next/font/google';
 import '@/styles/globals.scss';
 
-const outfit = Outfit({
+const fraunces = Fraunces({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-outfit',
-  weight: ['400', '500', '600', '700'],
+  variable: '--font-fraunces',
+  weight: ['300', '400', '700', '900'],
+  style: ['normal', 'italic'],
 });
 
-const dmSans = DM_Sans({
+const syne = Syne({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-dm-sans',
-  weight: ['400', '500', '600'],
+  variable: '--font-syne',
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-jetbrains-mono',
+  variable: '--font-mono',
   weight: ['400', '500'],
-});
-
-const arefRuqaa = Aref_Ruqaa({
-  subsets: ['arabic'],
-  display: 'swap',
-  variable: '--font-arabic',
-  weight: ['400', '700'],
 });
 
 export const metadata: Metadata = {
@@ -112,7 +106,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${dmSans.variable} ${jetbrainsMono.variable} ${arefRuqaa.variable}`}
+      className={`${fraunces.variable} ${syne.variable} ${jetbrainsMono.variable}`}
     >
       <body>{children}</body>
     </html>

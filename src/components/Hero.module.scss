@@ -3,293 +3,164 @@
 
 .section {
   position: relative;
-  min-height: 100vh;
+  background: var(--bg);
+  min-height: 100svh;
   display: flex;
   align-items: center;
   overflow: hidden;
-}
+  padding-top: 120px;
+  padding-bottom: $section-padding-mobile;
 
-.background {
-  position: absolute;
-  inset: 0;
-  background: $bg-card;
-}
-
-.patterns {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.grid {
-  position: absolute;
-  inset: 0;
-  opacity: 0.15;
-  background-image: linear-gradient(
-      to right,
-      $border-color 1px,
-      transparent 1px
-    ),
-    linear-gradient(to bottom, $border-color 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-.floatingShape {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-
-  &.shape1 {
-    top: 25%;
-    right: 25%;
-    width: 288px;
-    height: 288px;
-    background: linear-gradient(
-      to bottom right,
-      rgba($primary, 0.3),
-      rgba($primary, 0.1)
-    );
-  }
-
-  &.shape2 {
-    bottom: 25%;
-    left: 25%;
-    width: 384px;
-    height: 384px;
-    background: linear-gradient(
-      to bottom right,
-      rgba($secondary, 0.2),
-      rgba($secondary, 0.05)
-    );
-  }
-
-  &.shape3 {
-    top: 33%;
-    left: 33%;
-    width: 256px;
-    height: 256px;
-    background: linear-gradient(
-      to bottom right,
-      rgba($primary, 0.15),
-      rgba($secondary, 0.1)
-    );
+  @include lg {
+    padding-bottom: $section-padding-desktop;
   }
 }
 
-.floatingIcons {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.floatingIcon {
-  position: absolute;
-
-  &.icon1 {
-    top: 128px;
-    right: 15%;
-    color: rgba($primary, 0.4);
-  }
-
-  &.icon2 {
-    top: 50%;
-    right: 10%;
-    color: rgba($secondary, 0.3);
-  }
-
-  &.icon3 {
-    bottom: 128px;
-    right: 20%;
-    color: rgba($primary, 0.35);
-  }
-}
-
-.content {
-  position: relative;
+.container {
   @include container;
-  @include section-padding;
-  padding-top: 128px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
-.contentInner {
-  max-width: 896px;
-}
-
-.tagline {
-  display: inline-flex;
-  align-items: center;
-  gap: $spacing-2;
-  padding: $spacing-2 $spacing-4;
-  background: rgba($primary, 0.15);
-  border-radius: $border-radius-full;
-  border: 1px solid rgba($primary, 0.3);
-  margin-bottom: $spacing-8;
-}
-
-.taglineDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: $primary;
-  box-shadow: $glow-primary;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-    box-shadow: $glow-primary;
-  }
-  50% {
-    opacity: 0.7;
-    box-shadow: none;
-  }
-}
-
-.taglineText {
-  font-size: $text-xs;
-  font-weight: 500;
-  color: $primary;
-
-  @include sm {
-    font-size: $text-sm;
-  }
-}
-
-.headline {
-  text-wrap: balance;
-  margin-bottom: $spacing-6;
-
-  .dark {
-    color: $text-main;
-  }
-
-  .gradient {
-    @include gradient-text;
-  }
-}
-
-.subheadline {
-  font-size: $text-lg;
-  color: $text-muted;
-  max-width: 672px;
-  margin-bottom: $spacing-10;
-  line-height: $leading-relaxed;
-
-  @include md {
-    font-size: $text-xl;
-  }
-}
-
-.cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $spacing-4;
-}
-
-.ctaPrimary {
-  @include button-primary;
-  padding: $spacing-4 $spacing-8;
-  display: flex;
-  align-items: center;
-  gap: $spacing-2;
-
-  .arrow {
-    transition: transform $transition-normal $transition-ease;
-  }
-
-  &:hover .arrow {
-    transform: translateX(4px);
-  }
-}
-
-.ctaSecondary {
-  @include button-secondary;
-  padding: $spacing-4 $spacing-8;
-}
-
-.focusAreas {
-  margin-top: $spacing-16;
-  padding-top: $spacing-10;
-  border-top: 1px solid $border-color;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: $spacing-6;
-  max-width: 672px;
-
-  @include sm {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.focusItem {
+// Eyebrow — full-bleed rule effect on desktop
+.eyebrow {
   display: flex;
   align-items: center;
   gap: $spacing-3;
-}
+  margin-bottom: $spacing-8;
 
-.focusIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: $border-radius-xl;
-  background: $bg-card;
-  border: 1px solid $border-color;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all $transition-normal $transition-ease;
-
-  svg {
-    color: $primary;
-  }
-
-  .focusItem:hover & {
-    border-color: $primary;
-    box-shadow: $glow-primary;
+  @include lg {
+    margin-left: calc(-1 * #{$container-px-desktop} - 48px);
+    padding-left: calc(#{$container-px-desktop} + 48px);
   }
 }
 
-.focusText {
-  .label {
-    font-weight: 500;
-    color: $text-main;
-    font-size: $text-sm;
-  }
-
-  .desc {
-    font-size: $text-xs;
-    color: $text-muted;
-  }
-}
-
-.scrollIndicator {
+.eyebrowRule {
   display: none;
-  position: absolute;
-  bottom: $spacing-8;
-  left: 50%;
-  transform: translateX(-50%);
+  height: 1px;
+  width: 48px;
+  background: var(--primary);
+  flex-shrink: 0;
 
-  @include md {
+  @include lg {
     display: block;
   }
 }
 
-.scrollMouse {
-  width: 24px;
-  height: 40px;
-  border: 2px solid rgba($primary, 0.5);
-  border-radius: $border-radius-full;
-  display: flex;
-  justify-content: center;
-  padding-top: $spacing-2;
+.eyebrowText {
+  font-family: $font-body;
+  font-size: $text-xs;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
 }
 
-.scrollDot {
-  width: 6px;
-  height: 6px;
-  background: $primary;
-  border-radius: 50%;
-  box-shadow: $glow-primary;
+// Headline
+.headline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: $spacing-8;
+}
+
+.line1 {
+  font-family: $font-display;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 1.0;
+  color: var(--text);
+  display: block;
+}
+
+.line2 {
+  font-family: $font-display;
+  font-weight: 800;
+  font-style: normal;
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 1.0;
+  color: var(--text);
+  display: block;
+}
+
+.period {
+  color: var(--primary);
+}
+
+// Subheadline
+.subheadline {
+  font-family: $font-body;
+  font-size: clamp($text-base, 2vw, $text-xl);
+  line-height: $leading-relaxed;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin-bottom: $spacing-10;
+}
+
+// CTA buttons
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $spacing-4;
+  margin-bottom: $spacing-12;
+}
+
+.ctaPrimary {
+  @include button-primary;
+  font-size: $text-base;
+  padding: 0.875rem 1.75rem;
+}
+
+.ctaSecondary {
+  font-family: $font-body;
+  font-size: $text-base;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color $transition-fast $transition-ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover {
+    color: var(--text);
+  }
+}
+
+// Proof row
+.proofRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-10;
+  padding-top: $spacing-8;
+  border-top: 1px solid var(--border);
+}
+
+.proofItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.proofValue {
+  font-family: $font-display;
+  font-size: $text-2xl;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.proofLabel {
+  font-family: $font-body;
+  font-size: $text-xs;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }

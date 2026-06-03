@@ -6,7 +6,25 @@
 // ============================================
 
 :root {
+  --bg: #0B0E0F;
+  --surface: #0F1315;
+  --card: #141A1C;
+  --border: #1C2426;
+  --border-subtle: #162022;
   --primary: #008F7A;
+  --primary-dim: rgba(0, 143, 122, 0.12);
+  --primary-glow: rgba(0, 143, 122, 0.25);
+  --gold: #B8935A;
+  --gold-dim: rgba(184, 147, 90, 0.10);
+  --text: #E8ECED;
+  --text-muted: #667880;
+  --text-dim: #2E3D42;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Syne', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  // Legacy compat
+  --primary-color: #008F7A;
   --secondary: #B8935A;
 }
 
@@ -28,44 +46,45 @@ html {
 }
 
 body {
-  background: $bg-main;
-  color: $text-main;
+  background: var(--bg);
+  color: var(--text);
   font-family: $font-body;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
+}
+
+// Grain texture overlay
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 9999;
 }
 
 // ============================================
 // TYPOGRAPHY
 // ============================================
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  @include heading-base;
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-display;
+  line-height: $leading-tight;
+  color: var(--text);
 }
 
-h1 {
-  @include h1;
-}
-
-h2 {
-  @include h2;
-}
-
-h3 {
-  @include h3;
-}
-
-h4 {
-  @include h4;
-}
+h1 { @include h1; }
+h2 { @include h2; }
+h3 { @include h3; }
+h4 { @include h4; }
 
 p {
-  @include body-text;
+  font-family: $font-body;
+  font-size: $text-base;
+  line-height: $leading-relaxed;
+  color: var(--text-muted);
 }
 
 // ============================================
@@ -91,7 +110,7 @@ img {
 // ============================================
 
 button {
-  font-family: inherit;
+  font-family: $font-body;
   cursor: pointer;
 }
 
@@ -100,19 +119,19 @@ button {
 // ============================================
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: $bg-main;
+  background: var(--bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba($primary, 0.5);
-  border-radius: $border-radius-full;
+  background: var(--border);
+  border-radius: 0;
 
   &:hover {
-    background: $primary;
+    background: var(--primary);
   }
 }
 
@@ -121,8 +140,8 @@ button {
 // ============================================
 
 ::selection {
-  background: rgba($primary, 0.4);
-  color: $text-main;
+  background: var(--primary-dim);
+  color: var(--text);
 }
 
 // ============================================
@@ -131,5 +150,5 @@ button {
 
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px $primary, 0 0 0 4px $bg-main;
+  box-shadow: 0 0 0 2px var(--primary), 0 0 0 4px var(--bg);
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import {
   Bot,
@@ -26,110 +26,100 @@ const expertise = [
   { icon: Users, label: 'Technical Leadership' },
 ];
 
+const fadeUp = (delay: number) => ({
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: 'easeOut' as const, delay },
+  },
+});
+
 export function About() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
     <section id="about" className={styles.section}>
-      <div className={styles.backgroundAccent} />
-
       <div ref={ref} className={styles.container}>
-        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
-          className={styles.header}
+          variants={fadeUp(0)}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
         >
           <span className={styles.badge}>About</span>
-          <h2 className={styles.title}>
-            Meet Tarek - Founder of{' '}
-            <span className={styles.gradient}>TATAWUR</span>
-          </h2>
+          <h2 className={styles.title}>Meet Tarek — Founder of TATAWUR</h2>
         </motion.div>
 
-        {/* Lead paragraph with profile photo */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className={styles.leadSection}
-        >
-          <p className={styles.leadText}>
-            Tarek is uniquely positioned at the intersection of software, AI,
-            and the built environment, with deep technical expertise and a
-            proven track record of building novel products in uncharted
-            territory.
-          </p>
-          <div className={styles.photoWrapper}>
+        <div className={styles.layout}>
+          <motion.div
+            variants={fadeUp(0.1)}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            className={styles.textCol}
+          >
+            <p className={styles.leadText}>
+              Tarek is uniquely positioned at the intersection of software, AI, and
+              the built environment — with deep technical expertise and a proven
+              track record of building novel products in uncharted territory.
+            </p>
+            <p className={styles.bioText}>
+              At ICON, Tarek led product and engineering, building the software
+              organization behind the platform that powered over 200
+              robotically-built homes — delivering computational geometry engines,
+              design automation tools, and real-time operations software that scaled
+              construction technology from prototype to production.
+            </p>
+            <p className={styles.bioText}>
+              Before that, he worked as an engineer at Arup and Walter P Moore,
+              building BIM automation tools that reduced design iteration time by
+              over 50%. Combined with graduate degrees in AI, computer science, and
+              structural engineering, this breadth is exactly what Tatawur AI brings
+              to every engagement: the ability to see across the full project
+              lifecycle and build solutions that actually work in the field.
+            </p>
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp(0.2)}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            className={styles.photoCol}
+          >
             <div className={styles.photo}>
               <Image
                 src="/tarek-profile.jpeg"
-                alt="Tarek - Founder of Tatawur AI"
+                alt="Tarek El-Afifi, Founder of Tatawur AI"
                 fill
                 className={styles.photoImage}
                 priority
               />
             </div>
-          </div>
-        </motion.div>
-
-        {/* Two column layout: Bio | Expertise */}
-        <div className={styles.columns}>
-          {/* Bio content */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className={styles.bioContent}
-          >
-            <p className={styles.bioText}>
-              At ICON, Tarek led product and engineering, building the software
-              organization behind the platform that powered over 200
-              robotically-built homes, delivering computational geometry
-              engines, design automation tools, and real-time operations
-              software that scaled construction technology from prototype to
-              production.
-            </p>
-
-            <p className={styles.bioText}>
-              Before that, he worked as an engineer at Arup and Walter P Moore,
-              building BIM automation tools that reduced design iteration time
-              by over 50%. Combined with graduate degrees in AI, computer
-              science, and structural engineering, this breadth is exactly what
-              Tatawur AI brings to every engagement: the ability to see across
-              the full project lifecycle and build solutions that actually work
-              in the field.
-            </p>
-          </motion.div>
-
-          {/* Expertise column */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className={styles.expertiseColumn}
-          >
-            <p className={styles.expertiseLabel}>Technical Expertise</p>
-            <div className={styles.expertiseGrid}>
-              {expertise.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={
-                    isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }
-                  }
-                  transition={{ duration: 0.4, delay: 0.4 + index * 0.05 }}
-                  className={styles.expertiseCard}
-                >
-                  <item.icon size={18} className={styles.expertiseIcon} />
-                  <span className={styles.expertiseText}>{item.label}</span>
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
         </div>
+
+        <motion.div
+          variants={fadeUp(0.3)}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className={styles.expertiseSection}
+        >
+          <p className={styles.expertiseLabel}>Technical Expertise</p>
+          <div className={styles.expertiseTags}>
+            {expertise.map((item, index) => (
+              <motion.div
+                key={item.label}
+                variants={fadeUp(0.35 + index * 0.04)}
+                initial="hidden"
+                animate={isInView ? 'visible' : 'hidden'}
+                className={styles.expertiseTag}
+              >
+                <item.icon size={14} strokeWidth={1.5} />
+                <span>{item.label}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
