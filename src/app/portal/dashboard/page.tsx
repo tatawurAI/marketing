@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import styles from './dashboard.module.scss'
@@ -115,9 +116,9 @@ export default async function DashboardPage() {
           </section>
 
           <div className={styles.actions}>
-            <a href="/portal/timesheets" className={styles.timesheetLink}>
+            <Link href="/portal/timesheets" className={styles.timesheetLink}>
               View Timesheets
-            </a>
+            </Link>
           </div>
         </>
       ) : (

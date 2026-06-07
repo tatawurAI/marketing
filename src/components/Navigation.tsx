@@ -34,8 +34,8 @@ export function Navigation() {
     let unsubscribe: (() => void) | undefined;
     try {
       const supabase = createClient();
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        setUser(session?.user ?? null);
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        setUser(user ?? null);
       });
       const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
         setUser(session?.user ?? null);

@@ -9,5 +9,5 @@
 
 .main {
   flex: 1;
-  padding-top: 64px; // clears the sticky nav
+  padding-top: $portal-nav-height;
 }

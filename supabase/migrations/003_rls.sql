@@ -19,6 +19,13 @@ RETURNS BOOLEAN AS $$
   );
 $$ LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '';
 
+-- Returns the employee id for the currently authenticated user.
+-- Extracted as a stable function so RLS policies don't re-run the subquery per row.
+CREATE OR REPLACE FUNCTION my_employee_id()
+RETURNS UUID AS $$
+  SELECT id FROM public.employees WHERE user_id = auth.uid();
+$$ LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '';
+
 -- ---------------------------------------------------------------------------
 -- employees
 -- ---------------------------------------------------------------------------
@@ -64,13 +71,13 @@ ALTER TABLE time_entries FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY "te_select" ON time_entries FOR SELECT
   USING (
-    employee_id = (SELECT id FROM employees WHERE user_id = auth.uid())
+    employee_id = my_employee_id()
     OR is_admin()
   );
 
 CREATE POLICY "te_insert" ON time_entries FOR INSERT
   WITH CHECK (
-    employee_id = (SELECT id FROM employees WHERE user_id = auth.uid())
+    employee_id = my_employee_id()
     AND NOT week_is_locked(work_date)
   );
 
@@ -78,17 +85,17 @@ CREATE POLICY "te_insert" ON time_entries FOR INSERT
 -- WITH CHECK prevents changing work_date to a locked week.
 CREATE POLICY "te_update" ON time_entries FOR UPDATE
   USING (
-    employee_id = (SELECT id FROM employees WHERE user_id = auth.uid())
+    employee_id = my_employee_id()
     AND NOT week_is_locked(work_date)
   )
   WITH CHECK (
-    employee_id = (SELECT id FROM employees WHERE user_id = auth.uid())
+    employee_id = my_employee_id()
     AND NOT week_is_locked(work_date)
   );
 
 CREATE POLICY "te_delete" ON time_entries FOR DELETE
   USING (
-    employee_id = (SELECT id FROM employees WHERE user_id = auth.uid())
+    employee_id = my_employee_id()
     AND NOT week_is_locked(work_date)
   );
 

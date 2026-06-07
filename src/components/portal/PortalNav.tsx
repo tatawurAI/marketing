@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import styles from './PortalNav.module.scss'
@@ -21,12 +22,12 @@ export default function PortalNav({ userEmail }: { userEmail: string }) {
       </a>
 
       <div className={styles.links}>
-        <a href="/portal/dashboard" className={styles.link}>
+        <Link href="/portal/dashboard" className={styles.link}>
           Dashboard
-        </a>
-        <a href="/portal/timesheets" className={styles.link}>
+        </Link>
+        <Link href="/portal/timesheets" className={styles.link}>
           Timesheets
-        </a>
+        </Link>
       </div>
 
       <div className={styles.user}>
