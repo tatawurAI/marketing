@@ -20,9 +20,9 @@ cdk.out/
 # Testing
 coverage/
 
-# Environment variables
-.env
-.env*.local
+# Environment variables — exclude all .env files except the example template
+.env*
+!.env.example
 
 # Debug logs
 npm-debug.log*

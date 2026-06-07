@@ -1,0 +1,83 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $spacing-6;
+
+  @include glass-effect;
+
+  @include lg {
+    padding: 0 $spacing-8;
+  }
+}
+
+.logo {
+  height: 28px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: $spacing-8;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.link {
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  color: $text-muted;
+  transition: color $transition-normal $transition-ease;
+
+  &:hover {
+    color: $text-main;
+  }
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+  flex-shrink: 0;
+}
+
+.email {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signOut {
+  font-family: $font-body;
+  font-size: $text-sm;
+  font-weight: 500;
+  color: $secondary;
+  background: none;
+  border: 1px solid rgba($secondary, 0.35);
+  border-radius: $border-radius-full;
+  padding: $spacing-1 $spacing-4;
+  cursor: pointer;
+  transition: all $transition-normal $transition-ease;
+
+  &:hover {
+    background: rgba($secondary, 0.1);
+    border-color: $secondary;
+  }
+}
