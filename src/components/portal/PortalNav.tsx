@@ -12,11 +12,13 @@ export default function PortalNav({ userEmail }: { userEmail: string }) {
 
   return (
     <nav className={styles.nav}>
-      <img
-        src="/brand/tatawur-lockup-horizontal-ivory.svg"
-        alt="Tatawur AI"
-        className={styles.logo}
-      />
+      <a href="/">
+        <img
+          src="/brand/tatawur-lockup-horizontal-ivory.svg"
+          alt="Tatawur AI — home"
+          className={styles.logo}
+        />
+      </a>
 
       <div className={styles.links}>
         <a href="/portal/dashboard" className={styles.link}>

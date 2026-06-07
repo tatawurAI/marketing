@@ -24,6 +24,13 @@
   height: 28px;
   width: auto;
   flex-shrink: 0;
+  display: block;
+  opacity: 1;
+  transition: opacity $transition-normal $transition-ease;
+
+  &:hover {
+    opacity: 0.75;
+  }
 }
 
 .links {
