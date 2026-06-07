@@ -3,7 +3,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import type { User } from '@supabase/supabase-js';
 import { Logo } from './Logo';
+import { createClient } from '@/lib/supabase/client';
+import { UserMenu } from './UserMenu';
 import styles from './Navigation.module.scss';
 
 const navItems = [
@@ -17,6 +20,7 @@ const navItems = [
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +29,33 @@ export function Navigation() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    try {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        setUser(user ?? null);
+      });
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+        setUser(session?.user ?? null);
+      });
+      unsubscribe = () => subscription.unsubscribe();
+    } catch {
+      // Supabase env vars not configured — auth unavailable, stay logged out
+    }
+    return () => unsubscribe?.();
+  }, []);
+
+  async function handleSignOut() {
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+    } catch {
+      // ignore
+    }
+    setUser(null);
+  }
 
   const handleNavClick = (href: string) => {
     setIsMobileMenuOpen(false);
@@ -94,6 +125,7 @@ export function Navigation() {
               >
                 Book a Consultation
               </motion.a>
+              <UserMenu user={user} onSignOut={handleSignOut} />
             </div>
 
             {/* Mobile Menu Button */}
@@ -149,6 +181,34 @@ export function Navigation() {
                 >
                   Book a Consultation
                 </motion.a>
+                {!user ? (
+                  <a
+                    href="/portal/login"
+                    className={styles.mobileNavLink}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Sign in
+                  </a>
+                ) : (
+                  <>
+                    <a
+                      href="/portal/dashboard"
+                      className={styles.mobileNavLink}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Team Portal
+                    </a>
+                    <button
+                      className={styles.mobileSignOut}
+                      onClick={async () => {
+                        await handleSignOut();
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      Sign out
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>

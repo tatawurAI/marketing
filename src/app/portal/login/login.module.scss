@@ -1,0 +1,83 @@
+@use '../../../styles/variables' as *;
+
+.root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $bg-main;
+  padding: $spacing-6;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  background-color: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-2xl;
+  padding: $spacing-12 $spacing-8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-6;
+  box-shadow: $shadow-2xl;
+}
+
+.logo {
+  width: 180px;
+  height: auto;
+}
+
+.subtitle {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: -$spacing-3;
+}
+
+.error {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $red-500;
+  text-align: center;
+  background-color: rgba($red-500, 0.08);
+  border: 1px solid rgba($red-500, 0.2);
+  border-radius: $border-radius-md;
+  padding: $spacing-3 $spacing-4;
+  width: 100%;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-3;
+  width: 100%;
+  padding: $spacing-3 $spacing-6;
+  background-color: $secondary;
+  color: $text-dark;
+  font-family: $font-body;
+  font-size: $text-base;
+  font-weight: 600;
+  border: none;
+  border-radius: $border-radius-lg;
+  cursor: pointer;
+  transition: background-color $transition-fast $transition-ease,
+    box-shadow $transition-fast $transition-ease;
+
+  &:hover {
+    background-color: $secondary-400;
+    box-shadow: $glow-gold;
+  }
+
+  &:active {
+    background-color: $secondary-600;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $secondary;
+    outline-offset: 2px;
+  }
+}
