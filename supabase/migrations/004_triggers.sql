@@ -12,15 +12,15 @@ BEGIN
   IF NEW.email NOT LIKE '%@tatawur.ai' THEN
     RAISE EXCEPTION 'Access restricted to @tatawur.ai accounts';
   END IF;
-  UPDATE auth.users
-    SET raw_app_meta_data = raw_app_meta_data || '{"role": "employee"}'::jsonb
-    WHERE id = NEW.id;
+  -- Set role on NEW directly instead of a separate UPDATE to avoid firing the
+  -- BEFORE UPDATE trigger (handle_user_email_update) on every new user creation.
+  NEW.raw_app_meta_data := COALESCE(NEW.raw_app_meta_data, '{}'::jsonb) || '{"role": "employee"}'::jsonb;
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = '';
 
 CREATE TRIGGER on_auth_user_created
-  AFTER INSERT ON auth.users
+  BEFORE INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION handle_new_user();
 
 -- ---------------------------------------------------------------------------

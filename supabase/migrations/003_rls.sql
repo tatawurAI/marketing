@@ -24,6 +24,7 @@ $$ LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '';
 -- ---------------------------------------------------------------------------
 
 ALTER TABLE employees ENABLE ROW LEVEL SECURITY;
+ALTER TABLE employees FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY "emp_select" ON employees FOR SELECT
   USING (user_id = auth.uid() OR is_admin());
@@ -36,6 +37,7 @@ CREATE POLICY "emp_admin_all" ON employees FOR ALL
 -- ---------------------------------------------------------------------------
 
 ALTER TABLE employee_billing_rates ENABLE ROW LEVEL SECURITY;
+ALTER TABLE employee_billing_rates FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY "billing_admin_only" ON employee_billing_rates FOR ALL
   USING (is_admin()) WITH CHECK (is_admin());
@@ -58,6 +60,7 @@ CREATE POLICY "proj_admin_all" ON projects FOR ALL
 -- ---------------------------------------------------------------------------
 
 ALTER TABLE time_entries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE time_entries FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY "te_select" ON time_entries FOR SELECT
   USING (
@@ -97,6 +100,7 @@ CREATE POLICY "te_admin_all" ON time_entries FOR ALL
 -- ---------------------------------------------------------------------------
 
 ALTER TABLE locked_weeks ENABLE ROW LEVEL SECURITY;
+ALTER TABLE locked_weeks FORCE ROW LEVEL SECURITY;
 
 CREATE POLICY "lw_read" ON locked_weeks FOR SELECT
   USING (auth.uid() IS NOT NULL);

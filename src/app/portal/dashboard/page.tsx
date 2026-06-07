@@ -38,34 +38,37 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser()
 
+  // Layout already redirects unauthenticated users; this is a type-narrowing guard only
   if (!user) redirect('/portal/login')
 
-  const { data: employee } = (await supabase
+  const { data: employee, error: empError } = await supabase
     .from('employees')
     .select('id, full_name, title, department, salary_rate, started_at')
     .eq('user_id', user.id)
-    .single()) as { data: Employee | null; error: unknown }
+    .single() as { data: Employee | null; error: { code?: string } | null }
+
+  // PGRST116 = no rows — expected for employees without a profile yet
+  if (empError && empError.code !== 'PGRST116') {
+    console.error('[dashboard] employee query failed:', empError)
+  }
 
   const weekStart = getWeekStart(new Date())
   const weekEnd = new Date(weekStart)
   weekEnd.setDate(weekEnd.getDate() + 6)
 
-  const { data: entries } = employee
-    ? ((await supabase
-        .from('time_entries')
-        .select('hours')
-        .eq('employee_id', employee.id)
-        .gte('work_date', weekStart.toISOString().split('T')[0])
-        .lte('work_date', weekEnd.toISOString().split('T')[0])) as {
-        data: TimeEntry[] | null
-        error: unknown
-      })
-    : { data: [] as TimeEntry[] }
+  let entries: TimeEntry[] | null = []
+  if (employee) {
+    const { data, error: teError } = await supabase
+      .from('time_entries')
+      .select('hours')
+      .eq('employee_id', employee.id)
+      .gte('work_date', weekStart.toISOString().split('T')[0])
+      .lte('work_date', weekEnd.toISOString().split('T')[0])
+    if (teError) console.error('[dashboard] time_entries query failed:', teError)
+    entries = data
+  }
 
-  const weeklyHours = (entries ?? []).reduce(
-    (sum, e) => sum + Number(e.hours),
-    0
-  )
+  const weeklyHours = (entries ?? []).reduce((sum, e) => sum + Number(e.hours), 0)
 
   return (
     <div className={styles.root}>
