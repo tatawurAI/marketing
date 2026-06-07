@@ -1,4 +1,3 @@
-import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import PortalNav from '@/components/portal/PortalNav'
 import styles from './portal.module.scss'
@@ -13,7 +12,11 @@ export default async function PortalLayout({
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user) redirect('/portal/login')
+  // Unauthenticated: render children without the portal shell.
+  // Middleware already redirects unauthenticated requests away from protected
+  // routes — but /portal/login and /portal/auth/callback are exempted and
+  // still reach this layout, so we must not redirect here or we get a loop.
+  if (!user) return <>{children}</>
 
   return (
     <div className={styles.shell}>
