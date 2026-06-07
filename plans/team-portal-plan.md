@@ -2,7 +2,7 @@
 
 **Date:** 2026-06-06  
 **Author:** Izuku (VP of Software Products)  
-**Status:** APPROVED — Ready for Execution  
+**Status:** Phase 1 complete — Phase 2 pending  
 **Reviewed by:** security-engineer, data-engineer, backend-engineer, frontend-engineer
 
 ---
@@ -636,7 +636,9 @@ The portal is a separate page surface from the marketing site — it has its own
 |---|---|---|
 | Security Review | `security-engineer` | RLS policies, triggers, auth hook, env var audit, admin route guard, `search_path` verification |
 
-### Phase 2 — Timesheets (Parallel, ~2 days)
+### Phase 2 — Timesheets (Parallel, ~2 days) — NEXT UP
+
+> Phase 1 shipped in PR #7. Phase 2 will begin in a follow-on session.
 
 | Workstream | Teammate | Files Owned |
 |---|---|---|
