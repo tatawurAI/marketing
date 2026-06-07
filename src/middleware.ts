@@ -10,6 +10,7 @@ export async function middleware(request: NextRequest) {
   // Unauthenticated — redirect to login
   if (!user) {
     if (pathname === '/portal/login') return response
+    if (pathname === '/portal/auth/callback') return response
     return NextResponse.redirect(new URL('/portal/login', request.url))
   }
 
