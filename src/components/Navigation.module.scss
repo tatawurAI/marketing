@@ -169,3 +169,19 @@
   border: none;
   cursor: pointer;
 }
+
+.mobileSignOut {
+  font-size: $text-lg;
+  font-weight: 500;
+  color: $secondary;
+  padding: $spacing-2 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color $transition-normal $transition-ease;
+
+  &:hover {
+    color: $secondary-400;
+  }
+}

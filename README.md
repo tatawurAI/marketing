@@ -82,10 +82,9 @@ Copyright 2025 Tatawur AI LLC
 | Tool | Install |
 |---|---|
 | [Bun](https://bun.sh) | `curl -fsSL https://bun.sh/install \| bash` |
-| [Docker Desktop](https://www.docker.com/products/docker-desktop/) | Required for Supabase CLI and container testing |
 | [Supabase CLI](https://supabase.com/docs/guides/cli) | `brew install supabase/tap/supabase` |
 
-> **Note:** The Docker container requires `output: 'standalone'` in `next.config.js`. This is being added by the backend team. Until that config is in place, use the local dev path below — do not rely on the Docker image for development.
+> **Note:** Docker Desktop is required if you want a local Supabase stack (`supabase start` uses Docker internally), but is not needed to run the Next.js app itself.
 
 ---
 
@@ -121,15 +120,6 @@ supabase db reset           # re-runs all migrations + seed.sql from scratch (wi
 
 ---
 
-### Test the Docker Container Locally
-
-```bash
-supabase start              # must be running first so the container can reach it
-docker compose up web       # builds and runs the container at http://localhost:3000
-```
-
----
-
 ### Environment Variables
 
 | Variable | Description |
@@ -153,22 +143,21 @@ supabase status     # show running services, URLs, and keys
 
 ---
 
-### Production Deploy
+### Production Deploy (Vercel)
 
-Build the image:
+1. Connect the GitHub repo (`github.com/telafifi/tatawur`) to Vercel.
+2. In Vercel → Settings → Environment Variables, add the following for all environments (Production, Preview, Development):
 
-```bash
-docker build -t tatawur-portal .
-```
+   | Variable | Value |
+   |---|---|
+   | `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase publishable key |
+   | `NEXT_PUBLIC_SITE_URL` | `https://tatawur.ai` (use your preview URL for Preview env) |
 
-Run with production environment variables (never bake secrets into the image):
+3. In Supabase dashboard → Authentication → URL Configuration → Redirect URLs, add:
+   - `https://tatawur.ai/portal/auth/callback`
+   - `https://*.vercel.app/portal/auth/callback` (covers all preview deployments)
 
-```bash
-docker run -p 3000:3000 \
-  -e NEXT_PUBLIC_SUPABASE_URL=https://<project>.supabase.co \
-  -e NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_... \
-  -e NEXT_PUBLIC_SITE_URL=https://tatawur.ai \
-  tatawur-portal
-```
+4. Vercel auto-deploys on every push to `main`. Preview deployments are created for every PR.
 
-After first deploy: promote yourself to admin in the Supabase dashboard — go to **Authentication → Users**, edit your user's `app_metadata`, and add `{"role": "admin"}`.
+5. After first deploy, promote yourself to admin: Supabase dashboard → Authentication → Users → edit your user → set `app_metadata` to `{"role": "admin"}`.

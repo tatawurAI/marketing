@@ -1,0 +1,98 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.signIn {
+  @include button-secondary;
+  padding: $spacing-2 $spacing-4;
+  font-size: $text-sm;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: $border-radius-full;
+  background: $secondary;
+  color: $text-dark;
+  font-size: $text-xs;
+  font-weight: 600;
+  font-family: $font-heading;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-normal $transition-ease;
+  flex-shrink: 0;
+
+  &:hover {
+    filter: brightness(1.1);
+    box-shadow: $glow-gold;
+  }
+}
+
+.dropdown {
+  @include glass-effect;
+  position: absolute;
+  top: calc(100% + #{$spacing-2});
+  right: 0;
+  min-width: 200px;
+  border-radius: $border-radius-xl;
+  padding: $spacing-2 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.email {
+  font-size: $text-xs;
+  color: $text-muted;
+  padding: $spacing-2 $spacing-4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: $font-body;
+}
+
+.divider {
+  height: 1px;
+  background: $border-color;
+  margin: $spacing-1 0;
+}
+
+.portalLink {
+  display: block;
+  padding: $spacing-2 $spacing-4;
+  font-size: $text-sm;
+  color: $text-main;
+  font-family: $font-heading;
+  text-decoration: none;
+  transition: color $transition-normal $transition-ease;
+
+  &:hover {
+    color: $primary;
+  }
+}
+
+.signOutBtn {
+  display: block;
+  width: 100%;
+  padding: $spacing-2 $spacing-4;
+  text-align: left;
+  font-size: $text-sm;
+  color: $text-muted;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: $font-body;
+  transition: color $transition-normal $transition-ease;
+
+  &:hover {
+    color: $red-500;
+  }
+}
