@@ -23,10 +23,7 @@ export default function WeekPicker({ weekStart, isLocked }: Props) {
     return new Date(year!, month! - 1, day!)
   }, [weekStart])
 
-  const currentMonday = useMemo(
-    () => startOfWeek(new Date(), { weekStartsOn: 1 }),
-    [],
-  )
+  const currentMonday = startOfWeek(new Date(), { weekStartsOn: 1 })
 
   const isCurrentWeek =
     format(parsedWeekStart, 'yyyy-MM-dd') ===

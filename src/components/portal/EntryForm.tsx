@@ -17,6 +17,7 @@ type Props = {
   day: string | null
   existingEntry: TimeEntry | null
   projects: Project[]
+  isLocked: boolean
   onClose: () => void
 }
 
@@ -25,6 +26,7 @@ export default function EntryForm({
   day,
   existingEntry,
   projects,
+  isLocked,
   onClose,
 }: Props) {
   const [projectId, setProjectId] = useState('')
@@ -103,7 +105,7 @@ export default function EntryForm({
             {isEdit && <input type="hidden" name="id" value={existingEntry.id} />}
 
             <div className={styles.field}>
-              <label className={styles.label} id="project-label">
+              <label className={styles.label} htmlFor="project-trigger">
                 Project
               </label>
               <input type="hidden" name="project_id" value={projectId} />
@@ -113,8 +115,8 @@ export default function EntryForm({
                 disabled={isEdit}
               >
                 <Select.Trigger
+                  id="project-trigger"
                   className={styles.selectTrigger}
-                  aria-labelledby="project-label"
                 >
                   <Select.Value placeholder="Select project" />
                   <Select.Icon>
@@ -208,7 +210,7 @@ export default function EntryForm({
                   type="button"
                   className={styles.deleteBtn}
                   onClick={handleDelete}
-                  disabled={isPending}
+                  disabled={isPending || isLocked}
                 >
                   Delete
                 </button>
@@ -224,7 +226,7 @@ export default function EntryForm({
               <button
                 type="submit"
                 className={styles.submitBtn}
-                disabled={isPending}
+                disabled={isPending || isLocked}
               >
                 {isEdit ? 'Save Changes' : 'Log Time'}
               </button>

@@ -26,8 +26,8 @@ export default async function TimesheetsPage({ searchParams }: PageProps) {
   const weekStart = searchParams.week
   if (!/^\d{4}-\d{2}-\d{2}$/.test(weekStart)) redirect('/portal/timesheets')
 
-  const weekEndDate = new Date(weekStart)
-  weekEndDate.setDate(weekEndDate.getDate() + 6)
+  const weekEndDate = new Date(weekStart + 'T00:00:00Z')
+  weekEndDate.setUTCDate(weekEndDate.getUTCDate() + 6)
   const weekEnd = weekEndDate.toISOString().split('T')[0]
 
   const { data: employee } = await supabase

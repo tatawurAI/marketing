@@ -22,12 +22,9 @@ type ModalState = {
 }
 
 function addDaysToDateStr(dateStr: string, days: number): string {
-  const [year, month, day] = dateStr.split('-').map(Number)
-  const date = new Date(year!, month! - 1, day! + days)
-  const y = date.getFullYear()
-  const m = String(date.getMonth() + 1).padStart(2, '0')
-  const d = String(date.getDate()).padStart(2, '0')
-  return `${y}-${m}-${d}`
+  const date = new Date(dateStr + 'T00:00:00Z')
+  date.setUTCDate(date.getUTCDate() + days)
+  return date.toISOString().split('T')[0]!
 }
 
 function formatDay(dateStr: string): string {
@@ -65,8 +62,7 @@ export default function TimesheetShell({
     projectMap[entry.work_date]!.push(entry)
   }
 
-  const activeProjectIds = new Set(entries.map((e) => e.project_id))
-  const activeProjects = projects.filter((p) => activeProjectIds.has(p.id))
+  const activeProjects = projects
 
   function rowTotal(projectId: string): string {
     return entries
@@ -166,6 +162,7 @@ export default function TimesheetShell({
         day={modal.day}
         existingEntry={modal.existingEntry}
         projects={projects}
+        isLocked={isLocked}
         onClose={() =>
           setModal({ open: false, day: null, existingEntry: null })
         }
