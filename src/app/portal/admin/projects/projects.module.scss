@@ -1,0 +1,40 @@
+@use '../../../../styles/variables' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-4;
+}
+
+.heading {
+  font-family: $font-heading;
+  font-size: $text-2xl;
+  font-weight: 600;
+  color: $text-main;
+  margin: 0;
+}
+
+.newButton {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-2 $spacing-5;
+  background: $primary;
+  color: $text-main;
+  border-radius: $border-radius-md;
+  font-family: $font-body;
+  font-size: $text-sm;
+  font-weight: 500;
+  text-decoration: none;
+  transition: opacity $transition-fast $transition-ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}

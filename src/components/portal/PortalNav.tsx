@@ -1,9 +1,15 @@
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import NavLinks from './NavLinks'
 import styles from './PortalNav.module.scss'
 
-export default function PortalNav({ userEmail }: { userEmail: string }) {
+export default function PortalNav({
+  userEmail,
+  isAdmin,
+}: {
+  userEmail: string
+  isAdmin: boolean
+}) {
   async function signOut() {
     'use server'
     const supabase = createClient()
@@ -22,12 +28,7 @@ export default function PortalNav({ userEmail }: { userEmail: string }) {
       </a>
 
       <div className={styles.links}>
-        <Link href="/portal/dashboard" className={styles.link}>
-          Dashboard
-        </Link>
-        <Link href="/portal/timesheets" className={styles.link}>
-          Timesheets
-        </Link>
+        <NavLinks isAdmin={isAdmin} />
       </div>
 
       <div className={styles.user}>

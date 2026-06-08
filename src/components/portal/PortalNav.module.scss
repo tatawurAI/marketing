@@ -54,6 +54,18 @@
   }
 }
 
+.linkActive {
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  color: $secondary;
+  transition: color $transition-normal $transition-ease;
+
+  &:hover {
+    color: $secondary;
+  }
+}
+
 .user {
   display: flex;
   align-items: center;
