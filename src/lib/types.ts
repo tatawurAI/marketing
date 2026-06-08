@@ -60,3 +60,19 @@ export type AdminStats = {
   entries_this_week: number
   unlocked_weeks_last_12: number
 }
+
+export type TimesheetApproval = {
+  id: string
+  employee_id: string
+  week_start: string
+  status: 'pending' | 'approved' | 'denied'
+  reviewed_by: string | null
+  review_comment: string | null
+  submitted_at: string
+  reviewed_at: string | null
+}
+
+export type AdminTimesheetApproval = TimesheetApproval & {
+  employee: { full_name: string }
+  reviewer: { full_name: string } | null
+}

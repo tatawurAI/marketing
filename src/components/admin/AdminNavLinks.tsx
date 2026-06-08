@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Briefcase, Users, Clock, CalendarCheck } from 'lucide-react'
+import { LayoutDashboard, Briefcase, Users, Clock, CalendarCheck, ClipboardCheck } from 'lucide-react'
 import styles from './AdminNav.module.scss'
 
 const NAV_ITEMS = [
@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { label: 'Employees', href: '/portal/admin/employees', icon: Users, exact: false },
   { label: 'Timesheets', href: '/portal/admin/timesheets', icon: Clock, exact: false },
   { label: 'Weeks', href: '/portal/admin/weeks', icon: CalendarCheck, exact: false },
+  { label: 'Approvals', href: '/portal/admin/approvals', icon: ClipboardCheck, exact: false },
 ] as const
 
 export default function AdminNavLinks() {

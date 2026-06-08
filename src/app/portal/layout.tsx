@@ -18,7 +18,13 @@ export default async function PortalLayout({
   // still reach this layout, so we must not redirect here or we get a loop.
   if (!user) return <>{children}</>
 
-  const isAdmin = user.app_metadata?.role === 'admin'
+  const { data: employee } = await supabase
+    .from('employees')
+    .select('role')
+    .eq('user_id', user.id)
+    .single()
+
+  const isAdmin = employee?.role === 'admin'
 
   return (
     <div className={styles.shell}>

@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import type { Project, TimeEntry } from '@/lib/types'
+import type { Project, TimeEntry, TimesheetApproval } from '@/lib/types'
 import TimesheetShell from '@/components/portal/TimesheetShell'
 
 type PageProps = {
@@ -38,7 +38,13 @@ export default async function TimesheetsPage({ searchParams }: PageProps) {
 
   if (!employee) redirect('/portal/login')
 
-  const [projectsResult, entriesResult, lockResult] = await Promise.all([
+  const [weekProjectsResult, availableProjectsResult, entriesResult, lockResult, approvalResult] = await Promise.all([
+    supabase
+      .from('employee_week_projects')
+      .select('project:projects(id, name)')
+      .eq('employee_id', employee.id)
+      .eq('week_start', weekStart)
+      .order('project(name)'),
     supabase
       .from('projects')
       .select('id, name')
@@ -55,18 +61,30 @@ export default async function TimesheetsPage({ searchParams }: PageProps) {
       .select('week_start')
       .eq('week_start', weekStart)
       .maybeSingle(),
+    supabase
+      .from('timesheet_approvals')
+      .select('*')
+      .eq('employee_id', employee.id)
+      .eq('week_start', weekStart)
+      .maybeSingle(),
   ])
 
-  const projects = (projectsResult.data ?? []) as Project[]
+  const weekProjects = (weekProjectsResult.data ?? [])
+    .map(r => r.project as unknown as Project | null)
+    .filter((p): p is Project => p !== null)
+  const availableProjects = (availableProjectsResult.data ?? []) as Project[]
   const entries = (entriesResult.data ?? []) as TimeEntry[]
   const isLocked = lockResult.data != null
+  const approval = (approvalResult.data ?? null) as TimesheetApproval | null
 
   return (
     <TimesheetShell
       weekStart={weekStart}
-      projects={projects}
+      projects={weekProjects}
+      availableProjects={availableProjects}
       entries={entries}
       isLocked={isLocked}
+      approval={approval}
     />
   )
 }

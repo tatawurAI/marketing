@@ -77,6 +77,9 @@
   min-width: 120px;
   vertical-align: top;
   border-bottom: 1px solid rgba($border-color, 0.5);
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
 }
 
 .total {
@@ -102,4 +105,215 @@
   font-family: $font-body;
   font-size: $text-sm;
   color: $text-muted;
+}
+
+.actionError {
+  padding: $spacing-3 $spacing-4;
+  border: 1px solid rgba($secondary, 0.4);
+  border-radius: $border-radius-lg;
+  background: rgba($secondary, 0.08);
+  color: $secondary;
+  font-size: $text-sm;
+}
+
+// ============================================================
+// Approval bar
+// ============================================================
+
+.approvalBar {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  padding: $spacing-3 $spacing-4;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  background: $bg-card;
+  flex-wrap: wrap;
+}
+
+.approvalLabel {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+}
+
+.badgePending {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba($secondary, 0.15);
+  color: $secondary;
+  border: 1px solid rgba($secondary, 0.3);
+}
+
+.badgeApproved {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba($green-500, 0.15);
+  color: $green-500;
+  border: 1px solid rgba($green-500, 0.3);
+}
+
+.badgeDenied {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba($red-500, 0.15);
+  color: $red-500;
+  border: 1px solid rgba($red-500, 0.3);
+}
+
+.denyComment {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $red-500;
+  font-style: italic;
+}
+
+.submitReviewBtn {
+  padding: $spacing-2 $spacing-4;
+  background: $primary;
+  color: $text-main;
+  border: none;
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    background: $primary-600;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.resubmitBtn {
+  padding: $spacing-1 $spacing-3;
+  background: transparent;
+  color: $text-muted;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    border-color: $text-muted;
+    color: $text-main;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// ============================================================
+// Per-project remove button
+// ============================================================
+
+.removeBtn {
+  background: none;
+  border: none;
+  color: $text-muted;
+  cursor: pointer;
+  padding: 0 $spacing-1;
+  border-radius: $border-radius-sm;
+  font-size: $text-xs;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color $transition-fast $transition-ease;
+
+  &:hover {
+    color: $red-500;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+// ============================================================
+// Add project row
+// ============================================================
+
+.addProjectRow td {
+  padding: $spacing-2 $spacing-4;
+  border-bottom: none;
+}
+
+.addProjectControls {
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+}
+
+.addProjectSelect {
+  padding: $spacing-1 $spacing-3;
+  border-radius: $border-radius-md;
+  border: 1px solid $border-color;
+  background: $bg-elevated;
+  color: $text-main;
+  font-family: $font-body;
+  font-size: $text-sm;
+  outline: none;
+  cursor: pointer;
+  transition: border-color $transition-fast $transition-ease;
+
+  &:focus {
+    border-color: $primary;
+  }
+}
+
+.addProjectBtn {
+  padding: $spacing-1 $spacing-3;
+  background: transparent;
+  color: $primary;
+  border: 1px solid $primary;
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    background: rgba($primary, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.noProjectsMsg {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  font-style: italic;
 }
