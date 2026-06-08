@@ -1,0 +1,57 @@
+@use '../../styles/variables' as *;
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-1;
+  min-width: 72px;
+}
+
+.entry {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: background $transition-fast $transition-ease;
+
+  &:hover {
+    background: rgba($secondary, 0.12);
+  }
+}
+
+.hours {
+  font-family: $font-mono;
+  font-size: $text-sm;
+  color: $text-main;
+}
+
+.addButton {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-sm;
+  font-family: $font-body;
+  font-size: $text-xs;
+  color: $text-muted;
+  cursor: pointer;
+  transition: color $transition-fast $transition-ease;
+
+  &:hover {
+    color: $secondary;
+  }
+}
+
+.empty {
+  font-family: $font-mono;
+  font-size: $text-sm;
+  color: $text-muted;
+  padding: $spacing-1 $spacing-2;
+  display: block;
+}
