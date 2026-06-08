@@ -124,7 +124,7 @@ export default async function DashboardPage() {
       ) : (
         <section className={styles.card}>
           <p className={styles.empty}>
-            No employee profile found. Please contact your administrator.
+            Your account is being set up. If this persists, please contact your administrator.
           </p>
         </section>
       )}

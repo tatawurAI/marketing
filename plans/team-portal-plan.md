@@ -2,7 +2,7 @@
 
 **Date:** 2026-06-06  
 **Author:** Izuku (VP of Software Products)  
-**Status:** Phase 1 complete — Phase 2 pending  
+**Status:** Phase 1 complete, employee auto-provisioning added — Phase 2 pending  
 **Reviewed by:** security-engineer, data-engineer, backend-engineer, frontend-engineer
 
 ---
@@ -267,7 +267,19 @@ CREATE TRIGGER on_auth_user_email_updated
   FOR EACH ROW EXECUTE FUNCTION handle_user_email_update();
 ```
 
-### 3.7 Supabase Auth Hook — Role in JWT
+### 3.7 Employee Auto-Provisioning — `006_auto_provision.sql`
+
+An AFTER INSERT trigger on `auth.users` auto-creates a `public.employees` row on every new sign-in. The BEFORE INSERT trigger (`on_auth_user_created`) has already validated the domain by the time this fires, so the email is trusted.
+
+The function uses `SECURITY DEFINER` to bypass RLS and INSERT directly into `public.employees`. `ON CONFLICT (user_id) DO NOTHING` makes it idempotent.
+
+Placeholder values filled in by admin via the Phase 3 admin panel:
+- `title = 'New Employee'`
+- `salary_rate = 0.00`
+
+`full_name` is sourced from `raw_user_meta_data->>'full_name'` (Google OAuth) with a fallback to the email prefix.
+
+### 3.8 Supabase Auth Hook — Role in JWT
 
 Configure a Supabase Auth Hook (Database → Webhooks → Auth Hooks → `customize_access_token`) to embed `role` into the JWT at sign-in:
 
@@ -625,7 +637,7 @@ The portal is a separate page surface from the marketing site — it has its own
 
 | Workstream | Teammate | Files Owned |
 |---|---|---|
-| DB Schema | `data-engineer` | `supabase/migrations/001_tables.sql`, `002_indexes.sql`, `003_rls.sql`, `004_triggers.sql`, `005_auth_hook.sql`, `supabase/config.toml`, `supabase/seed.sql` |
+| DB Schema | `data-engineer` | `supabase/migrations/001_tables.sql`, `002_indexes.sql`, `003_rls.sql`, `004_triggers.sql`, `005_auth_hook.sql`, `006_auto_provision.sql`, `supabase/config.toml`, `supabase/seed.sql` |
 | Auth + Middleware | `backend-engineer` | `src/middleware.ts`, `src/lib/supabase/`, `src/app/portal/auth/callback/route.ts`, `src/app/portal/login/page.tsx`, `next.config.js` (standalone output) |
 | Employee Dashboard | `frontend-engineer` | `src/app/portal/layout.tsx`, `src/app/portal/dashboard/page.tsx`, `src/components/portal/PortalNav.*` |
 | Docker + CI | `devops-infrastructure-engineer` | `Dockerfile`, `docker-compose.yml`, `.dockerignore`, `.env.example` (updated with local keys), `README.md` (dev setup instructions) |
