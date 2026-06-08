@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import * as AlertDialog from '@radix-ui/react-alert-dialog'
 import type { EmployeeFull, BillingRate, Project } from '@/lib/types'
 import {
   updateEmployee,
@@ -100,6 +101,8 @@ export default function EmployeeForm({ employee, projects, billingRates }: Props
       await deleteBillingRate(rateId, employee.id)
     })
   }
+
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
 
   return (
     <div className={styles.wrapper}>
@@ -288,14 +291,55 @@ export default function EmployeeForm({ employee, projects, billingRates }: Props
                         >
                           Edit
                         </button>
-                        <button
-                          type="button"
-                          className={styles.rateDeleteBtn}
-                          onClick={() => handleDeleteRate(rate.id)}
-                          disabled={ratePending}
+                        <AlertDialog.Root
+                          open={pendingDeleteId === rate.id}
+                          onOpenChange={(open) => !open && setPendingDeleteId(null)}
                         >
-                          Delete
-                        </button>
+                          <AlertDialog.Trigger asChild>
+                            <button
+                              type="button"
+                              className={styles.rateDeleteBtn}
+                              onClick={() => setPendingDeleteId(rate.id)}
+                              disabled={ratePending}
+                            >
+                              Delete
+                            </button>
+                          </AlertDialog.Trigger>
+                          <AlertDialog.Portal>
+                            <AlertDialog.Overlay className={styles.dialogOverlay} />
+                            <AlertDialog.Content className={styles.dialogContent}>
+                              <AlertDialog.Title className={styles.dialogTitle}>
+                                Remove billing rate?
+                              </AlertDialog.Title>
+                              <AlertDialog.Description className={styles.dialogDescription}>
+                                Remove the billing rate for{' '}
+                                <strong>{rate.project.name}</strong>? You can add
+                                it again at any time.
+                              </AlertDialog.Description>
+                              <div className={styles.dialogActions}>
+                                <AlertDialog.Cancel asChild>
+                                  <button
+                                    type="button"
+                                    className={styles.dialogCancelBtn}
+                                    autoFocus
+                                  >
+                                    Cancel
+                                  </button>
+                                </AlertDialog.Cancel>
+                                <AlertDialog.Action asChild>
+                                  <button
+                                    type="button"
+                                    className={styles.rateDeleteBtn}
+                                    onClick={() => handleDeleteRate(rate.id)}
+                                    disabled={ratePending}
+                                  >
+                                    Remove
+                                  </button>
+                                </AlertDialog.Action>
+                              </div>
+                            </AlertDialog.Content>
+                          </AlertDialog.Portal>
+                        </AlertDialog.Root>
                       </>
                     )}
                   </td>

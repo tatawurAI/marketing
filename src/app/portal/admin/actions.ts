@@ -10,7 +10,13 @@ async function getAdminUser() {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { supabase, user: null, error: 'Unauthorized' as const }
-  if (user.app_metadata?.role !== 'admin') return { supabase, user: null, error: 'Forbidden' as const }
+  // DB check is authoritative — JWT app_metadata can lag after role changes
+  const { data: employee } = await supabase
+    .from('employees')
+    .select('role')
+    .eq('user_id', user.id)
+    .single()
+  if (employee?.role !== 'admin') return { supabase, user: null, error: 'Forbidden' as const }
   return { supabase, user, error: null }
 }
 
@@ -22,8 +28,11 @@ export async function createProject(formData: FormData): Promise<{ error?: strin
   const { supabase, user, error: authError } = await getAdminUser()
   if (!user) return { error: authError }
 
+  const name = (formData.get('name') as string)?.trim()
+  if (!name) return { error: 'Project name is required' }
+
   const { error } = await supabase.from('projects').insert({
-    name:        formData.get('name') as string,
+    name,
     client_name: (formData.get('client_name') as string) || null,
     description: (formData.get('description') as string) || null,
     is_active:   formData.get('is_active') === 'true',
@@ -39,11 +48,13 @@ export async function updateProject(formData: FormData): Promise<{ error?: strin
   if (!user) return { error: authError }
 
   const id = formData.get('id') as string
+  const name = (formData.get('name') as string)?.trim()
+  if (!name) return { error: 'Project name is required' }
 
   const { error } = await supabase
     .from('projects')
     .update({
-      name:        formData.get('name') as string,
+      name,
       client_name: (formData.get('client_name') as string) || null,
       description: (formData.get('description') as string) || null,
       is_active:   formData.get('is_active') === 'true',
@@ -82,13 +93,16 @@ export async function updateEmployee(formData: FormData): Promise<{ error?: stri
 
   const id = formData.get('id') as string
 
+  const salary_rate = parseFloat(formData.get('salary_rate') as string)
+  if (isNaN(salary_rate) || salary_rate < 0) return { error: 'Invalid salary rate' }
+
   const { error } = await supabase
     .from('employees')
     .update({
       full_name:   formData.get('full_name') as string,
       title:       formData.get('title') as string,
       department:  (formData.get('department') as string) || null,
-      salary_rate: parseFloat(formData.get('salary_rate') as string),
+      salary_rate,
       started_at:  formData.get('started_at') as string,
     })
     .eq('id', id)
@@ -175,7 +189,10 @@ export async function lockWeek(weekStart: string): Promise<{ error?: string }> {
     .from('locked_weeks')
     .insert({ week_start: weekStart, locked_by: employee.id })
 
-  if (error) return { error: error.message }
+  if (error) {
+    if (error.code === '23505') return { error: 'This week is already locked' }
+    return { error: error.message }
+  }
   revalidatePath('/portal/admin/weeks')
   revalidatePath('/portal/timesheets')
   return {}

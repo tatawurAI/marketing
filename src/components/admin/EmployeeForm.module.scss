@@ -259,3 +259,68 @@
     cursor: not-allowed;
   }
 }
+
+// AlertDialog styles (billing rate delete confirm)
+
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba($bg-main, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+}
+
+.dialogContent {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  width: min(400px, calc(100vw - 2rem));
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-xl;
+  padding: $spacing-6;
+  box-shadow: $shadow-2xl;
+}
+
+.dialogTitle {
+  font-family: $font-heading;
+  font-size: $text-lg;
+  font-weight: 600;
+  color: $text-main;
+  margin-bottom: $spacing-3;
+}
+
+.dialogDescription {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  line-height: $leading-relaxed;
+  margin-bottom: $spacing-6;
+}
+
+.dialogActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $spacing-3;
+}
+
+.dialogCancelBtn {
+  padding: $spacing-2 $spacing-4;
+  background: none;
+  color: $text-muted;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-normal $transition-ease;
+
+  &:hover {
+    color: $text-main;
+    border-color: $text-muted;
+  }
+}

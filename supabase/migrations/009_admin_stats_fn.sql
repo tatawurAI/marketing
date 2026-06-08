@@ -4,7 +4,16 @@ RETURNS TABLE (
   active_projects        BIGINT,
   entries_this_week      BIGINT,
   unlocked_weeks_last_12 BIGINT
-) LANGUAGE sql STABLE SECURITY DEFINER SET search_path = '' AS $$
+) LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = '' AS $$
+BEGIN
+  -- Enforce admin-only access at the DB layer regardless of who holds the grant
+  IF (
+    SELECT role FROM public.employees WHERE user_id = auth.uid()
+  ) IS DISTINCT FROM 'admin' THEN
+    RAISE EXCEPTION 'Forbidden';
+  END IF;
+
+  RETURN QUERY
   SELECT
     -- Active employees
     (SELECT COUNT(*) FROM public.employees  WHERE is_active = true)::BIGINT,
@@ -31,7 +40,8 @@ RETURNS TABLE (
       WHERE  gs.monday::date NOT IN (
                SELECT week_start FROM public.locked_weeks
              )
-    )::BIGINT
+    )::BIGINT;
+END;
 $$;
 
 GRANT EXECUTE ON FUNCTION admin_dashboard_stats() TO authenticated;
