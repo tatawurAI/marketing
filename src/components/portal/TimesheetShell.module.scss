@@ -1,0 +1,105 @@
+@use '../../styles/variables' as *;
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  background: $bg-card;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: $font-body;
+  font-size: $text-sm;
+}
+
+.projectHeader,
+.dayHeader,
+.totalHeader {
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $text-muted;
+  padding: $spacing-3 $spacing-4;
+  text-align: left;
+  border-bottom: 1px solid $border-color;
+  white-space: nowrap;
+}
+
+.totalHeader {
+  text-align: right;
+}
+
+.table td {
+  padding: $spacing-2 $spacing-3;
+  vertical-align: top;
+  border-bottom: 1px solid rgba($border-color, 0.5);
+  color: $text-main;
+}
+
+.table tbody tr:last-child td,
+.table tbody tr:last-child th {
+  border-bottom: 1px solid $border-color;
+}
+
+.table tfoot th,
+.table tfoot td {
+  padding: $spacing-3 $spacing-4;
+  border-bottom: none;
+  background: rgba($border-color, 0.25);
+}
+
+.table tfoot th {
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 600;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.projectName {
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  color: $text-main;
+  padding: $spacing-2 $spacing-4;
+  white-space: nowrap;
+  min-width: 120px;
+  vertical-align: top;
+  border-bottom: 1px solid rgba($border-color, 0.5);
+}
+
+.total {
+  font-family: $font-mono;
+  font-size: $text-sm;
+  color: $text-muted;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.weekTotal {
+  font-family: $font-mono;
+  font-size: $text-sm;
+  font-weight: 600;
+  color: $secondary;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.emptyState {
+  padding: $spacing-12 $spacing-6;
+  text-align: center;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+}

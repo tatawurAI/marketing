@@ -1,0 +1,218 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba($bg-main, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+}
+
+.content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  width: min(440px, calc(100vw - 2rem));
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-xl;
+  padding: $spacing-6;
+  box-shadow: $shadow-2xl;
+}
+
+.title {
+  font-family: $font-heading;
+  font-size: $text-lg;
+  font-weight: 600;
+  color: $text-main;
+  margin-bottom: $spacing-5;
+}
+
+.field {
+  margin-bottom: $spacing-4;
+}
+
+.label {
+  display: block;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+  margin-bottom: $spacing-2;
+}
+
+.fieldError {
+  font-family: $font-body;
+  font-size: $text-xs;
+  color: $red-500;
+  margin-top: $spacing-1;
+}
+
+.formError {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $red-500;
+  margin-bottom: $spacing-4;
+  padding: $spacing-2 $spacing-3;
+  background: rgba($red-500, 0.1);
+  border-radius: $border-radius-md;
+}
+
+.selectTrigger {
+  @include input-base;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-family: $font-body;
+  font-size: $text-sm;
+
+  &[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.selectContent {
+  background: $bg-elevated;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  padding: $spacing-1 0;
+  box-shadow: $shadow-xl;
+  z-index: 200;
+  min-width: var(--radix-select-trigger-width);
+}
+
+.selectItem {
+  padding: $spacing-2 $spacing-4;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+  cursor: pointer;
+  outline: none;
+
+  &[data-highlighted] {
+    background: rgba($secondary, 0.12);
+  }
+}
+
+.hoursRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+}
+
+.stepperBtn {
+  width: 32px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $bg-elevated;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  color: $text-main;
+  font-size: $text-base;
+  cursor: pointer;
+  transition: all $transition-fast $transition-ease;
+  flex-shrink: 0;
+
+  &:hover {
+    border-color: $secondary;
+    color: $secondary;
+  }
+}
+
+.hoursInput {
+  @include input-base;
+  width: 80px;
+  text-align: center;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  padding: $spacing-2 $spacing-3;
+}
+
+.textarea {
+  @include input-base;
+  font-family: $font-body;
+  font-size: $text-sm;
+  resize: vertical;
+  min-height: 72px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: $spacing-6;
+  gap: $spacing-3;
+}
+
+.submitBtn {
+  padding: $spacing-2 $spacing-5;
+  background: $secondary;
+  color: $bg-main;
+  border: none;
+  border-radius: $border-radius-lg;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter $transition-normal $transition-ease;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.deleteBtn {
+  margin-right: auto;
+  padding: $spacing-2 $spacing-4;
+  background: none;
+  color: $red-500;
+  border: 1px solid rgba($red-500, 0.35);
+  border-radius: $border-radius-lg;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-normal $transition-ease;
+
+  &:hover:not(:disabled) {
+    background: rgba($red-500, 0.1);
+    border-color: $red-500;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.cancelBtn {
+  padding: $spacing-2 $spacing-4;
+  background: none;
+  color: $text-muted;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-normal $transition-ease;
+
+  &:hover {
+    color: $text-main;
+    border-color: $text-muted;
+  }
+}

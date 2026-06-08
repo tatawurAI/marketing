@@ -1,0 +1,11 @@
+@use '../../styles/variables' as *;
+
+.banner {
+  padding: $spacing-3 $spacing-4 $spacing-3 $spacing-5;
+  border-left: 3px solid $secondary;
+  background: rgba($secondary, 0.08);
+  border-radius: $border-radius-md;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+}

@@ -650,12 +650,82 @@ The portal is a separate page surface from the marketing site — it has its own
 
 ### Phase 2 — Timesheets (Parallel, ~2 days) — NEXT UP
 
-> Phase 1 shipped in PR #7. Phase 2 will begin in a follow-on session.
+> Phase 1 shipped in PR #7. Phase 2 begins in the timesheets-phase-2 session.
+
+**New packages required:** `bun add react-day-picker @radix-ui/react-popover date-fns`
+
+#### Shared Types — `src/lib/types.ts` (new file)
+
+```typescript
+export type Project = { id: string; name: string }
+
+export type TimeEntry = {
+  id: string
+  project_id: string
+  work_date: string   // 'YYYY-MM-DD'
+  hours: number
+  notes: string | null
+}
+```
+
+#### Task 1 — Timesheet Server Layer (`backend-engineer`)
+
+**Files:** `src/app/portal/timesheets/page.tsx`, `src/app/portal/timesheets/actions.ts`
+
+`page.tsx` — Server Component:
+1. Read `?week=` from `searchParams`. If absent, compute current Monday and `redirect()` to canonical URL.
+2. Parse `weekStart`, derive `weekEnd` (+6 days).
+3. Fetch: employee row (for `employee.id`), all active projects (`id, name`), time entries for that employee × week window, locked_weeks row for `weekStart`.
+4. Pass all as props to `<TimesheetShell>`.
+
+`actions.ts` — `'use server'`:
+- `createTimeEntry(formData: FormData): Promise<{ error?: string }>` — reads `project_id`, `work_date`, `hours`, `notes`
+- `updateTimeEntry(formData: FormData): Promise<{ error?: string }>` — reads `id`, `hours`, `notes`; verifies ownership via `employee_id`
+- `deleteTimeEntry(entryId: string): Promise<{ error?: string }>` — verifies ownership
+- All three call `revalidatePath('/portal/timesheets')`. RLS enforces week-lock at DB layer.
+
+#### Task 2 — Timesheet UI Components (`frontend-engineer`)
+
+**Files** (all `src/components/portal/`): `TimesheetShell.*`, `WeekPicker.*`, `DayColumn.*`, `EntryForm.*`, `LockBanner.*`
+
+**`TimesheetShell.tsx`** — `'use client'`
+Props: `{ entries: TimeEntry[], projects: Project[], isLocked: boolean, weekStart: string }`
+Owns modal state: `{ open: boolean, day: string | null, existingEntry: TimeEntry | null }`.
+Renders: `WeekPicker` → `LockBanner` → semantic `<table>` (rows = projects with entries, cols = Mon–Sun, tfoot = daily + weekly totals) → single `<EntryForm>` instance.
+
+**`WeekPicker.tsx`** — `'use client'`
+Props: `{ weekStart: string, isLocked: boolean }`
+Layout: `[← Prev]  [📅 Week of Jun 2–8, 2026  🔒]  [Next →]  [This Week]`
+
+- Week label is a **Radix Popover trigger** (`@radix-ui/react-popover`)
+- Popover content: `<DayPicker mode="week" />` from `react-day-picker` v9
+- On week select: close popover, `router.push('/portal/timesheets?week=YYYY-MM-DD')` with the selected Monday formatted via `date-fns/format`
+- **This Week button**: computes current Monday, `router.push` to it. Visually disabled (muted style) when already on current week.
+- Lock icon (`lucide-react Lock`, `strokeWidth={1}`, ochre) shown inline in trigger when `isLocked`
+- Style react-day-picker via CSS custom property overrides in `src/styles/globals.scss` scoped to `.rdp`:
+  ```scss
+  .rdp { --rdp-accent-color: #{$secondary}; }
+  ```
+
+**`DayColumn.tsx`** — `'use client'`
+Props: `{ date: string, entries: TimeEntry[], isLocked: boolean, onAddClick: (day: string) => void, onEditClick: (entry: TimeEntry) => void }`
+Renders entry hour values (JetBrains Mono) + `[+ Add]` button. Button hidden when `isLocked`.
+
+**`EntryForm.tsx`** — `'use client'`
+Uses `@radix-ui/react-dialog` (already installed). Props: modal state + projects + Server Action refs.
+Fields: Project `<select>` (disabled on edit), Hours `<input step="0.5">` with blur validation (0.5–24, inline error, `aria-label`'d stepper buttons), Notes `<textarea>`. Hidden fields: `work_date`, `id`.
+On success: call `onClose()`. Delete button shown on edit mode.
+
+**`LockBanner.tsx`** — presentational, no `'use client'` needed
+Props: `{ isLocked: boolean }`. Returns `null` when not locked. Ochre-accented banner: "This week is locked and cannot be edited."
+
+#### Task 3 — Code Review (`code-reviewer`)
+After tasks 1 + 2. Checks: Server Action ownership guards, modal a11y (focus trap, escape, aria-labelledby), SCSS token usage, TypeScript strictness.
 
 | Workstream | Teammate | Files Owned |
 |---|---|---|
-| Timesheet Server Layer | `backend-engineer` | `src/app/portal/timesheets/page.tsx`, Server Actions for time entry CRUD |
-| Timesheet UI | `frontend-engineer` | `src/components/portal/TimesheetShell.*`, `WeekPicker.*`, `DayColumn.*`, `EntryForm.*`, `LockBanner.*` |
+| Timesheet Server Layer | `backend-engineer` | `src/app/portal/timesheets/page.tsx`, `src/app/portal/timesheets/actions.ts`, `src/lib/types.ts` |
+| Timesheet UI | `frontend-engineer` | `src/components/portal/TimesheetShell.*`, `WeekPicker.*`, `DayColumn.*`, `EntryForm.*`, `LockBanner.*`, `src/styles/globals.scss` (rdp vars only) |
 
 ### Phase 3 — Admin Panel (Parallel, ~3 days)
 

@@ -133,3 +133,18 @@ button {
   outline: none;
   box-shadow: 0 0 0 2px $primary, 0 0 0 4px $bg-main;
 }
+
+// ============================================
+// REACT-DAY-PICKER THEME OVERRIDES
+// ============================================
+
+.rdp-root {
+  --rdp-accent-color: #{$secondary};
+  --rdp-accent-background-color: #{rgba($secondary, 0.15)};
+  --rdp-day-height: 36px;
+  --rdp-day-width: 36px;
+  --rdp-day_button-height: 34px;
+  --rdp-day_button-width: 34px;
+  background: transparent;
+  color: $text-main;
+}
