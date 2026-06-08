@@ -7,7 +7,8 @@ type Props = {
   date: string
   entries: TimeEntry[]
   isLocked: boolean
-  onAddClick: (day: string) => void
+  projectId: string
+  onAddClick: (day: string, projectId: string) => void
   onEditClick: (entry: TimeEntry) => void
 }
 
@@ -15,6 +16,7 @@ export default function DayColumn({
   date,
   entries,
   isLocked,
+  projectId,
   onAddClick,
   onEditClick,
 }: Props) {
@@ -41,7 +43,7 @@ export default function DayColumn({
         <button
           type="button"
           className={styles.addButton}
-          onClick={() => onAddClick(date)}
+          onClick={() => onAddClick(date, projectId)}
         >
           + Add
         </button>

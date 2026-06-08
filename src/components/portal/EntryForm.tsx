@@ -18,6 +18,7 @@ type Props = {
   existingEntry: TimeEntry | null
   projects: Project[]
   isLocked: boolean
+  defaultProjectId?: string
   onClose: () => void
 }
 
@@ -27,6 +28,7 @@ export default function EntryForm({
   existingEntry,
   projects,
   isLocked,
+  defaultProjectId,
   onClose,
 }: Props) {
   const [projectId, setProjectId] = useState('')
@@ -38,13 +40,13 @@ export default function EntryForm({
 
   useEffect(() => {
     if (open) {
-      setProjectId(existingEntry?.project_id ?? projects[0]?.id ?? '')
+      setProjectId(existingEntry?.project_id ?? defaultProjectId ?? projects[0]?.id ?? '')
       setHours(existingEntry?.hours ?? 1.0)
       setNotes(existingEntry?.notes ?? '')
       setHoursError(null)
       setFormError(null)
     }
-  }, [open, existingEntry, projects])
+  }, [open, existingEntry, defaultProjectId, projects])
 
   function validateHours(value: number): string | null {
     if (value < 0.5 || value > 24) return 'Hours must be between 0.5 and 24'

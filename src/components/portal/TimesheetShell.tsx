@@ -1,23 +1,31 @@
 'use client'
 
-import { useState } from 'react'
-import type { TimeEntry, Project } from '@/lib/types'
+import { useState, useTransition } from 'react'
+import type { TimeEntry, Project, TimesheetApproval } from '@/lib/types'
 import DayColumn from './DayColumn'
 import EntryForm from './EntryForm'
 import LockBanner from './LockBanner'
 import WeekPicker from './WeekPicker'
+import {
+  addWeekProject,
+  removeWeekProject,
+  submitTimesheetForReview,
+} from '@/app/portal/timesheets/actions'
 import styles from './TimesheetShell.module.scss'
 
 type Props = {
   entries: TimeEntry[]
   projects: Project[]
+  availableProjects: Project[]
   isLocked: boolean
   weekStart: string
+  approval: TimesheetApproval | null
 }
 
 type ModalState = {
   open: boolean
   day: string | null
+  projectId: string | null
   existingEntry: TimeEntry | null
 }
 
@@ -37,14 +45,19 @@ function formatDay(dateStr: string): string {
 export default function TimesheetShell({
   entries,
   projects,
+  availableProjects,
   isLocked,
   weekStart,
+  approval,
 }: Props) {
   const [modal, setModal] = useState<ModalState>({
     open: false,
     day: null,
+    projectId: null,
     existingEntry: null,
   })
+  const [addSelectId, setAddSelectId] = useState('')
+  const [isPending, startTransition] = useTransition()
 
   const days = Array.from({ length: 7 }, (_, i) =>
     addDaysToDateStr(weekStart, i),
@@ -62,8 +75,6 @@ export default function TimesheetShell({
     projectMap[entry.work_date]!.push(entry)
   }
 
-  const activeProjects = projects
-
   function rowTotal(projectId: string): string {
     return entries
       .filter((e) => e.project_id === projectId)
@@ -80,10 +91,91 @@ export default function TimesheetShell({
 
   const weekTotal = entries.reduce((sum, e) => sum + e.hours, 0).toFixed(1)
 
+  const pinnedIds = new Set(projects.map((p) => p.id))
+  const addableProjects = availableProjects.filter((p) => !pinnedIds.has(p.id))
+
+  function handleAddProject() {
+    if (!addSelectId) return
+    const idToAdd = addSelectId
+    startTransition(async () => {
+      await addWeekProject(weekStart, idToAdd)
+      setAddSelectId('')
+    })
+  }
+
+  function handleRemoveProject(projectId: string) {
+    startTransition(async () => {
+      await removeWeekProject(weekStart, projectId)
+    })
+  }
+
+  function handleSubmitForReview() {
+    startTransition(async () => {
+      await submitTimesheetForReview(weekStart)
+    })
+  }
+
+  // Hide the bar only when week is locked AND there's no approval record at all
+  const showApprovalBar = !(isLocked && approval === null)
+
   return (
     <div className={styles.shell}>
       <WeekPicker weekStart={weekStart} isLocked={isLocked} />
       <LockBanner isLocked={isLocked} />
+
+      {showApprovalBar && (
+        <div className={styles.approvalBar}>
+          {approval === null && !isLocked && (
+            <>
+              <span className={styles.approvalLabel}>
+                Timesheet not yet submitted
+              </span>
+              <button
+                type="button"
+                className={styles.submitReviewBtn}
+                onClick={handleSubmitForReview}
+                disabled={isPending}
+              >
+                Submit for Review
+              </button>
+            </>
+          )}
+
+          {approval?.status === 'pending' && (
+            <>
+              <span className={styles.approvalLabel}>Status:</span>
+              <span className={styles.badgePending}>Awaiting Review</span>
+            </>
+          )}
+
+          {approval?.status === 'approved' && (
+            <>
+              <span className={styles.approvalLabel}>Status:</span>
+              <span className={styles.badgeApproved}>Approved</span>
+            </>
+          )}
+
+          {approval?.status === 'denied' && (
+            <>
+              <span className={styles.approvalLabel}>Status:</span>
+              <span className={styles.badgeDenied}>Denied</span>
+              {approval.review_comment && (
+                <span className={styles.denyComment}>
+                  &ldquo;{approval.review_comment}&rdquo;
+                </span>
+              )}
+              <button
+                type="button"
+                className={styles.resubmitBtn}
+                onClick={handleSubmitForReview}
+                disabled={isPending}
+              >
+                Resubmit
+              </button>
+            </>
+          )}
+        </div>
+      )}
 
       <div className={styles.tableWrapper}>
         <table className={styles.table}>
@@ -103,45 +195,99 @@ export default function TimesheetShell({
             </tr>
           </thead>
           <tbody>
-            {activeProjects.length === 0 && (
+            {projects.length === 0 && (
               <tr>
-                <td
-                  colSpan={days.length + 2}
-                  className={styles.emptyState}
-                >
-                  No time logged this week
+                <td colSpan={days.length + 2} className={styles.emptyState}>
+                  No projects pinned this week
                 </td>
               </tr>
             )}
-            {activeProjects.map((project) => (
-              <tr key={project.id}>
-                <th scope="row" className={styles.projectName}>
-                  {project.name}
-                </th>
-                {days.map((day) => (
-                  <td key={day}>
-                    <DayColumn
-                      date={day}
-                      entries={
-                        entriesByProject[project.id]?.[day] ?? []
-                      }
-                      isLocked={isLocked}
-                      onAddClick={(d) =>
-                        setModal({ open: true, day: d, existingEntry: null })
-                      }
-                      onEditClick={(e) =>
-                        setModal({
-                          open: true,
-                          day: e.work_date,
-                          existingEntry: e,
-                        })
-                      }
-                    />
-                  </td>
-                ))}
-                <td className={styles.total}>{rowTotal(project.id)}h</td>
+
+            {projects.map((project) => {
+              const projectHasEntries = entries.some(
+                (e) => e.project_id === project.id,
+              )
+              return (
+                <tr key={project.id}>
+                  <th scope="row" className={styles.projectName}>
+                    <span>{project.name}</span>
+                    {!projectHasEntries && !isLocked && (
+                      <button
+                        type="button"
+                        className={styles.removeBtn}
+                        onClick={() => handleRemoveProject(project.id)}
+                        disabled={isPending}
+                        aria-label={`Remove ${project.name}`}
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </th>
+                  {days.map((day) => (
+                    <td key={day}>
+                      <DayColumn
+                        date={day}
+                        projectId={project.id}
+                        entries={entriesByProject[project.id]?.[day] ?? []}
+                        isLocked={isLocked}
+                        onAddClick={(d, pid) =>
+                          setModal({
+                            open: true,
+                            day: d,
+                            projectId: pid,
+                            existingEntry: null,
+                          })
+                        }
+                        onEditClick={(e) =>
+                          setModal({
+                            open: true,
+                            day: e.work_date,
+                            projectId: e.project_id,
+                            existingEntry: e,
+                          })
+                        }
+                      />
+                    </td>
+                  ))}
+                  <td className={styles.total}>{rowTotal(project.id)}h</td>
+                </tr>
+              )
+            })}
+
+            {!isLocked && (
+              <tr className={styles.addProjectRow}>
+                <td colSpan={days.length + 2}>
+                  {addableProjects.length > 0 ? (
+                    <div className={styles.addProjectControls}>
+                      <select
+                        className={styles.addProjectSelect}
+                        value={addSelectId}
+                        onChange={(e) => setAddSelectId(e.target.value)}
+                      >
+                        <option value="">Select project to add…</option>
+                        {addableProjects.map((p) => (
+                          <option key={p.id} value={p.id}>
+                            {p.name}
+                          </option>
+                        ))}
+                      </select>
+                      <button
+                        type="button"
+                        className={styles.addProjectBtn}
+                        onClick={handleAddProject}
+                        disabled={isPending || !addSelectId}
+                      >
+                        Add
+                      </button>
+                    </div>
+                  ) : (
+                    <span className={styles.noProjectsMsg}>
+                      No projects available to add
+                    </span>
+                  )}
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
           <tfoot>
             <tr>
@@ -163,8 +309,9 @@ export default function TimesheetShell({
         existingEntry={modal.existingEntry}
         projects={projects}
         isLocked={isLocked}
+        defaultProjectId={modal.projectId ?? undefined}
         onClose={() =>
-          setModal({ open: false, day: null, existingEntry: null })
+          setModal({ open: false, day: null, projectId: null, existingEntry: null })
         }
       />
     </div>

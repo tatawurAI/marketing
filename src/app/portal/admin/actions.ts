@@ -272,3 +272,82 @@ export async function exportTimesheetsCSV(filters: {
   const filename = `timesheets-${filters.week ?? 'all'}.csv`
   return { csv, filename }
 }
+
+// ---------------------------------------------------------------------------
+// Timesheet approval actions
+// ---------------------------------------------------------------------------
+
+export async function approveTimesheet(employeeId: string, weekStart: string): Promise<{ error?: string }> {
+  const { supabase, user, error: authError } = await getAdminUser()
+  if (!user) return { error: authError }
+
+  const { data: adminEmployee } = await supabase
+    .from('employees')
+    .select('id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!adminEmployee) return { error: 'Employee record not found for this user' }
+
+  const { error } = await supabase
+    .from('timesheet_approvals')
+    .update({
+      status: 'approved',
+      reviewed_by: adminEmployee.id,
+      reviewed_at: new Date().toISOString(),
+    })
+    .eq('employee_id', employeeId)
+    .eq('week_start', weekStart)
+
+  if (error) return { error: error.message }
+  revalidatePath('/portal/admin/approvals')
+  return {}
+}
+
+export async function denyTimesheet(employeeId: string, weekStart: string, comment: string): Promise<{ error?: string }> {
+  const { supabase, user, error: authError } = await getAdminUser()
+  if (!user) return { error: authError }
+
+  const { data: adminEmployee } = await supabase
+    .from('employees')
+    .select('id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!adminEmployee) return { error: 'Employee record not found for this user' }
+
+  const { error } = await supabase
+    .from('timesheet_approvals')
+    .update({
+      status: 'denied',
+      review_comment: comment,
+      reviewed_by: adminEmployee.id,
+      reviewed_at: new Date().toISOString(),
+    })
+    .eq('employee_id', employeeId)
+    .eq('week_start', weekStart)
+
+  if (error) return { error: error.message }
+  revalidatePath('/portal/admin/approvals')
+  return {}
+}
+
+export async function reopenTimesheet(employeeId: string, weekStart: string): Promise<{ error?: string }> {
+  const { supabase, user, error: authError } = await getAdminUser()
+  if (!user) return { error: authError }
+
+  const { error } = await supabase
+    .from('timesheet_approvals')
+    .update({
+      status: 'pending',
+      reviewed_by: null,
+      review_comment: null,
+      reviewed_at: null,
+    })
+    .eq('employee_id', employeeId)
+    .eq('week_start', weekStart)
+
+  if (error) return { error: error.message }
+  revalidatePath('/portal/admin/approvals')
+  return {}
+}

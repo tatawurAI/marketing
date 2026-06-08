@@ -103,3 +103,95 @@ export async function deleteTimeEntry(entryId: string): Promise<{ error?: string
   revalidatePath('/portal/timesheets')
   return {}
 }
+
+export async function addWeekProject(weekStart: string, projectId: string): Promise<{ error?: string }> {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Not authenticated' }
+
+  const employee = await getEmployee(supabase, user.id)
+  if (!employee) return { error: 'Employee not found' }
+
+  const { data: project } = await supabase
+    .from('projects').select('is_active').eq('id', projectId).single()
+  if (!project?.is_active) return { error: 'Project is not active' }
+
+  const { error } = await supabase.from('employee_week_projects').insert({
+    employee_id: employee.id,
+    week_start: weekStart,
+    project_id: projectId,
+  })
+
+  // 23505 = unique_violation — already pinned, treat as success
+  if (error && error.code !== '23505') return { error: error.message }
+  revalidatePath('/portal/timesheets')
+  return {}
+}
+
+export async function removeWeekProject(weekStart: string, projectId: string): Promise<{ error?: string }> {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Not authenticated' }
+
+  const employee = await getEmployee(supabase, user.id)
+  if (!employee) return { error: 'Employee not found' }
+
+  const weekEndDate = new Date(weekStart + 'T00:00:00Z')
+  weekEndDate.setUTCDate(weekEndDate.getUTCDate() + 6)
+  const weekEnd = weekEndDate.toISOString().split('T')[0]!
+
+  const { data: existingEntries } = await supabase
+    .from('time_entries')
+    .select('id')
+    .eq('employee_id', employee.id)
+    .eq('project_id', projectId)
+    .gte('work_date', weekStart)
+    .lte('work_date', weekEnd)
+    .limit(1)
+
+  if (existingEntries && existingEntries.length > 0) {
+    return { error: 'Cannot remove a project that has time logged this week' }
+  }
+
+  const { error } = await supabase
+    .from('employee_week_projects')
+    .delete()
+    .eq('employee_id', employee.id)
+    .eq('week_start', weekStart)
+    .eq('project_id', projectId)
+
+  if (error) return { error: error.message }
+  revalidatePath('/portal/timesheets')
+  return {}
+}
+
+export async function submitTimesheetForReview(weekStart: string): Promise<{ error?: string }> {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Not authenticated' }
+
+  const employee = await getEmployee(supabase, user.id)
+  if (!employee) return { error: 'Employee not found' }
+
+  if (await isWeekLocked(supabase, weekStart)) return { error: 'This week is locked and cannot be edited.' }
+
+  const { error } = await supabase.from('timesheet_approvals').upsert(
+    {
+      employee_id: employee.id,
+      week_start: weekStart,
+      status: 'pending',
+      submitted_at: new Date().toISOString(),
+      reviewed_by: null,
+      review_comment: null,
+      reviewed_at: null,
+    },
+    {
+      onConflict: 'employee_id,week_start',
+      ignoreDuplicates: false,
+    },
+  )
+
+  if (error) return { error: error.message }
+  revalidatePath('/portal/timesheets')
+  return {}
+}
