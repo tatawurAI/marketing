@@ -58,6 +58,7 @@ export default function TimesheetShell({
   })
   const [addSelectId, setAddSelectId] = useState('')
   const [isPending, startTransition] = useTransition()
+  const [actionError, setActionError] = useState<string | null>(null)
 
   const days = Array.from({ length: 7 }, (_, i) =>
     addDaysToDateStr(weekStart, i),
@@ -97,21 +98,27 @@ export default function TimesheetShell({
   function handleAddProject() {
     if (!addSelectId) return
     const idToAdd = addSelectId
+    setActionError(null)
     startTransition(async () => {
-      await addWeekProject(weekStart, idToAdd)
+      const result = await addWeekProject(weekStart, idToAdd)
+      if (result.error) { setActionError(result.error); return }
       setAddSelectId('')
     })
   }
 
   function handleRemoveProject(projectId: string) {
+    setActionError(null)
     startTransition(async () => {
-      await removeWeekProject(weekStart, projectId)
+      const result = await removeWeekProject(weekStart, projectId)
+      if (result.error) setActionError(result.error)
     })
   }
 
   function handleSubmitForReview() {
+    setActionError(null)
     startTransition(async () => {
-      await submitTimesheetForReview(weekStart)
+      const result = await submitTimesheetForReview(weekStart)
+      if (result.error) setActionError(result.error)
     })
   }
 
@@ -122,6 +129,12 @@ export default function TimesheetShell({
     <div className={styles.shell}>
       <WeekPicker weekStart={weekStart} isLocked={isLocked} />
       <LockBanner isLocked={isLocked} />
+
+      {actionError && (
+        <div className={styles.actionError} role="alert">
+          {actionError}
+        </div>
+      )}
 
       {showApprovalBar && (
         <div className={styles.approvalBar}>

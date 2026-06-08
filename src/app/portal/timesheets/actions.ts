@@ -175,6 +175,17 @@ export async function submitTimesheetForReview(weekStart: string): Promise<{ err
 
   if (await isWeekLocked(supabase, weekStart)) return { error: 'This week is locked and cannot be edited.' }
 
+  const { data: existing } = await supabase
+    .from('timesheet_approvals')
+    .select('status')
+    .eq('employee_id', employee.id)
+    .eq('week_start', weekStart)
+    .maybeSingle()
+
+  if (existing?.status === 'approved') {
+    return { error: 'This timesheet has already been approved and cannot be resubmitted.' }
+  }
+
   const { error } = await supabase.from('timesheet_approvals').upsert(
     {
       employee_id: employee.id,

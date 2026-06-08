@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import type { AdminTimesheetApproval, EmployeeFull } from '@/lib/types'
 import TimesheetApprovals from '@/components/admin/TimesheetApprovals'
 
@@ -9,16 +8,6 @@ type PageProps = {
 
 export default async function ApprovalsPage({ searchParams }: PageProps) {
   const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/portal/login')
-
-  // Check admin role
-  const { data: me } = await supabase
-    .from('employees')
-    .select('role')
-    .eq('user_id', user.id)
-    .single()
-  if (me?.role !== 'admin') redirect('/portal/dashboard')
 
   const { week, employee_id, status } = searchParams
 

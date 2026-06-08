@@ -69,7 +69,9 @@ export default async function TimesheetsPage({ searchParams }: PageProps) {
       .maybeSingle(),
   ])
 
-  const weekProjects = (weekProjectsResult.data ?? []).map(r => r.project as unknown as Project)
+  const weekProjects = (weekProjectsResult.data ?? [])
+    .map(r => r.project as unknown as Project | null)
+    .filter((p): p is Project => p !== null)
   const availableProjects = (availableProjectsResult.data ?? []) as Project[]
   const entries = (entriesResult.data ?? []) as TimeEntry[]
   const isLocked = lockResult.data != null

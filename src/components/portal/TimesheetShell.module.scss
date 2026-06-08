@@ -107,6 +107,15 @@
   color: $text-muted;
 }
 
+.actionError {
+  padding: $spacing-3 $spacing-4;
+  border: 1px solid rgba($secondary, 0.4);
+  border-radius: $border-radius-lg;
+  background: rgba($secondary, 0.08);
+  color: $secondary;
+  font-size: $text-sm;
+}
+
 // ============================================================
 // Approval bar
 // ============================================================

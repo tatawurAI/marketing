@@ -141,6 +141,7 @@ export async function upsertBillingRate(formData: FormData): Promise<{ error?: s
   const employee_id   = formData.get('employee_id') as string
   const project_id    = formData.get('project_id') as string
   const billable_rate = parseFloat(formData.get('billable_rate') as string)
+  if (isNaN(billable_rate) || billable_rate < 0) return { error: 'Invalid billing rate' }
 
   const { error } = await supabase
     .from('employee_billing_rates')
@@ -289,7 +290,7 @@ export async function approveTimesheet(employeeId: string, weekStart: string): P
 
   if (!adminEmployee) return { error: 'Employee record not found for this user' }
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('timesheet_approvals')
     .update({
       status: 'approved',
@@ -298,8 +299,10 @@ export async function approveTimesheet(employeeId: string, weekStart: string): P
     })
     .eq('employee_id', employeeId)
     .eq('week_start', weekStart)
+    .select('id')
 
   if (error) return { error: error.message }
+  if (!data?.length) return { error: 'Approval record not found — employee may not have submitted yet' }
   revalidatePath('/portal/admin/approvals')
   return {}
 }
@@ -316,7 +319,7 @@ export async function denyTimesheet(employeeId: string, weekStart: string, comme
 
   if (!adminEmployee) return { error: 'Employee record not found for this user' }
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('timesheet_approvals')
     .update({
       status: 'denied',
@@ -326,8 +329,10 @@ export async function denyTimesheet(employeeId: string, weekStart: string, comme
     })
     .eq('employee_id', employeeId)
     .eq('week_start', weekStart)
+    .select('id')
 
   if (error) return { error: error.message }
+  if (!data?.length) return { error: 'Approval record not found — employee may not have submitted yet' }
   revalidatePath('/portal/admin/approvals')
   return {}
 }
@@ -336,7 +341,7 @@ export async function reopenTimesheet(employeeId: string, weekStart: string): Pr
   const { supabase, user, error: authError } = await getAdminUser()
   if (!user) return { error: authError }
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('timesheet_approvals')
     .update({
       status: 'pending',
@@ -346,8 +351,10 @@ export async function reopenTimesheet(employeeId: string, weekStart: string): Pr
     })
     .eq('employee_id', employeeId)
     .eq('week_start', weekStart)
+    .select('id')
 
   if (error) return { error: error.message }
+  if (!data?.length) return { error: 'Approval record not found' }
   revalidatePath('/portal/admin/approvals')
   return {}
 }
