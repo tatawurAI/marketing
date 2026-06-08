@@ -1,0 +1,326 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-5;
+}
+
+.sectionTitle {
+  font-family: $font-heading;
+  font-size: $text-lg;
+  font-weight: 600;
+  color: $text-main;
+  margin: 0;
+}
+
+.divider {
+  height: 1px;
+  background: $border-color;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+  max-width: 600px;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-4;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.label {
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+}
+
+.required {
+  color: $secondary;
+}
+
+.input {
+  @include input-base;
+  font-family: $font-body;
+  font-size: $text-sm;
+}
+
+.inputMono {
+  @include input-base;
+  font-family: $font-mono;
+  font-size: $text-sm;
+}
+
+.formActions {
+  padding-top: $spacing-2;
+}
+
+.submitBtn {
+  padding: $spacing-2 $spacing-6;
+  background: $primary;
+  color: $text-main;
+  border: none;
+  border-radius: $border-radius-lg;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter $transition-normal $transition-ease;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.successMsg {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $green-500;
+  padding: $spacing-2 $spacing-3;
+  background: rgba($green-500, 0.1);
+  border-radius: $border-radius-md;
+}
+
+.errorMsg {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $red-500;
+  padding: $spacing-2 $spacing-3;
+  background: rgba($red-500, 0.1);
+  border-radius: $border-radius-md;
+}
+
+// Billing Rates Table
+
+.ratesTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ratesTh {
+  padding: $spacing-2 $spacing-3;
+  text-align: left;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+  border-bottom: 1px solid $border-color;
+}
+
+.ratesTr {
+  border-bottom: 1px solid $border-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.ratesTd {
+  padding: $spacing-2 $spacing-3;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+  vertical-align: middle;
+}
+
+.ratesTdActions {
+  padding: $spacing-2 $spacing-3;
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+  vertical-align: middle;
+}
+
+.rateValue {
+  font-family: $font-mono;
+  font-size: $text-sm;
+  color: $text-main;
+}
+
+.inlineRateInput {
+  width: 100px;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-md;
+  border: 1px solid $border-color;
+  background: $bg-elevated;
+  color: $text-main;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  outline: none;
+  transition: border-color $transition-fast $transition-ease;
+
+  &:focus {
+    border-color: $primary;
+  }
+}
+
+.addSelect {
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-md;
+  border: 1px solid $border-color;
+  background: $bg-elevated;
+  color: $text-main;
+  font-family: $font-body;
+  font-size: $text-sm;
+  outline: none;
+  cursor: pointer;
+  transition: border-color $transition-fast $transition-ease;
+
+  &:focus {
+    border-color: $primary;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.rateActionBtn {
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  color: $secondary;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    color: $secondary-400;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.rateActionMuted {
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  color: $text-muted;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color $transition-fast $transition-ease;
+
+  &:hover {
+    color: $text-main;
+  }
+}
+
+.rateDeleteBtn {
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  color: $text-muted;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    color: $red-500;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// AlertDialog styles (billing rate delete confirm)
+
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba($bg-main, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+}
+
+.dialogContent {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  width: min(400px, calc(100vw - 2rem));
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-xl;
+  padding: $spacing-6;
+  box-shadow: $shadow-2xl;
+}
+
+.dialogTitle {
+  font-family: $font-heading;
+  font-size: $text-lg;
+  font-weight: 600;
+  color: $text-main;
+  margin-bottom: $spacing-3;
+}
+
+.dialogDescription {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  line-height: $leading-relaxed;
+  margin-bottom: $spacing-6;
+}
+
+.dialogActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $spacing-3;
+}
+
+.dialogCancelBtn {
+  padding: $spacing-2 $spacing-4;
+  background: none;
+  color: $text-muted;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-normal $transition-ease;
+
+  &:hover {
+    color: $text-main;
+    border-color: $text-muted;
+  }
+}

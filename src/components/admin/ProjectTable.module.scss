@@ -1,0 +1,103 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  padding: $spacing-3 $spacing-4;
+  text-align: left;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+  border-bottom: 1px solid $border-color;
+}
+
+.tr {
+  border-bottom: 1px solid $border-color;
+  transition: background-color $transition-fast $transition-ease;
+
+  &:hover {
+    background: rgba($text-main, 0.03);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.td {
+  padding: $spacing-3 $spacing-4;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+}
+
+.tdActions {
+  padding: $spacing-3 $spacing-4;
+  display: flex;
+  align-items: center;
+  gap: $spacing-3;
+}
+
+.badgeActive {
+  display: inline-block;
+  padding: $spacing-1 $spacing-3;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  color: $primary;
+  border: 1px solid $primary;
+  background: rgba($primary, 0.08);
+}
+
+.badgeInactive {
+  display: inline-block;
+  padding: $spacing-1 $spacing-3;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  color: $text-muted;
+  border: 1px solid $border-color;
+  background: rgba($text-muted, 0.06);
+}
+
+.actionLink {
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  color: $secondary;
+  transition: color $transition-fast $transition-ease;
+
+  &:hover {
+    color: $secondary-400;
+  }
+}
+
+.actionBtn {
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  color: $text-muted;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    color: $text-main;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

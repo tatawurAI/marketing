@@ -18,9 +18,11 @@ export default async function PortalLayout({
   // still reach this layout, so we must not redirect here or we get a loop.
   if (!user) return <>{children}</>
 
+  const isAdmin = user.app_metadata?.role === 'admin'
+
   return (
     <div className={styles.shell}>
-      <PortalNav userEmail={user.email ?? ''} />
+      <PortalNav userEmail={user.email ?? ''} isAdmin={isAdmin} />
       <main className={styles.main}>{children}</main>
     </div>
   )

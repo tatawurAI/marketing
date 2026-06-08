@@ -1,0 +1,22 @@
+@use '../../../styles/variables' as *;
+
+.shell {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  min-height: 100%;
+  background: $bg-main;
+  color: $text-main;
+
+  @media (max-width: $breakpoint-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.content {
+  padding: $spacing-8;
+  min-width: 0;
+
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-4;
+  }
+}

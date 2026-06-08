@@ -1,0 +1,190 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  padding: $spacing-3 $spacing-4;
+  text-align: left;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+  border-bottom: 1px solid $border-color;
+}
+
+.tr {
+  border-bottom: 1px solid $border-color;
+  transition: background-color $transition-fast $transition-ease;
+
+  &:hover {
+    background: rgba($text-main, 0.03);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.td {
+  padding: $spacing-3 $spacing-4;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+}
+
+.tdActions {
+  padding: $spacing-3 $spacing-4;
+}
+
+.statusLocked {
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  color: $secondary;
+}
+
+.statusOpen {
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  color: $primary;
+}
+
+.actionBtn {
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  color: $text-muted;
+  background: none;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  padding: $spacing-1 $spacing-3;
+  cursor: pointer;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    color: $text-main;
+    border-color: $text-muted;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// AlertDialog styles
+
+.dialogOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba($bg-main, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+}
+
+.dialogContent {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  width: min(440px, calc(100vw - 2rem));
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-xl;
+  padding: $spacing-6;
+  box-shadow: $shadow-2xl;
+}
+
+.dialogTitle {
+  font-family: $font-heading;
+  font-size: $text-lg;
+  font-weight: 600;
+  color: $text-main;
+  margin-bottom: $spacing-3;
+}
+
+.dialogDescription {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  line-height: $leading-relaxed;
+  margin-bottom: $spacing-6;
+}
+
+.dialogActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $spacing-3;
+}
+
+.dialogCancelBtn {
+  padding: $spacing-2 $spacing-4;
+  background: none;
+  color: $text-muted;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-normal $transition-ease;
+
+  &:hover {
+    color: $text-main;
+    border-color: $text-muted;
+  }
+}
+
+.dialogConfirmBtn {
+  padding: $spacing-2 $spacing-5;
+  background: $primary;
+  color: $text-main;
+  border: none;
+  border-radius: $border-radius-lg;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter $transition-normal $transition-ease;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btnDestructive {
+  padding: $spacing-2 $spacing-5;
+  background: rgba($secondary, 0.15);
+  color: $secondary;
+  border: 1px solid rgba($secondary, 0.4);
+  border-radius: $border-radius-lg;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $transition-normal $transition-ease;
+
+  &:hover:not(:disabled) {
+    background: rgba($secondary, 0.25);
+    border-color: $secondary;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
