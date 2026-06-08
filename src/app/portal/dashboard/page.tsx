@@ -46,11 +46,17 @@ export default async function DashboardPage() {
     .from('employees')
     .select('id, full_name, title, department, salary_rate, started_at')
     .eq('user_id', user.id)
-    .single() as { data: Employee | null; error: { code?: string } | null }
+    .single() as { data: Employee | null; error: { code?: string; message?: string; details?: string; hint?: string } | null }
 
-  // PGRST116 = no rows — expected for employees without a profile yet
-  if (empError && empError.code !== 'PGRST116') {
-    console.error('[dashboard] employee query failed:', empError)
+  // Log full error detail so Vercel function logs can diagnose RLS / JWT issues
+  if (empError) {
+    console.error('[dashboard] employee query failed:', {
+      authUserId: user.id,
+      code: empError.code,
+      message: empError.message,
+      details: empError.details,
+      hint: empError.hint,
+    })
   }
 
   const weekStart = getWeekStart(new Date())
