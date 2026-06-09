@@ -9,6 +9,7 @@ type WeekRow = {
   weekStart: string
   entryCount: number
   isLocked: boolean
+  pendingApprovals: number
 }
 
 type PendingAction = { weekStart: string; action: 'lock' | 'unlock' }
@@ -63,6 +64,7 @@ export default function WeekLockTable({ weeks }: { weeks: WeekRow[] }) {
           <tr>
             <th className={styles.th}>Week Range</th>
             <th className={styles.th}>Entries</th>
+            <th className={styles.th}>Pending</th>
             <th className={styles.th}>Status</th>
             <th className={styles.th}>Action</th>
           </tr>
@@ -72,6 +74,11 @@ export default function WeekLockTable({ weeks }: { weeks: WeekRow[] }) {
             <tr key={week.weekStart} className={styles.tr}>
               <td className={styles.td}>{formatWeekRange(week.weekStart)}</td>
               <td className={styles.td}>{week.entryCount}</td>
+              <td className={styles.td}>
+                {!week.isLocked && week.pendingApprovals > 0
+                  ? <span className={styles.pendingCount}>{week.pendingApprovals}</span>
+                  : '—'}
+              </td>
               <td className={styles.td}>
                 <span className={week.isLocked ? styles.statusLocked : styles.statusOpen}>
                   {week.isLocked ? 'Locked' : 'Open'}
@@ -93,6 +100,11 @@ export default function WeekLockTable({ weeks }: { weeks: WeekRow[] }) {
                     {week.isLocked ? 'Unlock' : 'Lock'}
                   </button>
                 </AlertDialog.Trigger>
+                {!week.isLocked && week.pendingApprovals > 0 && (
+                  <div className={styles.pendingNote}>
+                    {week.pendingApprovals} pending
+                  </div>
+                )}
               </td>
             </tr>
           ))}

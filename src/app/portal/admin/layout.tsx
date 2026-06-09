@@ -17,9 +17,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   if (employee?.role !== 'admin') redirect('/portal/dashboard')
 
+  const { count: pendingApprovals } = await supabase
+    .from('timesheet_approvals')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'pending')
+
   return (
     <div className={styles.shell}>
-      <AdminNav />
+      <AdminNav pendingApprovals={pendingApprovals ?? 0} />
       <main className={styles.content}>{children}</main>
     </div>
   )

@@ -14,7 +14,11 @@ const NAV_ITEMS = [
   { label: 'Approvals', href: '/portal/admin/approvals', icon: ClipboardCheck, exact: false },
 ] as const
 
-export default function AdminNavLinks() {
+interface AdminNavLinksProps {
+  pendingApprovals?: number
+}
+
+export default function AdminNavLinks({ pendingApprovals }: AdminNavLinksProps) {
   const pathname = usePathname()
 
   return (
@@ -29,6 +33,9 @@ export default function AdminNavLinks() {
           >
             <Icon size={16} strokeWidth={1.5} />
             <span>{label}</span>
+            {label === 'Approvals' && pendingApprovals != null && pendingApprovals > 0 && (
+              <span className={styles.badge}>{pendingApprovals}</span>
+            )}
           </Link>
         )
       })}
