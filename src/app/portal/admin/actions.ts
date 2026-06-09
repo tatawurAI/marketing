@@ -186,6 +186,18 @@ export async function lockWeek(weekStart: string): Promise<{ error?: string }> {
 
   if (!employee) return { error: 'Employee record not found for this user' }
 
+  // Guard: prevent locking if any timesheets are pending approval for this week
+  const { count: pendingCount, error: pendingError } = await supabase
+    .from('timesheet_approvals')
+    .select('*', { count: 'exact', head: true })
+    .eq('week_start', weekStart)
+    .eq('status', 'pending')
+
+  if (pendingError) return { error: pendingError.message }
+  if (pendingCount && pendingCount > 0) {
+    return { error: `Cannot lock this week — ${pendingCount} timesheet${pendingCount === 1 ? '' : 's'} pending approval.` }
+  }
+
   const { error } = await supabase
     .from('locked_weeks')
     .insert({ week_start: weekStart, locked_by: employee.id })

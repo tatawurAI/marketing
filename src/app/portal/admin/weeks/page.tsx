@@ -28,12 +28,17 @@ export default async function AdminWeeksPage() {
 
   const oldestMonday = toISODate(mondays[mondays.length - 1])
 
-  const [lockedWeeksResult, entriesResult] = await Promise.all([
+  const [lockedWeeksResult, entriesResult, pendingApprovalsResult] = await Promise.all([
     supabase.from('locked_weeks').select('week_start'),
     supabase
       .from('time_entries')
       .select('work_date')
       .gte('work_date', oldestMonday),
+    supabase
+      .from('timesheet_approvals')
+      .select('week_start')
+      .eq('status', 'pending')
+      .gte('week_start', oldestMonday),
   ])
 
   const lockedSet = new Set(
@@ -49,12 +54,20 @@ export default async function AdminWeeksPage() {
     countByWeek[weekKey] = (countByWeek[weekKey] ?? 0) + 1
   }
 
+  // Count pending approvals per week start
+  const pendingByWeek: Record<string, number> = {}
+  for (const row of pendingApprovalsResult.data ?? []) {
+    const weekKey = row.week_start as string
+    pendingByWeek[weekKey] = (pendingByWeek[weekKey] ?? 0) + 1
+  }
+
   const weeks = mondays.map(monday => {
     const weekStart = toISODate(monday)
     return {
       weekStart,
-      entryCount: countByWeek[weekStart] ?? 0,
-      isLocked:   lockedSet.has(weekStart),
+      entryCount:       countByWeek[weekStart] ?? 0,
+      isLocked:         lockedSet.has(weekStart),
+      pendingApprovals: pendingByWeek[weekStart] ?? 0,
     }
   })
 

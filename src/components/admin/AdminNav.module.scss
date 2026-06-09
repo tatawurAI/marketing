@@ -32,6 +32,23 @@
   }
 }
 
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 $spacing-1;
+  border-radius: $border-radius-full;
+  background: $primary;
+  color: $text-main;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 600;
+  line-height: 1;
+  margin-left: auto;
+}
+
 .navLinkActive {
   display: flex;
   align-items: center;

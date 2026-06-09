@@ -79,6 +79,20 @@
   }
 }
 
+.pendingCount {
+  font-family: $font-mono;
+  font-size: $text-sm;
+  color: $secondary;
+  font-weight: 500;
+}
+
+.pendingNote {
+  font-family: $font-body;
+  font-size: $text-xs;
+  color: $secondary;
+  margin-top: $spacing-1;
+}
+
 // AlertDialog styles
 
 .dialogOverlay {
