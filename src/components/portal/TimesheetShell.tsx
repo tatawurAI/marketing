@@ -171,7 +171,7 @@ export default function TimesheetShell({
           {approval?.status === 'denied' && (
             <>
               <span className={styles.approvalLabel}>Status:</span>
-              <span className={styles.badgeDenied}>Denied</span>
+              <span className={styles.badgeDenied}>Changes Requested</span>
               {approval.review_comment && (
                 <span className={styles.denyComment}>
                   &ldquo;{approval.review_comment}&rdquo;

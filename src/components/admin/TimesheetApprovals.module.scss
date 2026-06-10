@@ -199,13 +199,15 @@
   flex-wrap: wrap;
 }
 
-.denyForm {
+.denyForm,
+.inlineForm {
   display: flex;
   flex-direction: column;
   gap: $spacing-2;
 }
 
-.denyTextarea {
+.denyTextarea,
+.commentTextarea {
   width: 100%;
   min-width: 200px;
   padding: $spacing-2 $spacing-3;
@@ -225,6 +227,29 @@
 
   &::placeholder {
     color: $text-muted;
+  }
+}
+
+.viewBtn {
+  padding: $spacing-1 $spacing-3;
+  background: transparent;
+  color: $text-muted;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    border-color: $primary;
+    color: $primary;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 

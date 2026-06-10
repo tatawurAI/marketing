@@ -290,7 +290,60 @@ export async function exportTimesheetsCSV(filters: {
 // Timesheet approval actions
 // ---------------------------------------------------------------------------
 
-export async function approveTimesheet(employeeId: string, weekStart: string): Promise<{ error?: string }> {
+export async function getTimesheetPreview(
+  employeeId: string,
+  weekStart: string,
+): Promise<{
+  entries: Array<{
+    project_id: string
+    project_name: string
+    work_date: string
+    hours: number
+    notes: string | null
+  }>
+  error?: string
+}> {
+  const { supabase, user, error: authError } = await getAdminUser()
+  if (!user) return { entries: [], error: authError }
+
+  const weekEndDate = new Date(weekStart + 'T00:00:00Z')
+  weekEndDate.setUTCDate(weekEndDate.getUTCDate() + 6)
+  const weekEnd = weekEndDate.toISOString().substring(0, 10)
+
+  const { data, error } = await supabase
+    .from('time_entries')
+    .select('project_id, work_date, hours, notes, project:projects(name)')
+    .eq('employee_id', employeeId)
+    .gte('work_date', weekStart)
+    .lte('work_date', weekEnd)
+    .order('work_date', { ascending: true })
+
+  if (error) return { entries: [], error: error.message }
+
+  const rows = (data ?? []) as unknown as Array<{
+    project_id: string
+    work_date: string
+    hours: number
+    notes: string | null
+    project: { name: string } | null
+  }>
+
+  const entries = rows.map((row) => ({
+    project_id: row.project_id,
+    project_name: row.project?.name ?? 'Unknown',
+    work_date: row.work_date,
+    hours: row.hours,
+    notes: row.notes,
+  }))
+
+  return { entries }
+}
+
+export async function approveTimesheet(
+  employeeId: string,
+  weekStart: string,
+  comment: string = '',
+): Promise<{ error?: string }> {
   const { supabase, user, error: authError } = await getAdminUser()
   if (!user) return { error: authError }
 
@@ -306,6 +359,7 @@ export async function approveTimesheet(employeeId: string, weekStart: string): P
     .from('timesheet_approvals')
     .update({
       status: 'approved',
+      review_comment: comment || null,
       reviewed_by: adminEmployee.id,
       reviewed_at: new Date().toISOString(),
     })
