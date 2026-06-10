@@ -52,19 +52,17 @@ export default function TimesheetPreviewModal({ approval, onClose }: Props) {
 
   useEffect(() => {
     if (!approval) return
+    let cancelled = false
     setLoading(true)
     setError(null)
     setEntries([])
-    getTimesheetPreview(approval.employee_id, approval.week_start).then(
-      (result) => {
-        setLoading(false)
-        if (result.error) {
-          setError(result.error)
-        } else {
-          setEntries(result.entries)
-        }
-      },
-    )
+    getTimesheetPreview(approval.employee_id, approval.week_start).then((result) => {
+      if (cancelled) return
+      setLoading(false)
+      if (result.error) setError(result.error)
+      else setEntries(result.entries)
+    })
+    return () => { cancelled = true }
   }, [approval?.employee_id, approval?.week_start])
 
   if (!approval) return null
@@ -143,7 +141,7 @@ export default function TimesheetPreviewModal({ approval, onClose }: Props) {
                       <tr key={row.id} className={styles.dataRow}>
                         <td className={styles.cellProject}>{row.name}</td>
                         {row.dayHours.map((h, i) => (
-                          <td key={i} className={styles.cellHours}>
+                          <td key={weekDates[i]} className={styles.cellHours}>
                             {formatHours(h)}
                           </td>
                         ))}
@@ -157,7 +155,7 @@ export default function TimesheetPreviewModal({ approval, onClose }: Props) {
                     <tr className={styles.footerRow}>
                       <td className={styles.footerLabel}>Total</td>
                       {dayTotals.map((h, i) => (
-                        <td key={i} className={styles.footerHours}>
+                        <td key={weekDates[i]} className={styles.footerHours}>
                           {formatHours(h)}
                         </td>
                       ))}

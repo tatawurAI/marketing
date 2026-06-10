@@ -84,6 +84,7 @@ export default function TimesheetApprovals({
       } else {
         setApprovingId(null)
         setApproveComment('')
+        setPreviewApproval(null)
       }
     })
   }
@@ -101,6 +102,7 @@ export default function TimesheetApprovals({
       } else {
         setDenyingId(null)
         setDenyComment('')
+        setPreviewApproval(null)
       }
     })
   }
@@ -109,7 +111,11 @@ export default function TimesheetApprovals({
     setActionError(null)
     startTransition(async () => {
       const result = await reopenTimesheet(approval.employee_id, approval.week_start)
-      if (result.error) setActionError(result.error)
+      if (result.error) {
+        setActionError(result.error)
+      } else {
+        setPreviewApproval(null)
+      }
     })
   }
 
@@ -167,7 +173,7 @@ export default function TimesheetApprovals({
             <option value="">All</option>
             <option value="pending">Pending</option>
             <option value="approved">Approved</option>
-            <option value="denied">Denied</option>
+            <option value="denied">Changes Requested</option>
           </select>
         </div>
       </div>
@@ -245,6 +251,8 @@ export default function TimesheetApprovals({
                           type="button"
                           className={styles.approveBtn}
                           onClick={() => {
+                            setDenyingId(null)
+                            setDenyComment('')
                             setApprovingId(approval.id)
                             setApproveComment('')
                           }}
@@ -256,6 +264,8 @@ export default function TimesheetApprovals({
                           type="button"
                           className={styles.denyBtn}
                           onClick={() => {
+                            setApprovingId(null)
+                            setApproveComment('')
                             setDenyingId(approval.id)
                             setDenyComment('')
                           }}
@@ -267,9 +277,9 @@ export default function TimesheetApprovals({
                     )}
 
                   {approval.status === 'pending' && approvingId === approval.id && (
-                    <div className={styles.denyForm}>
+                    <div className={styles.inlineForm}>
                       <textarea
-                        className={styles.denyTextarea}
+                        className={styles.commentTextarea}
                         placeholder="Add a note (optional)"
                         value={approveComment}
                         onChange={(e) => setApproveComment(e.target.value)}

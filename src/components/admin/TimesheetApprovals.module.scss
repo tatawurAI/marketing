@@ -199,13 +199,15 @@
   flex-wrap: wrap;
 }
 
-.denyForm {
+.denyForm,
+.inlineForm {
   display: flex;
   flex-direction: column;
   gap: $spacing-2;
 }
 
-.denyTextarea {
+.denyTextarea,
+.commentTextarea {
   width: 100%;
   min-width: 200px;
   padding: $spacing-2 $spacing-3;

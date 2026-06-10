@@ -308,7 +308,7 @@ export async function getTimesheetPreview(
 
   const weekEndDate = new Date(weekStart + 'T00:00:00Z')
   weekEndDate.setUTCDate(weekEndDate.getUTCDate() + 6)
-  const weekEnd = weekEndDate.toISOString().split('T')[0]
+  const weekEnd = weekEndDate.toISOString().substring(0, 10)
 
   const { data, error } = await supabase
     .from('time_entries')
