@@ -232,3 +232,48 @@
   font-weight: 700;
   color: $primary;
 }
+
+.cellWithNotes {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  color: $text-main;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: $border-radius-sm;
+  transition: color $transition-fast $transition-ease;
+
+  &:hover {
+    color: $secondary;
+  }
+}
+
+.notesDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: $secondary;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.notesPopover {
+  background: $bg-elevated;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  padding: $spacing-2 $spacing-3;
+  font-family: $font-body;
+  font-size: $text-xs;
+  color: $text-main;
+  max-width: 260px;
+  box-shadow: $shadow-lg;
+  z-index: 100;
+}
+
+.notesArrow {
+  fill: $border-color;
+}

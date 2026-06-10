@@ -223,18 +223,20 @@ export default function TimesheetShell({
               return (
                 <tr key={project.id}>
                   <th scope="row" className={styles.projectName}>
-                    <span>{project.name}</span>
-                    {!projectHasEntries && !isLocked && (
-                      <button
-                        type="button"
-                        className={styles.removeBtn}
-                        onClick={() => handleRemoveProject(project.id)}
-                        disabled={isPending}
-                        aria-label={`Remove ${project.name}`}
-                      >
-                        ✕
-                      </button>
-                    )}
+                    <div className={styles.projectNameInner}>
+                      <span>{project.name}</span>
+                      {!projectHasEntries && !isLocked && (
+                        <button
+                          type="button"
+                          className={styles.removeBtn}
+                          onClick={() => handleRemoveProject(project.id)}
+                          disabled={isPending}
+                          aria-label={`Remove ${project.name}`}
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
                   </th>
                   {days.map((day) => (
                     <td key={day}>

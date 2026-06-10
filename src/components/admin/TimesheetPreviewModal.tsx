@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import * as Popover from '@radix-ui/react-popover'
 import type { AdminTimesheetApproval } from '@/lib/types'
 import { getTimesheetPreview } from '@/app/portal/admin/actions'
 import styles from './TimesheetPreviewModal.module.scss'
@@ -12,6 +13,8 @@ type PreviewEntry = {
   hours: number
   notes: string | null
 }
+
+type CellData = { hours: number; notesList: string[] }
 
 type Props = {
   approval: AdminTimesheetApproval | null
@@ -69,25 +72,28 @@ export default function TimesheetPreviewModal({ approval, onClose }: Props) {
 
   const weekDates = getWeekDates(approval.week_start)
 
-  // Build project rows: { project_id, project_name, hoursByDate }
-  const projectMap = new Map<string, { name: string; byDate: Map<string, number> }>()
+  // Build project rows: { project_id, project_name, byDate }
+  const projectMap = new Map<string, { name: string; byDate: Map<string, CellData> }>()
   for (const entry of entries) {
     if (!projectMap.has(entry.project_id)) {
       projectMap.set(entry.project_id, { name: entry.project_name, byDate: new Map() })
     }
     const row = projectMap.get(entry.project_id)!
-    const prev = row.byDate.get(entry.work_date) ?? 0
-    row.byDate.set(entry.work_date, prev + entry.hours)
+    const prev = row.byDate.get(entry.work_date) ?? { hours: 0, notesList: [] as string[] }
+    row.byDate.set(entry.work_date, {
+      hours: prev.hours + entry.hours,
+      notesList: entry.notes ? [...prev.notesList, entry.notes] : prev.notesList,
+    })
   }
 
   const projectRows = Array.from(projectMap.entries()).map(([id, { name, byDate }]) => {
-    const dayHours = weekDates.map((d) => byDate.get(d) ?? 0)
-    const total = dayHours.reduce((sum, h) => sum + h, 0)
-    return { id, name, dayHours, total }
+    const dayData = weekDates.map((d) => byDate.get(d) ?? { hours: 0, notesList: [] })
+    const total = dayData.reduce((sum, c) => sum + c.hours, 0)
+    return { id, name, dayData, total }
   })
 
   const dayTotals = weekDates.map((_, i) =>
-    projectRows.reduce((sum, row) => sum + (row.dayHours[i] ?? 0), 0),
+    projectRows.reduce((sum, row) => sum + (row.dayData[i]?.hours ?? 0), 0),
   )
   const weekTotal = dayTotals.reduce((sum, h) => sum + h, 0)
 
@@ -140,9 +146,26 @@ export default function TimesheetPreviewModal({ approval, onClose }: Props) {
                     projectRows.map((row) => (
                       <tr key={row.id} className={styles.dataRow}>
                         <td className={styles.cellProject}>{row.name}</td>
-                        {row.dayHours.map((h, i) => (
+                        {row.dayData.map((cell, i) => (
                           <td key={weekDates[i]} className={styles.cellHours}>
-                            {formatHours(h)}
+                            {cell.notesList.length > 0 ? (
+                              <Popover.Root>
+                                <Popover.Trigger asChild>
+                                  <button className={styles.cellWithNotes}>
+                                    {formatHours(cell.hours)}
+                                    <span className={styles.notesDot} aria-label="has notes" />
+                                  </button>
+                                </Popover.Trigger>
+                                <Popover.Portal>
+                                  <Popover.Content className={styles.notesPopover} sideOffset={6}>
+                                    {cell.notesList.join(' / ')}
+                                    <Popover.Arrow className={styles.notesArrow} />
+                                  </Popover.Content>
+                                </Popover.Portal>
+                              </Popover.Root>
+                            ) : (
+                              <span>{formatHours(cell.hours)}</span>
+                            )}
                           </td>
                         ))}
                         <td className={styles.cellTotal}>{formatHours(row.total)}</td>
