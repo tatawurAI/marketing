@@ -74,8 +74,8 @@ export default async function TimesheetsPage({ searchParams }: PageProps) {
     .filter((p): p is Project => p !== null)
   const availableProjects = (availableProjectsResult.data ?? []) as Project[]
   const entries = (entriesResult.data ?? []) as TimeEntry[]
-  const isLocked = lockResult.data != null
   const approval = (approvalResult.data ?? null) as TimesheetApproval | null
+  const isLocked = lockResult.data != null || approval?.status === 'approved'
 
   return (
     <TimesheetShell
