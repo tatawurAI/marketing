@@ -1,0 +1,234 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-4;
+}
+
+.panel {
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-xl;
+  width: 100%;
+  max-width: 860px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: $shadow-2xl;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-4;
+  padding: $spacing-5 $spacing-6;
+  border-bottom: 1px solid $border-color;
+  flex-shrink: 0;
+}
+
+.title {
+  font-family: $font-heading;
+  font-size: $text-base;
+  font-weight: 600;
+  color: $text-main;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+}
+
+.titleSep {
+  color: $text-muted;
+  font-weight: 400;
+}
+
+.closeBtn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  color: $text-muted;
+  font-size: $text-sm;
+  cursor: pointer;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover {
+    border-color: $text-muted;
+    color: $text-main;
+  }
+}
+
+.body {
+  overflow-y: auto;
+  padding: $spacing-5 $spacing-6;
+  flex: 1;
+}
+
+.stateMsg {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  text-align: center;
+  padding: $spacing-8 0;
+}
+
+.errorMsg {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $red-500;
+  padding: $spacing-3 $spacing-4;
+  border: 1px solid rgba($red-500, 0.3);
+  border-radius: $border-radius-md;
+  background: rgba($red-500, 0.08);
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+// Header row
+
+.colProject {
+  padding: $spacing-2 $spacing-3;
+  text-align: left;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+  border-bottom: 1px solid $border-color;
+  min-width: 180px;
+}
+
+.colDay {
+  padding: $spacing-2 $spacing-3;
+  text-align: center;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+  border-bottom: 1px solid $border-color;
+  min-width: 52px;
+}
+
+.colTotal {
+  padding: $spacing-2 $spacing-3;
+  text-align: right;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+  border-bottom: 1px solid $border-color;
+  min-width: 60px;
+}
+
+// Data rows
+
+.dataRow {
+  border-bottom: 1px solid rgba($border-color, 0.6);
+  transition: background-color $transition-fast $transition-ease;
+
+  &:hover {
+    background: rgba($text-main, 0.03);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.cellProject {
+  padding: $spacing-3 $spacing-3;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+}
+
+.cellHours {
+  padding: $spacing-3 $spacing-3;
+  text-align: center;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  color: $text-main;
+
+  &:first-of-type {
+    color: $text-muted;
+  }
+}
+
+.cellTotal {
+  padding: $spacing-3 $spacing-3;
+  text-align: right;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  font-weight: 600;
+  color: $primary;
+}
+
+.emptyCell {
+  padding: $spacing-8 $spacing-4;
+  text-align: center;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+}
+
+// Footer row
+
+.footerRow {
+  border-top: 1px solid $border-color;
+  background: $bg-elevated;
+}
+
+.footerLabel {
+  padding: $spacing-3 $spacing-3;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-main;
+}
+
+.footerHours {
+  padding: $spacing-3 $spacing-3;
+  text-align: center;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  font-weight: 600;
+  color: $text-main;
+}
+
+.footerTotal {
+  padding: $spacing-3 $spacing-3;
+  text-align: right;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  font-weight: 700;
+  color: $primary;
+}

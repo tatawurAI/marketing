@@ -9,6 +9,7 @@ import {
   reopenTimesheet,
 } from '@/app/portal/admin/actions'
 import styles from './TimesheetApprovals.module.scss'
+import TimesheetPreviewModal from './TimesheetPreviewModal'
 
 type Filters = {
   week?: string
@@ -41,6 +42,9 @@ export default function TimesheetApprovals({
   const [isPending, startTransition] = useTransition()
   const [denyingId, setDenyingId] = useState<string | null>(null)
   const [denyComment, setDenyComment] = useState('')
+  const [approvingId, setApprovingId] = useState<string | null>(null)
+  const [approveComment, setApproveComment] = useState('')
+  const [previewApproval, setPreviewApproval] = useState<AdminTimesheetApproval | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
 
   const [weekInput, setWeekInput] = useState(currentFilters.week ?? '')
@@ -67,11 +71,20 @@ export default function TimesheetApprovals({
     }, 300)
   }
 
-  function handleApprove(approval: AdminTimesheetApproval) {
+  function handleApproveConfirm(approval: AdminTimesheetApproval) {
     setActionError(null)
     startTransition(async () => {
-      const result = await approveTimesheet(approval.employee_id, approval.week_start)
-      if (result.error) setActionError(result.error)
+      const result = await approveTimesheet(
+        approval.employee_id,
+        approval.week_start,
+        approveComment,
+      )
+      if (result.error) {
+        setActionError(result.error)
+      } else {
+        setApprovingId(null)
+        setApproveComment('')
+      }
     })
   }
 
@@ -202,7 +215,7 @@ export default function TimesheetApprovals({
                       ? 'Pending'
                       : approval.status === 'approved'
                         ? 'Approved'
-                        : 'Denied'}
+                        : 'Changes Requested'}
                   </span>
                 </td>
                 <td className={styles.td}>{formatDate(approval.submitted_at)}</td>
@@ -213,27 +226,76 @@ export default function TimesheetApprovals({
                   {approval.review_comment ?? '—'}
                 </td>
                 <td className={styles.td}>
-                  {approval.status === 'pending' && denyingId !== approval.id && (
-                    <div className={styles.actionBtns}>
-                      <button
-                        type="button"
-                        className={styles.approveBtn}
-                        onClick={() => handleApprove(approval)}
-                        disabled={isPending}
-                      >
-                        Approve
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.denyBtn}
-                        onClick={() => {
-                          setDenyingId(approval.id)
-                          setDenyComment('')
-                        }}
-                        disabled={isPending}
-                      >
-                        Deny
-                      </button>
+                  <div className={styles.actionBtns}>
+                    <button
+                      type="button"
+                      className={styles.viewBtn}
+                      onClick={() => setPreviewApproval(approval)}
+                      disabled={isPending}
+                    >
+                      View
+                    </button>
+                  </div>
+
+                  {approval.status === 'pending' &&
+                    approvingId !== approval.id &&
+                    denyingId !== approval.id && (
+                      <div className={styles.actionBtns}>
+                        <button
+                          type="button"
+                          className={styles.approveBtn}
+                          onClick={() => {
+                            setApprovingId(approval.id)
+                            setApproveComment('')
+                          }}
+                          disabled={isPending}
+                        >
+                          Approve
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.denyBtn}
+                          onClick={() => {
+                            setDenyingId(approval.id)
+                            setDenyComment('')
+                          }}
+                          disabled={isPending}
+                        >
+                          Request Changes
+                        </button>
+                      </div>
+                    )}
+
+                  {approval.status === 'pending' && approvingId === approval.id && (
+                    <div className={styles.denyForm}>
+                      <textarea
+                        className={styles.denyTextarea}
+                        placeholder="Add a note (optional)"
+                        value={approveComment}
+                        onChange={(e) => setApproveComment(e.target.value)}
+                        rows={2}
+                      />
+                      <div className={styles.actionBtns}>
+                        <button
+                          type="button"
+                          className={styles.approveBtn}
+                          onClick={() => handleApproveConfirm(approval)}
+                          disabled={isPending}
+                        >
+                          Confirm Approve
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.actionBtn}
+                          onClick={() => {
+                            setApprovingId(null)
+                            setApproveComment('')
+                          }}
+                          disabled={isPending}
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </div>
                   )}
 
@@ -241,7 +303,7 @@ export default function TimesheetApprovals({
                     <div className={styles.denyForm}>
                       <textarea
                         className={styles.denyTextarea}
-                        placeholder="Reason for denial (optional)"
+                        placeholder="What needs to change? (required)"
                         value={denyComment}
                         onChange={(e) => setDenyComment(e.target.value)}
                         rows={2}
@@ -251,9 +313,9 @@ export default function TimesheetApprovals({
                           type="button"
                           className={styles.denyBtn}
                           onClick={() => handleDenyConfirm(approval)}
-                          disabled={isPending}
+                          disabled={isPending || denyComment.trim() === ''}
                         >
-                          Confirm Deny
+                          Confirm
                         </button>
                         <button
                           type="button"
@@ -287,6 +349,11 @@ export default function TimesheetApprovals({
           )}
         </tbody>
       </table>
+
+      <TimesheetPreviewModal
+        approval={previewApproval}
+        onClose={() => setPreviewApproval(null)}
+      />
     </div>
   )
 }
