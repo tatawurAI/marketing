@@ -19,8 +19,9 @@ function getWeekStart(dateStr: string): string {
 
 async function isWeekLocked(supabase: Client, workDate: string): Promise<boolean> {
   const weekStart = getWeekStart(workDate)
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from('locked_weeks').select('week_start').eq('week_start', weekStart).maybeSingle()
+  if (error) return true // fail-safe: treat query failure as locked
   return data != null
 }
 
@@ -43,12 +44,15 @@ async function resetApprovalIfPending(
   if (approval.status === 'approved') {
     return { error: 'This timesheet has been approved and cannot be edited.' }
   }
-  // pending or denied — reset back to not-submitted
+  // pending or denied — reset back to not-submitted.
+  // Filter on status in the delete itself to guard against a concurrent approval
+  // slipping in between the select and delete above.
   const { error } = await supabase
     .from('timesheet_approvals')
     .delete()
     .eq('employee_id', employeeId)
     .eq('week_start', weekStart)
+    .in('status', ['pending', 'denied'])
   if (error) return { error: error.message }
   return {}
 }

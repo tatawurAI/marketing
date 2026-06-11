@@ -243,7 +243,7 @@
   padding: 0;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: $spacing-1;
   border-radius: $border-radius-sm;
   transition: color $transition-fast $transition-ease;
 
@@ -253,8 +253,8 @@
 }
 
 .notesDot {
-  width: 5px;
-  height: 5px;
+  width: $spacing-1;
+  height: $spacing-1;
   border-radius: 50%;
   background: $secondary;
   flex-shrink: 0;
@@ -272,6 +272,7 @@
   max-width: 260px;
   box-shadow: $shadow-lg;
   z-index: 100;
+  white-space: pre-line;
 }
 
 .notesArrow {

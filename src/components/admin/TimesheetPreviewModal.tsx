@@ -151,14 +151,17 @@ export default function TimesheetPreviewModal({ approval, onClose }: Props) {
                             {cell.notesList.length > 0 ? (
                               <Popover.Root>
                                 <Popover.Trigger asChild>
-                                  <button className={styles.cellWithNotes}>
+                                  <button
+                                    className={styles.cellWithNotes}
+                                    aria-label={`${formatHours(cell.hours)}, has notes`}
+                                  >
                                     {formatHours(cell.hours)}
-                                    <span className={styles.notesDot} aria-label="has notes" />
+                                    <span className={styles.notesDot} aria-hidden />
                                   </button>
                                 </Popover.Trigger>
                                 <Popover.Portal>
                                   <Popover.Content className={styles.notesPopover} sideOffset={6}>
-                                    {cell.notesList.join(' / ')}
+                                    {cell.notesList.join('\n')}
                                     <Popover.Arrow className={styles.notesArrow} />
                                   </Popover.Content>
                                 </Popover.Portal>
