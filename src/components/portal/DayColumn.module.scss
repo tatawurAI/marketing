@@ -8,7 +8,9 @@
 }
 
 .entry {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
   width: 100%;
   text-align: left;
   background: none;
@@ -21,12 +23,23 @@
   &:hover {
     background: rgba($secondary, 0.12);
   }
+
+  &:hover .editIcon {
+    opacity: 1;
+  }
 }
 
 .hours {
   font-family: $font-mono;
   font-size: $text-sm;
   color: $text-main;
+}
+
+.editIcon {
+  opacity: 0;
+  color: $text-muted;
+  flex-shrink: 0;
+  transition: opacity $transition-fast $transition-ease;
 }
 
 .addButton {

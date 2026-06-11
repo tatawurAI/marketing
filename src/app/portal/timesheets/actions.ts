@@ -10,14 +10,51 @@ async function getEmployee(supabase: Client, userId: string) {
   return data
 }
 
-async function isWeekLocked(supabase: Client, workDate: string): Promise<boolean> {
-  const d = new Date(workDate + 'T00:00:00Z')
+function getWeekStart(dateStr: string): string {
+  const d = new Date(dateStr + 'T00:00:00Z')
   const dow = d.getUTCDay()
   d.setUTCDate(d.getUTCDate() + (dow === 0 ? -6 : 1 - dow))
-  const weekStart = d.toISOString().split('T')[0]
-  const { data } = await supabase
+  return d.toISOString().split('T')[0]!
+}
+
+async function isWeekLocked(supabase: Client, workDate: string): Promise<boolean> {
+  const weekStart = getWeekStart(workDate)
+  const { data, error } = await supabase
     .from('locked_weeks').select('week_start').eq('week_start', weekStart).maybeSingle()
+  if (error) return true // fail-safe: treat query failure as locked
   return data != null
+}
+
+// If approved → returns an error (block the edit).
+// If pending or denied → deletes the approval record so the week reverts to not-submitted.
+async function resetApprovalIfPending(
+  supabase: Client,
+  employeeId: string,
+  workDate: string,
+): Promise<{ error?: string }> {
+  const weekStart = getWeekStart(workDate)
+  const { data: approval } = await supabase
+    .from('timesheet_approvals')
+    .select('status')
+    .eq('employee_id', employeeId)
+    .eq('week_start', weekStart)
+    .maybeSingle()
+
+  if (!approval) return {}
+  if (approval.status === 'approved') {
+    return { error: 'This timesheet has been approved and cannot be edited.' }
+  }
+  // pending or denied — reset back to not-submitted.
+  // Filter on status in the delete itself to guard against a concurrent approval
+  // slipping in between the select and delete above.
+  const { error } = await supabase
+    .from('timesheet_approvals')
+    .delete()
+    .eq('employee_id', employeeId)
+    .eq('week_start', weekStart)
+    .in('status', ['pending', 'denied'])
+  if (error) return { error: error.message }
+  return {}
 }
 
 export async function createTimeEntry(formData: FormData): Promise<{ error?: string }> {
@@ -38,6 +75,9 @@ export async function createTimeEntry(formData: FormData): Promise<{ error?: str
   if (isNaN(hours) || hours < 0.5 || hours > 24) return { error: 'Hours must be between 0.5 and 24' }
 
   if (await isWeekLocked(supabase, workDate)) return { error: 'This week is locked and cannot be edited.' }
+
+  const approvalReset = await resetApprovalIfPending(supabase, employee.id, workDate)
+  if (approvalReset.error) return approvalReset
 
   const { error } = await supabase.from('time_entries').insert({
     employee_id: employee.id,
@@ -71,6 +111,9 @@ export async function updateTimeEntry(formData: FormData): Promise<{ error?: str
 
   if (await isWeekLocked(supabase, workDate)) return { error: 'This week is locked and cannot be edited.' }
 
+  const approvalReset = await resetApprovalIfPending(supabase, employee.id, workDate)
+  if (approvalReset.error) return approvalReset
+
   const { error } = await supabase.from('time_entries').update({
     hours,
     notes: (formData.get('notes') as string) || null,
@@ -95,6 +138,9 @@ export async function deleteTimeEntry(entryId: string): Promise<{ error?: string
   if (!entry) return { error: 'Entry not found' }
 
   if (await isWeekLocked(supabase, entry.work_date)) return { error: 'This week is locked and cannot be edited.' }
+
+  const approvalReset = await resetApprovalIfPending(supabase, employee.id, entry.work_date)
+  if (approvalReset.error) return approvalReset
 
   const { error } = await supabase.from('time_entries')
     .delete().eq('id', entryId).eq('employee_id', employee.id)

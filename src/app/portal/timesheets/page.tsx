@@ -74,8 +74,10 @@ export default async function TimesheetsPage({ searchParams }: PageProps) {
     .filter((p): p is Project => p !== null)
   const availableProjects = (availableProjectsResult.data ?? []) as Project[]
   const entries = (entriesResult.data ?? []) as TimeEntry[]
-  const isLocked = lockResult.data != null
   const approval = (approvalResult.data ?? null) as TimesheetApproval | null
+  // isLocked covers two distinct cases: an admin-set week lock OR an approved timesheet.
+  // Both make the sheet read-only; the action layer returns different error messages for each.
+  const isLocked = lockResult.data != null || approval?.status === 'approved'
 
   return (
     <TimesheetShell

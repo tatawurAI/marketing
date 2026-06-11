@@ -1,5 +1,6 @@
 'use client'
 
+import { Pencil } from 'lucide-react'
 import type { TimeEntry } from '@/lib/types'
 import styles from './DayColumn.module.scss'
 
@@ -32,6 +33,7 @@ export default function DayColumn({
           onClick={() => onEditClick(entry)}
         >
           <span className={styles.hours}>{entry.hours.toFixed(1)}h</span>
+          <Pencil size={12} strokeWidth={1.5} className={styles.editIcon} aria-hidden />
         </button>
       ))}
 
@@ -39,7 +41,7 @@ export default function DayColumn({
         <span className={styles.empty} aria-label="No entries">—</span>
       )}
 
-      {!isLocked && (
+      {!hasEntries && !isLocked && (
         <button
           type="button"
           className={styles.addButton}

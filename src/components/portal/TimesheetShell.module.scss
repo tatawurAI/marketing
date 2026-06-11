@@ -77,6 +77,9 @@
   min-width: 120px;
   vertical-align: top;
   border-bottom: 1px solid rgba($border-color, 0.5);
+}
+
+.projectNameInner {
   display: flex;
   align-items: center;
   gap: $spacing-2;
