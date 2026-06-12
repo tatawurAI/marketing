@@ -1,0 +1,15 @@
+@use '../../../../styles/variables' as *;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-8;
+}
+
+.heading {
+  font-family: $font-heading;
+  font-size: $text-2xl;
+  font-weight: 600;
+  color: $text-main;
+  margin: 0;
+}

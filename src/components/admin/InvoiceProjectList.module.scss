@@ -1,0 +1,92 @@
+@use '../../styles/variables' as *;
+
+.wrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  padding: $spacing-3 $spacing-4;
+  text-align: left;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+  border-bottom: 1px solid $border-color;
+}
+
+.tr {
+  border-bottom: 1px solid $border-color;
+  transition: background-color $transition-fast $transition-ease;
+
+  &:hover {
+    background: rgba($text-main, 0.03);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.td {
+  padding: $spacing-3 $spacing-4;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+  vertical-align: middle;
+}
+
+.tdMono {
+  padding: $spacing-3 $spacing-4;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  color: $text-main;
+  vertical-align: middle;
+}
+
+.tdAction {
+  padding: $spacing-3 $spacing-4;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.rateWarning {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $secondary;
+}
+
+.empty {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  padding: $spacing-8 0;
+}
+
+.downloadBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-2 $spacing-4;
+  background: transparent;
+  color: $text-main;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color $transition-fast $transition-ease,
+    color $transition-fast $transition-ease;
+
+  &:hover {
+    border-color: $primary;
+    color: $primary;
+  }
+}
