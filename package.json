@@ -4,7 +4,7 @@
   "description": "Tatawur AI - Marketing Website",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NEXT_IGNORE_INCORRECT_LOCKFILE=1 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -34,6 +34,7 @@
     "@radix-ui/react-popover": "^1.1.16",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-slot": "^1.1.2",
+    "@react-pdf/renderer": "^4.5.1",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.107.0",
     "class-variance-authority": "^0.7.1",

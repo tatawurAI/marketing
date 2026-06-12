@@ -1,0 +1,107 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-4;
+  flex-wrap: wrap;
+
+  @include md {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.label {
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+}
+
+.select {
+  padding: $spacing-2 $spacing-3;
+  border-radius: $border-radius-md;
+  border: 1px solid $border-color;
+  background: $bg-card;
+  color: $text-main;
+  font-family: $font-body;
+  font-size: $text-sm;
+  outline: none;
+  cursor: pointer;
+  min-width: 200px;
+  transition: border-color $transition-fast $transition-ease;
+
+  &:focus {
+    border-color: $primary;
+  }
+}
+
+.dateInput {
+  padding: $spacing-2 $spacing-3;
+  border-radius: $border-radius-md;
+  border: 1px solid $border-color;
+  background: $bg-card;
+  color: $text-main;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  outline: none;
+  transition: border-color $transition-fast $transition-ease;
+  min-width: 140px;
+
+  &:focus {
+    border-color: $primary;
+  }
+
+  &::-webkit-calendar-picker-indicator {
+    filter: invert(0.6);
+    cursor: pointer;
+  }
+}
+
+.submitWrapper {
+  display: flex;
+  align-items: flex-end;
+}
+
+.dateError {
+  font-size: $text-sm;
+  color: $red-500;
+  margin: 0;
+
+  @include md {
+    width: 100%;
+  }
+}
+
+.submitBtn {
+  padding: $spacing-2 $spacing-6;
+  background: $primary;
+  color: $text-main;
+  border: none;
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: filter $transition-normal $transition-ease;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
