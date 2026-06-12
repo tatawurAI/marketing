@@ -43,51 +43,47 @@ export async function GET(request: Request): Promise<Response> {
     return new Response('Forbidden', { status: 403 })
   }
 
-  // Fetch employee
-  const { data: employee, error: employeeError } = await supabase
-    .from('employees')
-    .select('full_name')
-    .eq('id', employeeId)
-    .single()
+  // Fetch employee and project in parallel
+  const [
+    { data: employee, error: employeeError },
+    { data: project, error: projectError },
+  ] = await Promise.all([
+    supabase.from('employees').select('full_name').eq('id', employeeId).single(),
+    supabase.from('projects').select('name').eq('id', projectId).single(),
+  ])
 
   if (employeeError || !employee) {
     return new Response('Employee not found', { status: 404 })
   }
-
-  // Fetch project
-  const { data: project, error: projectError } = await supabase
-    .from('projects')
-    .select('name')
-    .eq('id', projectId)
-    .single()
-
   if (projectError || !project) {
     return new Response('Project not found', { status: 404 })
   }
 
-  // Fetch time entries
-  const { data: entries, error: entriesError } = await supabase
-    .from('time_entries')
-    .select('work_date, hours, notes')
-    .eq('employee_id', employeeId)
-    .eq('project_id', projectId)
-    .gte('work_date', startDate)
-    .lte('work_date', endDate)
-    .order('work_date', { ascending: true })
+  // Fetch time entries and billing rate in parallel
+  const [
+    { data: entries, error: entriesError },
+    { data: rateRow, error: rateError },
+  ] = await Promise.all([
+    supabase
+      .from('time_entries')
+      .select('work_date, hours, notes')
+      .eq('employee_id', employeeId)
+      .eq('project_id', projectId)
+      .gte('work_date', startDate)
+      .lte('work_date', endDate)
+      .order('work_date', { ascending: true }),
+    supabase
+      .from('employee_billing_rates')
+      .select('billable_rate')
+      .eq('employee_id', employeeId)
+      .eq('project_id', projectId)
+      .maybeSingle(),
+  ])
 
   if (entriesError) {
     console.error('[invoice] time_entries fetch error:', entriesError)
     return new Response('Failed to fetch time entries', { status: 500 })
   }
-
-  // Fetch billing rate (optional — null if not configured)
-  const { data: rateRow, error: rateError } = await supabase
-    .from('employee_billing_rates')
-    .select('billable_rate')
-    .eq('employee_id', employeeId)
-    .eq('project_id', projectId)
-    .maybeSingle()
-
   if (rateError) {
     console.error('[invoice] billing_rate fetch error:', rateError)
     return new Response('Failed to fetch billing rate', { status: 500 })
@@ -117,7 +113,9 @@ export async function GET(request: Request): Promise<Response> {
 
   // Build filename: tatawur-invoice-{employee-slug}-{project-slug}-{startDate}.pdf
   const slugify = (s: string) => s.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-  const filename = `tatawur-invoice-${slugify(employee.full_name)}-${slugify(project.name)}-${startDate}.pdf`
+  const empSlug  = slugify(employee.full_name) || 'employee'
+  const projSlug = slugify(project.name) || 'project'
+  const filename = `tatawur-invoice-${empSlug}-${projSlug}-${startDate}.pdf`
 
   return new Response(new Uint8Array(buffer), {
     headers: {

@@ -1,6 +1,6 @@
 'use client'
 
-import type { ProjectInvoicePreview } from '@/app/portal/admin/invoices/page'
+import type { ProjectInvoicePreview } from '@/lib/pdf/types'
 import styles from './InvoiceProjectList.module.scss'
 
 type Props = {

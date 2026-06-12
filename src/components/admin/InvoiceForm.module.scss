@@ -73,6 +73,16 @@
   align-items: flex-end;
 }
 
+.dateError {
+  font-size: $text-sm;
+  color: $red-500;
+  margin: 0;
+
+  @include md {
+    width: 100%;
+  }
+}
+
 .submitBtn {
   padding: $spacing-2 $spacing-6;
   background: $primary;
@@ -86,7 +96,12 @@
   white-space: nowrap;
   transition: filter $transition-normal $transition-ease;
 
-  &:hover {
+  &:hover:not(:disabled) {
     filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 }

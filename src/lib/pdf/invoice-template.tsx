@@ -249,7 +249,7 @@ export function InvoiceDocument({ data }: InvoiceDocumentProps) {
               key={`${entry.work_date}-${index}`}
               style={[
                 styles.tableRow,
-                index % 2 === 0 ? styles.tableRowOdd : styles.tableRowEven,
+                index % 2 === 0 ? styles.tableRowEven : styles.tableRowOdd,
               ]}
             >
               <Text style={styles.colDate}>

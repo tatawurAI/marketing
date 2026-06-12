@@ -3,14 +3,9 @@ import { createClient } from '@/lib/supabase/server'
 import InvoiceForm from '@/components/admin/InvoiceForm'
 import InvoiceProjectList from '@/components/admin/InvoiceProjectList'
 import styles from './page.module.scss'
+import type { ProjectInvoicePreview } from '@/lib/pdf/types'
 
-export type ProjectInvoicePreview = {
-  projectId: string
-  projectName: string
-  totalHours: number
-  entryCount: number
-  billingRate: number | null
-}
+export type { ProjectInvoicePreview }
 
 type Employee = { id: string; full_name: string }
 
@@ -48,7 +43,10 @@ export default async function InvoicesPage({ searchParams }: PageProps) {
 
   const { employeeId, start, end } = searchParams
 
-  if (employeeId && start && end) {
+  const dateRe = /^\d{4}-\d{2}-\d{2}$/
+  const datesValid = start && end && dateRe.test(start) && dateRe.test(end) && end >= start
+
+  if (employeeId && datesValid) {
     // Fetch entries without join — project names fetched separately to avoid type/runtime mismatch
     const { data: rawEntries } = await supabase
       .from('time_entries')
@@ -113,7 +111,7 @@ export default async function InvoicesPage({ searchParams }: PageProps) {
         currentStart={start}
         currentEnd={end}
       />
-      {employeeId && start && end && (
+      {employeeId && datesValid && (
         <InvoiceProjectList
           projects={projects}
           employeeId={employeeId}

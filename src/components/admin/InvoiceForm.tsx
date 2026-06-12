@@ -23,9 +23,18 @@ export default function InvoiceForm({
   const [employeeId, setEmployeeId] = useState(currentEmployeeId ?? '')
   const [start, setStart] = useState(currentStart ?? '')
   const [end, setEnd] = useState(currentEnd ?? '')
+  const [dateError, setDateError] = useState('')
+  const [isPending, setIsPending] = useState(false)
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (end < start) {
+      setDateError('End date must be on or after start date.')
+      return
+    }
+    setDateError('')
+    if (isPending) return
+    setIsPending(true)
     const params = new URLSearchParams({ employeeId, start, end })
     router.push(`/portal/admin/invoices?${params}`)
   }
@@ -75,14 +84,16 @@ export default function InvoiceForm({
           type="date"
           className={styles.dateInput}
           value={end}
-          onChange={(e) => setEnd(e.target.value)}
+          onChange={(e) => { setEnd(e.target.value); setDateError('') }}
           required
         />
       </div>
 
+      {dateError && <p className={styles.dateError}>{dateError}</p>}
+
       <div className={styles.submitWrapper}>
-        <button type="submit" className={styles.submitBtn}>
-          Preview Invoices
+        <button type="submit" className={styles.submitBtn} disabled={isPending}>
+          {isPending ? 'Loading…' : 'Preview Invoices'}
         </button>
       </div>
     </form>
