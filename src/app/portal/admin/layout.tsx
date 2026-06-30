@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import AdminNav from '@/components/admin/AdminNav'
+import { UNPAID_STATUS } from '@/lib/types'
 import styles from './admin.module.scss'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -20,6 +21,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const [
     { count: pendingApprovals },
     { count: pendingExpenses },
+    { count: pendingInvoices },
+    { count: pendingPayroll },
   ] = await Promise.all([
     supabase
       .from('timesheet_approvals')
@@ -29,6 +32,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       .from('expense_claims')
       .select('*', { count: 'exact', head: true })
       .in('status', ['pending', 'approved']),
+    supabase
+      .from('invoices')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', UNPAID_STATUS),
+    supabase
+      .from('payroll_runs')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', UNPAID_STATUS),
   ])
 
   return (
@@ -36,6 +47,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <AdminNav
         pendingApprovals={pendingApprovals ?? 0}
         pendingExpenses={pendingExpenses ?? 0}
+        pendingInvoices={pendingInvoices ?? 0}
+        pendingPayroll={pendingPayroll ?? 0}
       />
       <main className={styles.content}>{children}</main>
     </div>

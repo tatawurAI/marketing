@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import type { AdminPayrollRun } from '@/lib/types'
+import type { AdminPayrollRun, PayableStatusFilter } from '@/lib/types'
 import {
   submitPayrollRun,
   markPayrollPaid,
@@ -14,15 +14,26 @@ import styles from './PayrollRunsTable.module.scss'
 
 type Props = {
   runs: AdminPayrollRun[]
+  currentStatus: PayableStatusFilter
 }
 
-export default function PayrollRunsTable({ runs }: Props) {
+const STATUS_TABS: { value: PayableStatusFilter; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'draft', label: 'Draft' },
+  { value: 'submitted', label: 'Submitted' },
+  { value: 'paid', label: 'Paid' },
+]
+
+export default function PayrollRunsTable({ runs, currentStatus }: Props) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [actionError, setActionError] = useState<string | null>(null)
 
-  if (runs.length === 0) {
-    return <p className={styles.empty}>No payroll runs found.</p>
+  function pushStatus(status: PayableStatusFilter) {
+    const params = new URLSearchParams(window.location.search)
+    if (status === 'all') params.delete('status')
+    else params.set('status', status)
+    router.push(`?${params.toString()}`)
   }
 
   function handleSubmit(runId: string) {
@@ -76,6 +87,21 @@ export default function PayrollRunsTable({ runs }: Props) {
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.tabs} role="tablist">
+        {STATUS_TABS.map(({ value, label }) => (
+          <button
+            key={value}
+            type="button"
+            role="tab"
+            aria-selected={currentStatus === value}
+            className={currentStatus === value ? styles.tabActive : styles.tab}
+            onClick={() => pushStatus(value)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
       {actionError && <p className={styles.actionError}>{actionError}</p>}
       <div className={styles.overflow}>
         <table className={styles.table}>
@@ -92,83 +118,91 @@ export default function PayrollRunsTable({ runs }: Props) {
             </tr>
           </thead>
           <tbody>
-            {runs.map((run) => (
-              <tr key={run.id} className={styles.tr}>
-                <td className={styles.td}>{run.employee.full_name}</td>
-                <td className={styles.tdMono}>
-                  {formatPortalDate(run.period_start)} – {formatPortalDate(run.period_end)}
-                </td>
-                <td className={styles.tdMono}>{run.total_hours.toFixed(2)}</td>
-                <td className={styles.tdMono}>{formatCurrency(run.hourly_rate)}</td>
-                <td className={styles.tdMono}>{formatCurrency(run.total_amount)}</td>
-                <td className={styles.td}>
-                  <span
-                    className={
-                      run.status === 'draft'
-                        ? styles.badgeDraft
-                        : run.status === 'submitted'
-                          ? styles.badgeSubmitted
-                          : styles.badgePaid
-                    }
-                  >
-                    {run.status === 'draft' ? 'Draft' : run.status === 'submitted' ? 'Submitted' : 'Paid'}
-                  </span>
-                </td>
-                <td className={styles.td}>
-                  {run.pdf_path ? (
-                    <button
-                      type="button"
-                      className={styles.pdfBtn}
-                      onClick={() => handleDownload(run.pdf_path!)}
-                      disabled={isPending}
-                    >
-                      Download
-                    </button>
-                  ) : (
-                    <span className={styles.noPdf}>—</span>
-                  )}
-                </td>
-                <td className={styles.td}>
-                  <div className={styles.actionBtns}>
-                    {run.status === 'draft' && (
-                      <>
-                        <button
-                          type="button"
-                          className={styles.submitBtn}
-                          onClick={() => handleSubmit(run.id)}
-                          disabled={isPending}
-                        >
-                          Submit
-                        </button>
-                        <button
-                          type="button"
-                          className={styles.deleteBtn}
-                          onClick={() => handleDelete(run.id)}
-                          disabled={isPending}
-                        >
-                          Delete
-                        </button>
-                      </>
-                    )}
-                    {run.status === 'submitted' && (
-                      <button
-                        type="button"
-                        className={styles.paidBtn}
-                        onClick={() => handleMarkPaid(run.id)}
-                        disabled={isPending}
-                      >
-                        Mark Paid
-                      </button>
-                    )}
-                    {run.status === 'paid' && run.paid_at && (
-                      <span className={styles.paidDate}>
-                        Paid {formatPortalDate(run.paid_at)}
-                      </span>
-                    )}
-                  </div>
+            {runs.length === 0 ? (
+              <tr>
+                <td colSpan={8} className={styles.emptyCell}>
+                  No {currentStatus === 'all' ? '' : `${currentStatus} `}payroll runs found.
                 </td>
               </tr>
-            ))}
+            ) : (
+              runs.map((run) => (
+                <tr key={run.id} className={styles.tr}>
+                  <td className={styles.td}>{run.employee.full_name}</td>
+                  <td className={styles.tdMono}>
+                    {formatPortalDate(run.period_start)} – {formatPortalDate(run.period_end)}
+                  </td>
+                  <td className={styles.tdMono}>{run.total_hours.toFixed(2)}</td>
+                  <td className={styles.tdMono}>{formatCurrency(run.hourly_rate)}</td>
+                  <td className={styles.tdMono}>{formatCurrency(run.total_amount)}</td>
+                  <td className={styles.td}>
+                    <span
+                      className={
+                        run.status === 'draft'
+                          ? styles.badgeDraft
+                          : run.status === 'submitted'
+                            ? styles.badgeSubmitted
+                            : styles.badgePaid
+                      }
+                    >
+                      {run.status === 'draft' ? 'Draft' : run.status === 'submitted' ? 'Submitted' : 'Paid'}
+                    </span>
+                  </td>
+                  <td className={styles.td}>
+                    {run.pdf_path ? (
+                      <button
+                        type="button"
+                        className={styles.pdfBtn}
+                        onClick={() => handleDownload(run.pdf_path!)}
+                        disabled={isPending}
+                      >
+                        Download
+                      </button>
+                    ) : (
+                      <span className={styles.noPdf}>—</span>
+                    )}
+                  </td>
+                  <td className={styles.td}>
+                    <div className={styles.actionBtns}>
+                      {run.status === 'draft' && (
+                        <>
+                          <button
+                            type="button"
+                            className={styles.submitBtn}
+                            onClick={() => handleSubmit(run.id)}
+                            disabled={isPending}
+                          >
+                            Submit
+                          </button>
+                          <button
+                            type="button"
+                            className={styles.deleteBtn}
+                            onClick={() => handleDelete(run.id)}
+                            disabled={isPending}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                      {run.status === 'submitted' && (
+                        <button
+                          type="button"
+                          className={styles.paidBtn}
+                          onClick={() => handleMarkPaid(run.id)}
+                          disabled={isPending}
+                        >
+                          Mark Paid
+                        </button>
+                      )}
+                      {run.status === 'paid' && run.paid_at && (
+                        <span className={styles.paidDate}>
+                          Paid {formatPortalDate(run.paid_at)}
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

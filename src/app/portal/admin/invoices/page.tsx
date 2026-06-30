@@ -5,17 +5,25 @@ import InvoiceProjectList from '@/components/admin/InvoiceProjectList'
 import InvoiceHistoryTable from '@/components/admin/InvoiceHistoryTable'
 import styles from './page.module.scss'
 import type { ProjectInvoicePreview } from '@/lib/pdf/types'
-import type { AdminInvoice } from '@/lib/types'
+import {
+  PAYABLE_STATUS_FILTERS,
+  UNPAID_STATUS,
+  type AdminInvoice,
+  type PayableStatusFilter,
+} from '@/lib/types'
 
 export type { ProjectInvoicePreview }
 
 type Employee = { id: string; full_name: string }
+
+const HISTORY_LIMIT = 50
 
 type PageProps = {
   searchParams: {
     employeeId?: string
     start?: string
     end?: string
+    status?: string
   }
 }
 
@@ -42,7 +50,6 @@ export default async function InvoicesPage({ searchParams }: PageProps) {
   const employees: Employee[] = employeesData ?? []
 
   let projects: ProjectInvoicePreview[] = []
-  let invoices: AdminInvoice[] = []
 
   const { employeeId, start, end } = searchParams
 
@@ -105,21 +112,51 @@ export default async function InvoicesPage({ searchParams }: PageProps) {
     }
   }
 
-  if (employeeId) {
-    const { data: invoicesData } = await supabase
-      .from('invoices')
-      .select(
-        '*, employee:employees!employee_id(full_name), project:projects!project_id(name), creator:employees!created_by(full_name), payer:employees!paid_by(full_name)',
-      )
-      .eq('employee_id', employeeId)
-      .order('created_at', { ascending: false })
+  const rawStatus = searchParams.status
+  const currentStatus: PayableStatusFilter =
+    rawStatus && PAYABLE_STATUS_FILTERS.has(rawStatus as PayableStatusFilter)
+      ? (rawStatus as PayableStatusFilter)
+      : 'all'
 
-    invoices = (invoicesData ?? []) as AdminInvoice[]
+  let historyQuery = supabase
+    .from('invoices')
+    .select(
+      '*, employee:employees!employee_id(full_name), project:projects!project_id(name), creator:employees!created_by(full_name), payer:employees!paid_by(full_name)',
+    )
+    .order('created_at', { ascending: false })
+
+  if (employeeId) {
+    historyQuery = historyQuery.eq('employee_id', employeeId)
+  } else {
+    historyQuery = historyQuery.limit(HISTORY_LIMIT)
   }
+  if (currentStatus !== 'all') {
+    historyQuery = historyQuery.eq('status', currentStatus)
+  }
+
+  const { data: invoicesData } = await historyQuery
+  const invoices = (invoicesData ?? []) as AdminInvoice[]
+
+  let unpaidQuery = supabase
+    .from('invoices')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', UNPAID_STATUS)
+
+  if (employeeId) {
+    unpaidQuery = unpaidQuery.eq('employee_id', employeeId)
+  }
+
+  const { count: unpaidCount } = await unpaidQuery
+  const unpaid = unpaidCount ?? 0
 
   return (
     <div className={styles.root}>
-      <h1 className={styles.heading}>Invoice Generator</h1>
+      <div className={styles.headerRow}>
+        <h1 className={styles.heading}>Invoice Generator</h1>
+        {unpaid > 0 && (
+          <span className={styles.pendingBadge}>{unpaid} unpaid</span>
+        )}
+      </div>
       <InvoiceForm
         employees={employees}
         currentEmployeeId={employeeId}
@@ -134,12 +171,10 @@ export default async function InvoicesPage({ searchParams }: PageProps) {
           end={end}
         />
       )}
-      {employeeId && (
-        <div>
-          <h2 className={styles.subheading}>Invoice History</h2>
-          <InvoiceHistoryTable invoices={invoices} />
-        </div>
-      )}
+      <div>
+        <h2 className={styles.subheading}>Invoice History</h2>
+        <InvoiceHistoryTable invoices={invoices} currentStatus={currentStatus} />
+      </div>
     </div>
   )
 }

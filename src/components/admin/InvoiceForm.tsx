@@ -38,6 +38,8 @@ export default function InvoiceForm({
     if (isPending) return
     setIsPending(true)
     const params = new URLSearchParams({ employeeId, start, end })
+    const status = new URLSearchParams(window.location.search).get('status')
+    if (status) params.set('status', status)
     router.push(`${basePath}?${params}`)
   }
 

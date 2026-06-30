@@ -4,15 +4,23 @@ import InvoiceForm from '@/components/admin/InvoiceForm'
 import PayrollPreview from '@/components/admin/PayrollPreview'
 import PayrollRunsTable from '@/components/admin/PayrollRunsTable'
 import styles from './page.module.scss'
-import type { AdminPayrollRun } from '@/lib/types'
+import {
+  PAYABLE_STATUS_FILTERS,
+  UNPAID_STATUS,
+  type AdminPayrollRun,
+  type PayableStatusFilter,
+} from '@/lib/types'
 
 type Employee = { id: string; full_name: string }
+
+const HISTORY_LIMIT = 50
 
 type PageProps = {
   searchParams: {
     employeeId?: string
     start?: string
     end?: string
+    status?: string
   }
 }
 
@@ -94,6 +102,12 @@ export default async function PayrollPage({ searchParams }: PageProps) {
     }
   }
 
+  const rawStatus = searchParams.status
+  const currentStatus: PayableStatusFilter =
+    rawStatus && PAYABLE_STATUS_FILTERS.has(rawStatus as PayableStatusFilter)
+      ? (rawStatus as PayableStatusFilter)
+      : 'all'
+
   // Always fetch payroll run history
   let runsQuery = supabase
     .from('payroll_runs')
@@ -105,15 +119,35 @@ export default async function PayrollPage({ searchParams }: PageProps) {
   if (employeeId) {
     runsQuery = runsQuery.eq('employee_id', employeeId)
   } else {
-    runsQuery = runsQuery.limit(20)
+    runsQuery = runsQuery.limit(HISTORY_LIMIT)
+  }
+  if (currentStatus !== 'all') {
+    runsQuery = runsQuery.eq('status', currentStatus)
   }
 
   const { data: runsData } = await runsQuery
   const runs = (runsData ?? []) as AdminPayrollRun[]
 
+  let unpaidQuery = supabase
+    .from('payroll_runs')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', UNPAID_STATUS)
+
+  if (employeeId) {
+    unpaidQuery = unpaidQuery.eq('employee_id', employeeId)
+  }
+
+  const { count: unpaidCount } = await unpaidQuery
+  const unpaid = unpaidCount ?? 0
+
   return (
     <div className={styles.root}>
-      <h1 className={styles.heading}>Payroll</h1>
+      <div className={styles.headerRow}>
+        <h1 className={styles.heading}>Payroll</h1>
+        {unpaid > 0 && (
+          <span className={styles.pendingBadge}>{unpaid} unpaid</span>
+        )}
+      </div>
 
       <InvoiceForm
         employees={employees}
@@ -139,10 +173,8 @@ export default async function PayrollPage({ searchParams }: PageProps) {
       )}
 
       <div>
-        <h2 className={styles.subheading}>
-          {employeeId ? 'Pay Run History' : 'Recent Pay Runs'}
-        </h2>
-        <PayrollRunsTable runs={runs} />
+        <h2 className={styles.subheading}>Pay Run History</h2>
+        <PayrollRunsTable runs={runs} currentStatus={currentStatus} />
       </div>
     </div>
   )
