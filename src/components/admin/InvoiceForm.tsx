@@ -11,6 +11,7 @@ type Props = {
   currentEmployeeId?: string
   currentStart?: string
   currentEnd?: string
+  basePath?: string
 }
 
 export default function InvoiceForm({
@@ -18,6 +19,7 @@ export default function InvoiceForm({
   currentEmployeeId,
   currentStart,
   currentEnd,
+  basePath = '/portal/admin/invoices',
 }: Props) {
   const router = useRouter()
   const [employeeId, setEmployeeId] = useState(currentEmployeeId ?? '')
@@ -36,7 +38,7 @@ export default function InvoiceForm({
     if (isPending) return
     setIsPending(true)
     const params = new URLSearchParams({ employeeId, start, end })
-    router.push(`/portal/admin/invoices?${params}`)
+    router.push(`${basePath}?${params}`)
   }
 
   return (

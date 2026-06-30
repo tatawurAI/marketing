@@ -9,6 +9,7 @@ export default function NavLinks({ isAdmin }: { isAdmin: boolean }) {
 
   const dashboardActive = pathname === '/portal/dashboard'
   const timesheetsActive = pathname.startsWith('/portal/timesheets')
+  const expensesActive = pathname.startsWith('/portal/expenses')
   const adminActive = pathname.startsWith('/portal/admin')
 
   return (
@@ -24,6 +25,12 @@ export default function NavLinks({ isAdmin }: { isAdmin: boolean }) {
         className={timesheetsActive ? styles.linkActive : styles.link}
       >
         Timesheets
+      </Link>
+      <Link
+        href="/portal/expenses"
+        className={expensesActive ? styles.linkActive : styles.link}
+      >
+        Expenses
       </Link>
       {isAdmin && (
         <Link

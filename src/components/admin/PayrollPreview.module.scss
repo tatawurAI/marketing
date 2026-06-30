@@ -1,0 +1,164 @@
+@use '../../styles/variables' as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-6;
+}
+
+.summaryCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: $spacing-4;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+  padding: $spacing-5;
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-xl;
+}
+
+.cardLabel {
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+}
+
+.cardValue {
+  font-family: $font-mono;
+  font-size: $text-xl;
+  font-weight: 600;
+  color: $text-main;
+  line-height: $leading-tight;
+}
+
+.cardValueLarge {
+  font-family: $font-mono;
+  font-size: $text-2xl;
+  font-weight: 700;
+  color: $primary;
+  line-height: $leading-tight;
+}
+
+.breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+}
+
+.breakdownHeading {
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 600;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  padding: $spacing-2 $spacing-4;
+  text-align: left;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+  border-bottom: 1px solid $border-color;
+}
+
+.tr {
+  border-bottom: 1px solid $border-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.td {
+  padding: $spacing-2 $spacing-4;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+}
+
+.tdMono {
+  padding: $spacing-2 $spacing-4;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  color: $text-main;
+}
+
+.createRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-4;
+  flex-wrap: wrap;
+}
+
+.createBtn {
+  padding: $spacing-3 $spacing-8;
+  background: $primary;
+  color: $text-main;
+  border: none;
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: filter $transition-normal $transition-ease;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.createBtnSuccess {
+  padding: $spacing-3 $spacing-8;
+  background: rgba($green-500, 0.15);
+  color: $green-500;
+  border: 1px solid rgba($green-500, 0.3);
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 600;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.rateWarning {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $secondary;
+  margin: 0;
+}
+
+.error {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $red-500;
+  padding: $spacing-2 $spacing-3;
+  border: 1px solid rgba($red-500, 0.3);
+  border-radius: $border-radius-md;
+  background: rgba($red-500, 0.08);
+  margin: 0;
+}

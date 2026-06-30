@@ -90,3 +90,62 @@
     color: $primary;
   }
 }
+
+.actionBtns {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+}
+
+.createDraftBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-2 $spacing-4;
+  background: rgba($primary, 0.1);
+  color: $primary;
+  border: 1px solid rgba($primary, 0.3);
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    background: rgba($primary, 0.2);
+    border-color: $primary;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.createDraftBtnSuccess {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-2 $spacing-4;
+  background: rgba($green-500, 0.1);
+  color: $green-500;
+  border: 1px solid rgba($green-500, 0.3);
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.actionError {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $red-500;
+  padding: $spacing-2 $spacing-3;
+  border: 1px solid rgba($red-500, 0.3);
+  border-radius: $border-radius-md;
+  background: rgba($red-500, 0.08);
+  margin-bottom: $spacing-3;
+}
