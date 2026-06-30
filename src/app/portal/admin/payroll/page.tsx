@@ -4,13 +4,16 @@ import InvoiceForm from '@/components/admin/InvoiceForm'
 import PayrollPreview from '@/components/admin/PayrollPreview'
 import PayrollRunsTable from '@/components/admin/PayrollRunsTable'
 import styles from './page.module.scss'
-import type { AdminPayrollRun } from '@/lib/types'
+import {
+  PAYABLE_STATUS_FILTERS,
+  UNPAID_STATUS,
+  type AdminPayrollRun,
+  type PayableStatusFilter,
+} from '@/lib/types'
 
 type Employee = { id: string; full_name: string }
 
-type StatusFilter = 'all' | 'draft' | 'submitted' | 'paid'
-
-const VALID_STATUSES = new Set<StatusFilter>(['all', 'draft', 'submitted', 'paid'])
+const HISTORY_LIMIT = 50
 
 type PageProps = {
   searchParams: {
@@ -100,9 +103,9 @@ export default async function PayrollPage({ searchParams }: PageProps) {
   }
 
   const rawStatus = searchParams.status
-  const currentStatus: StatusFilter =
-    rawStatus && VALID_STATUSES.has(rawStatus as StatusFilter)
-      ? (rawStatus as StatusFilter)
+  const currentStatus: PayableStatusFilter =
+    rawStatus && PAYABLE_STATUS_FILTERS.has(rawStatus as PayableStatusFilter)
+      ? (rawStatus as PayableStatusFilter)
       : 'all'
 
   // Always fetch payroll run history
@@ -115,6 +118,8 @@ export default async function PayrollPage({ searchParams }: PageProps) {
 
   if (employeeId) {
     runsQuery = runsQuery.eq('employee_id', employeeId)
+  } else {
+    runsQuery = runsQuery.limit(HISTORY_LIMIT)
   }
   if (currentStatus !== 'all') {
     runsQuery = runsQuery.eq('status', currentStatus)
@@ -123,11 +128,16 @@ export default async function PayrollPage({ searchParams }: PageProps) {
   const { data: runsData } = await runsQuery
   const runs = (runsData ?? []) as AdminPayrollRun[]
 
-  const { count: unpaidCount } = await supabase
+  let unpaidQuery = supabase
     .from('payroll_runs')
     .select('*', { count: 'exact', head: true })
-    .eq('status', 'submitted')
+    .eq('status', UNPAID_STATUS)
 
+  if (employeeId) {
+    unpaidQuery = unpaidQuery.eq('employee_id', employeeId)
+  }
+
+  const { count: unpaidCount } = await unpaidQuery
   const unpaid = unpaidCount ?? 0
 
   return (

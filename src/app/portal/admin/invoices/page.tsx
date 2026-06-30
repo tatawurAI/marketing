@@ -5,15 +5,18 @@ import InvoiceProjectList from '@/components/admin/InvoiceProjectList'
 import InvoiceHistoryTable from '@/components/admin/InvoiceHistoryTable'
 import styles from './page.module.scss'
 import type { ProjectInvoicePreview } from '@/lib/pdf/types'
-import type { AdminInvoice } from '@/lib/types'
+import {
+  PAYABLE_STATUS_FILTERS,
+  UNPAID_STATUS,
+  type AdminInvoice,
+  type PayableStatusFilter,
+} from '@/lib/types'
 
 export type { ProjectInvoicePreview }
 
 type Employee = { id: string; full_name: string }
 
-type StatusFilter = 'all' | 'draft' | 'submitted' | 'paid'
-
-const VALID_STATUSES = new Set<StatusFilter>(['all', 'draft', 'submitted', 'paid'])
+const HISTORY_LIMIT = 50
 
 type PageProps = {
   searchParams: {
@@ -110,9 +113,9 @@ export default async function InvoicesPage({ searchParams }: PageProps) {
   }
 
   const rawStatus = searchParams.status
-  const currentStatus: StatusFilter =
-    rawStatus && VALID_STATUSES.has(rawStatus as StatusFilter)
-      ? (rawStatus as StatusFilter)
+  const currentStatus: PayableStatusFilter =
+    rawStatus && PAYABLE_STATUS_FILTERS.has(rawStatus as PayableStatusFilter)
+      ? (rawStatus as PayableStatusFilter)
       : 'all'
 
   let historyQuery = supabase
@@ -124,6 +127,8 @@ export default async function InvoicesPage({ searchParams }: PageProps) {
 
   if (employeeId) {
     historyQuery = historyQuery.eq('employee_id', employeeId)
+  } else {
+    historyQuery = historyQuery.limit(HISTORY_LIMIT)
   }
   if (currentStatus !== 'all') {
     historyQuery = historyQuery.eq('status', currentStatus)
@@ -132,11 +137,16 @@ export default async function InvoicesPage({ searchParams }: PageProps) {
   const { data: invoicesData } = await historyQuery
   const invoices = (invoicesData ?? []) as AdminInvoice[]
 
-  const { count: unpaidCount } = await supabase
+  let unpaidQuery = supabase
     .from('invoices')
     .select('*', { count: 'exact', head: true })
-    .eq('status', 'submitted')
+    .eq('status', UNPAID_STATUS)
 
+  if (employeeId) {
+    unpaidQuery = unpaidQuery.eq('employee_id', employeeId)
+  }
+
+  const { count: unpaidCount } = await unpaidQuery
   const unpaid = unpaidCount ?? 0
 
   return (

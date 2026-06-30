@@ -6,17 +6,18 @@ import { LayoutDashboard, Briefcase, Users, Clock, CalendarCheck, ClipboardCheck
 import styles from './AdminNav.module.scss'
 
 type BadgeSeverity = 'urgent' | 'routine'
+type BadgeKey = 'approvals' | 'expenses' | 'invoices' | 'payroll'
 
 const NAV_ITEMS = [
   { label: 'Overview', href: '/portal/admin', icon: LayoutDashboard, exact: true },
   { label: 'Projects', href: '/portal/admin/projects', icon: Briefcase, exact: false },
   { label: 'Employees', href: '/portal/admin/employees', icon: Users, exact: false },
   { label: 'Timesheets', href: '/portal/admin/timesheets', icon: Clock, exact: false },
-  { label: 'Invoices', href: '/portal/admin/invoices', icon: FileText, exact: false, badgeKey: 'invoices', severity: 'routine' as BadgeSeverity },
-  { label: 'Payroll', href: '/portal/admin/payroll', icon: DollarSign, exact: false, badgeKey: 'payroll', severity: 'routine' as BadgeSeverity },
+  { label: 'Invoices', href: '/portal/admin/invoices', icon: FileText, exact: false, badgeKey: 'invoices' as BadgeKey, severity: 'routine' as BadgeSeverity },
+  { label: 'Payroll', href: '/portal/admin/payroll', icon: DollarSign, exact: false, badgeKey: 'payroll' as BadgeKey, severity: 'routine' as BadgeSeverity },
   { label: 'Weeks', href: '/portal/admin/weeks', icon: CalendarCheck, exact: false },
-  { label: 'Approvals', href: '/portal/admin/approvals', icon: ClipboardCheck, exact: false, badgeKey: 'approvals', severity: 'urgent' as BadgeSeverity },
-  { label: 'Expenses', href: '/portal/admin/expenses', icon: Receipt, exact: false, badgeKey: 'expenses', severity: 'urgent' as BadgeSeverity },
+  { label: 'Approvals', href: '/portal/admin/approvals', icon: ClipboardCheck, exact: false, badgeKey: 'approvals' as BadgeKey, severity: 'urgent' as BadgeSeverity },
+  { label: 'Expenses', href: '/portal/admin/expenses', icon: Receipt, exact: false, badgeKey: 'expenses' as BadgeKey, severity: 'urgent' as BadgeSeverity },
 ] as const
 
 interface AdminNavLinksProps {
@@ -34,7 +35,7 @@ export default function AdminNavLinks({
 }: AdminNavLinksProps) {
   const pathname = usePathname()
 
-  const counts: Record<string, number | undefined> = {
+  const counts: Record<BadgeKey, number | undefined> = {
     approvals: pendingApprovals,
     expenses: pendingExpenses,
     invoices: pendingInvoices,

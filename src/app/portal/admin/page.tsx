@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import ActionNeededSummary from '@/components/admin/ActionNeededSummary'
-import type { AdminStats } from '@/lib/types'
+import { UNPAID_STATUS, type AdminStats } from '@/lib/types'
 import styles from './page.module.scss'
 
 export default async function AdminDashboardPage() {
@@ -25,11 +25,11 @@ export default async function AdminDashboardPage() {
     supabase
       .from('invoices')
       .select('*', { count: 'exact', head: true })
-      .eq('status', 'submitted'),
+      .eq('status', UNPAID_STATUS),
     supabase
       .from('payroll_runs')
       .select('*', { count: 'exact', head: true })
-      .eq('status', 'submitted'),
+      .eq('status', UNPAID_STATUS),
   ])
 
   const stats: AdminStats = data?.[0] ?? {
@@ -51,8 +51,8 @@ export default async function AdminDashboardPage() {
   const actionItems = [
     { label: 'Pending Approvals', count: pendingApprovals ?? 0, href: '/portal/admin/approvals', severity: 'urgent' as const },
     { label: 'Pending Expenses',  count: pendingExpenses ?? 0,  href: '/portal/admin/expenses', severity: 'urgent' as const },
-    { label: 'Unpaid Invoices',   count: pendingInvoices ?? 0,  href: '/portal/admin/invoices?status=submitted', severity: 'routine' as const },
-    { label: 'Unpaid Payroll',    count: pendingPayroll ?? 0,   href: '/portal/admin/payroll?status=submitted', severity: 'routine' as const },
+    { label: 'Unpaid Invoices',   count: pendingInvoices ?? 0,  href: `/portal/admin/invoices?status=${UNPAID_STATUS}`, severity: 'routine' as const },
+    { label: 'Unpaid Payroll',    count: pendingPayroll ?? 0,   href: `/portal/admin/payroll?status=${UNPAID_STATUS}`, severity: 'routine' as const },
   ]
 
   return (

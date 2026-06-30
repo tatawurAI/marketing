@@ -78,6 +78,24 @@ export type AdminTimesheetApproval = TimesheetApproval & {
 }
 
 // ---------------------------------------------------------------------------
+// Shared status filter — Invoices & Payroll runs share the same status enum
+// ---------------------------------------------------------------------------
+export type PayableStatusFilter = 'all' | 'draft' | 'submitted' | 'paid'
+
+export const PAYABLE_STATUS_FILTERS = new Set<PayableStatusFilter>([
+  'all',
+  'draft',
+  'submitted',
+  'paid',
+])
+
+// Invoices/payroll runs have no separate "unpaid" status — 'submitted' means
+// sent and awaiting payment. Centralized here so the four call sites that
+// query on it (admin layout/dashboard nav badges, invoices/payroll pages)
+// can't drift if a status is ever added (e.g. "overdue").
+export const UNPAID_STATUS = 'submitted' as const
+
+// ---------------------------------------------------------------------------
 // Invoices
 // ---------------------------------------------------------------------------
 export type Invoice = {

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import type { AdminInvoice } from '@/lib/types'
+import type { AdminInvoice, PayableStatusFilter } from '@/lib/types'
 import {
   submitInvoice,
   markInvoicePaid,
@@ -12,14 +12,12 @@ import {
 import { formatPortalDate, formatCurrency } from '@/lib/utils'
 import styles from './InvoiceHistoryTable.module.scss'
 
-type StatusFilter = 'all' | 'draft' | 'submitted' | 'paid'
-
 type Props = {
   invoices: AdminInvoice[]
-  currentStatus: StatusFilter
+  currentStatus: PayableStatusFilter
 }
 
-const STATUS_TABS: { value: StatusFilter; label: string }[] = [
+const STATUS_TABS: { value: PayableStatusFilter; label: string }[] = [
   { value: 'all', label: 'All' },
   { value: 'draft', label: 'Draft' },
   { value: 'submitted', label: 'Submitted' },
@@ -31,7 +29,7 @@ export default function InvoiceHistoryTable({ invoices, currentStatus }: Props) 
   const [isPending, startTransition] = useTransition()
   const [actionError, setActionError] = useState<string | null>(null)
 
-  function pushStatus(status: StatusFilter) {
+  function pushStatus(status: PayableStatusFilter) {
     const params = new URLSearchParams(window.location.search)
     if (status === 'all') params.delete('status')
     else params.set('status', status)
@@ -126,84 +124,84 @@ export default function InvoiceHistoryTable({ invoices, currentStatus }: Props) 
                 </td>
               </tr>
             ) : (
-            invoices.map((inv) => (
-              <tr key={inv.id} className={styles.tr}>
-                <td className={styles.td}>{inv.project.name}</td>
-                <td className={styles.tdMono}>
-                  {formatPortalDate(inv.period_start)} – {formatPortalDate(inv.period_end)}
-                </td>
-                <td className={styles.tdMono}>{inv.total_hours.toFixed(2)}</td>
-                <td className={styles.tdMono}>
-                  {inv.total_amount != null ? formatCurrency(inv.total_amount) : '—'}
-                </td>
-                <td className={styles.td}>
-                  <span
-                    className={
-                      inv.status === 'draft'
-                        ? styles.badgeDraft
-                        : inv.status === 'submitted'
-                          ? styles.badgeSubmitted
-                          : styles.badgePaid
-                    }
-                  >
-                    {inv.status === 'draft' ? 'Draft' : inv.status === 'submitted' ? 'Submitted' : 'Paid'}
-                  </span>
-                </td>
-                <td className={styles.td}>
-                  {inv.pdf_path ? (
-                    <button
-                      type="button"
-                      className={styles.pdfBtn}
-                      onClick={() => handleDownload(inv.pdf_path!)}
-                      disabled={isPending}
+              invoices.map((inv) => (
+                <tr key={inv.id} className={styles.tr}>
+                  <td className={styles.td}>{inv.project.name}</td>
+                  <td className={styles.tdMono}>
+                    {formatPortalDate(inv.period_start)} – {formatPortalDate(inv.period_end)}
+                  </td>
+                  <td className={styles.tdMono}>{inv.total_hours.toFixed(2)}</td>
+                  <td className={styles.tdMono}>
+                    {inv.total_amount != null ? formatCurrency(inv.total_amount) : '—'}
+                  </td>
+                  <td className={styles.td}>
+                    <span
+                      className={
+                        inv.status === 'draft'
+                          ? styles.badgeDraft
+                          : inv.status === 'submitted'
+                            ? styles.badgeSubmitted
+                            : styles.badgePaid
+                      }
                     >
-                      Download
-                    </button>
-                  ) : (
-                    <span className={styles.noPdf}>—</span>
-                  )}
-                </td>
-                <td className={styles.td}>
-                  <div className={styles.actionBtns}>
-                    {inv.status === 'draft' && (
-                      <>
-                        <button
-                          type="button"
-                          className={styles.submitBtn}
-                          onClick={() => handleSubmit(inv.id)}
-                          disabled={isPending}
-                        >
-                          Submit
-                        </button>
-                        <button
-                          type="button"
-                          className={styles.deleteBtn}
-                          onClick={() => handleDelete(inv.id)}
-                          disabled={isPending}
-                        >
-                          Delete
-                        </button>
-                      </>
-                    )}
-                    {inv.status === 'submitted' && (
+                      {inv.status === 'draft' ? 'Draft' : inv.status === 'submitted' ? 'Submitted' : 'Paid'}
+                    </span>
+                  </td>
+                  <td className={styles.td}>
+                    {inv.pdf_path ? (
                       <button
                         type="button"
-                        className={styles.paidBtn}
-                        onClick={() => handleMarkPaid(inv.id)}
+                        className={styles.pdfBtn}
+                        onClick={() => handleDownload(inv.pdf_path!)}
                         disabled={isPending}
                       >
-                        Mark Paid
+                        Download
                       </button>
+                    ) : (
+                      <span className={styles.noPdf}>—</span>
                     )}
-                    {inv.status === 'paid' && inv.paid_at && (
-                      <span className={styles.paidDate}>
-                        Paid {formatPortalDate(inv.paid_at)}
-                      </span>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))
+                  </td>
+                  <td className={styles.td}>
+                    <div className={styles.actionBtns}>
+                      {inv.status === 'draft' && (
+                        <>
+                          <button
+                            type="button"
+                            className={styles.submitBtn}
+                            onClick={() => handleSubmit(inv.id)}
+                            disabled={isPending}
+                          >
+                            Submit
+                          </button>
+                          <button
+                            type="button"
+                            className={styles.deleteBtn}
+                            onClick={() => handleDelete(inv.id)}
+                            disabled={isPending}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                      {inv.status === 'submitted' && (
+                        <button
+                          type="button"
+                          className={styles.paidBtn}
+                          onClick={() => handleMarkPaid(inv.id)}
+                          disabled={isPending}
+                        >
+                          Mark Paid
+                        </button>
+                      )}
+                      {inv.status === 'paid' && inv.paid_at && (
+                        <span className={styles.paidDate}>
+                          Paid {formatPortalDate(inv.paid_at)}
+                        </span>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))
             )}
           </tbody>
         </table>

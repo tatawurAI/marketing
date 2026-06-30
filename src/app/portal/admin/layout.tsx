@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import AdminNav from '@/components/admin/AdminNav'
+import { UNPAID_STATUS } from '@/lib/types'
 import styles from './admin.module.scss'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -34,11 +35,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     supabase
       .from('invoices')
       .select('*', { count: 'exact', head: true })
-      .eq('status', 'submitted'),
+      .eq('status', UNPAID_STATUS),
     supabase
       .from('payroll_runs')
       .select('*', { count: 'exact', head: true })
-      .eq('status', 'submitted'),
+      .eq('status', UNPAID_STATUS),
   ])
 
   return (
