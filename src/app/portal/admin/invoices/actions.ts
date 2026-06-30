@@ -1,52 +1,22 @@
 'use server'
-import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { generateInvoicePDF } from '@/lib/pdf/generate-invoice'
 import type { InvoiceData } from '@/lib/pdf/types'
-
-// ---------------------------------------------------------------------------
-// Auth helper
-// ---------------------------------------------------------------------------
-
-async function getAdminUser() {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { supabase, user: null, error: 'Unauthorized' as const }
-  const { data: employee } = await supabase
-    .from('employees')
-    .select('role')
-    .eq('user_id', user.id)
-    .single()
-  if (employee?.role !== 'admin') return { supabase, user: null, error: 'Forbidden' as const }
-  return { supabase, user, error: null }
-}
-
-// ---------------------------------------------------------------------------
-// Invoice actions
-// ---------------------------------------------------------------------------
+import { getAdminUser } from '@/lib/supabase/admin'
 
 export async function createInvoiceDraft(
   formData: FormData,
 ): Promise<{ id?: string; error?: string }> {
-  const { supabase, user, error: authError } = await getAdminUser()
-  if (!user) return { error: authError }
+  const { supabase, adminEmployee, error: authError } = await getAdminUser()
+  if (!adminEmployee) return { error: authError ?? 'Unauthorized' }
 
   const employee_id  = formData.get('employee_id') as string
   const project_id   = formData.get('project_id') as string
   const period_start = formData.get('period_start') as string
   const period_end   = formData.get('period_end') as string
 
-  const { data: adminEmployee } = await supabase
-    .from('employees')
-    .select('id')
-    .eq('user_id', user.id)
-    .single()
-
-  if (!adminEmployee) return { error: 'Employee record not found for this user' }
-
   if (period_start > period_end) return { error: 'Period start must be before or equal to period end' }
 
-  // Fetch time entries and billing rate in parallel
   const [
     { data: entries, error: entriesError },
     { data: rateRow,  error: rateError },
@@ -69,8 +39,8 @@ export async function createInvoiceDraft(
   if (entriesError) return { error: entriesError.message }
   if (rateError)    return { error: rateError.message }
 
-  const total_hours  = (entries ?? []).reduce((sum, e) => sum + (e.hours as number), 0)
-  const billing_rate = rateRow?.billable_rate ?? null
+  const total_hours  = (entries ?? []).reduce((sum, e) => sum + Number(e.hours), 0)
+  const billing_rate = rateRow?.billable_rate != null ? Number(rateRow.billable_rate) : null
   const total_amount = billing_rate != null ? total_hours * billing_rate : null
 
   const { data: inserted, error } = await supabase
@@ -89,7 +59,12 @@ export async function createInvoiceDraft(
     .select('id')
     .single()
 
-  if (error) return { error: error.message }
+  if (error) {
+    if (error.code === '23505') {
+      return { error: 'An invoice draft for this employee, project, and period already exists' }
+    }
+    return { error: error.message }
+  }
   revalidatePath('/portal/admin/invoices')
   return { id: (inserted as { id: string }).id }
 }
@@ -97,10 +72,9 @@ export async function createInvoiceDraft(
 export async function submitInvoice(
   invoiceId: string,
 ): Promise<{ signedUrl?: string; error?: string }> {
-  const { supabase, user, error: authError } = await getAdminUser()
-  if (!user) return { error: authError }
+  const { supabase, adminEmployee, error: authError } = await getAdminUser()
+  if (!adminEmployee) return { error: authError ?? 'Unauthorized' }
 
-  // Fetch invoice with joined employee and project names
   const { data: invoice, error: invoiceError } = await supabase
     .from('invoices')
     .select('*, employee:employees!employee_id(full_name), project:projects!project_id(name)')
@@ -115,7 +89,6 @@ export async function submitInvoice(
 
   if (!employee || !project) return { error: 'Invoice employee or project not found' }
 
-  // Fetch time entries for this invoice's period
   const { data: entries, error: entriesError } = await supabase
     .from('time_entries')
     .select('work_date, hours, notes')
@@ -134,10 +107,10 @@ export async function submitInvoice(
     endDate:      invoice.period_end   as string,
     entries: (entries ?? []).map((e) => ({
       work_date: e.work_date as string,
-      hours:     e.hours     as number,
-      notes:     e.notes     as string | null,
+      hours:     Number(e.hours),
+      notes:     e.notes as string | null,
     })),
-    billingRate: (invoice.billing_rate as number | null) ?? null,
+    billingRate: invoice.billing_rate != null ? Number(invoice.billing_rate) : null,
     generatedAt: new Date().toISOString(),
   }
 
@@ -148,9 +121,11 @@ export async function submitInvoice(
     return { error: err instanceof Error ? err.message : 'PDF generation failed' }
   }
 
+  const storagePath = `${invoiceId}.pdf`
+
   const { error: uploadError } = await supabase.storage
     .from('invoice-pdfs')
-    .upload(`${invoiceId}.pdf`, buffer, { contentType: 'application/pdf', upsert: true })
+    .upload(storagePath, buffer, { contentType: 'application/pdf', upsert: true })
 
   if (uploadError) return { error: uploadError.message }
 
@@ -163,11 +138,15 @@ export async function submitInvoice(
     })
     .eq('id', invoiceId)
 
-  if (updateError) return { error: updateError.message }
+  if (updateError) {
+    // Best-effort cleanup — PDF is in storage but DB update failed; remove the orphan
+    await supabase.storage.from('invoice-pdfs').remove([storagePath])
+    return { error: updateError.message }
+  }
 
   const { data: signedData, error: signedError } = await supabase.storage
     .from('invoice-pdfs')
-    .createSignedUrl(`${invoiceId}.pdf`, 3600)
+    .createSignedUrl(storagePath, 3600)
 
   if (signedError) return { error: signedError.message }
 
@@ -176,16 +155,8 @@ export async function submitInvoice(
 }
 
 export async function markInvoicePaid(invoiceId: string): Promise<{ error?: string }> {
-  const { supabase, user, error: authError } = await getAdminUser()
-  if (!user) return { error: authError }
-
-  const { data: adminEmployee } = await supabase
-    .from('employees')
-    .select('id')
-    .eq('user_id', user.id)
-    .single()
-
-  if (!adminEmployee) return { error: 'Employee record not found for this user' }
+  const { supabase, adminEmployee, error: authError } = await getAdminUser()
+  if (!adminEmployee) return { error: authError ?? 'Unauthorized' }
 
   const { error } = await supabase
     .from('invoices')
@@ -203,16 +174,24 @@ export async function markInvoicePaid(invoiceId: string): Promise<{ error?: stri
 }
 
 export async function deleteInvoiceDraft(invoiceId: string): Promise<{ error?: string }> {
-  const { supabase, user, error: authError } = await getAdminUser()
-  if (!user) return { error: authError }
+  const { supabase, adminEmployee, error: authError } = await getAdminUser()
+  if (!adminEmployee) return { error: authError ?? 'Unauthorized' }
 
-  const { error } = await supabase
+  const { data: deleted, error } = await supabase
     .from('invoices')
     .delete()
     .eq('id', invoiceId)
     .eq('status', 'draft')
+    .select('pdf_path')
+    .maybeSingle()
 
   if (error) return { error: error.message }
+
+  // Clean up any orphaned PDF (possible if a prior submit partially failed)
+  if (deleted?.pdf_path) {
+    await supabase.storage.from('invoice-pdfs').remove([`${invoiceId}.pdf`])
+  }
+
   revalidatePath('/portal/admin/invoices')
   return {}
 }
@@ -220,10 +199,10 @@ export async function deleteInvoiceDraft(invoiceId: string): Promise<{ error?: s
 export async function getInvoiceSignedUrl(
   pdfPath: string,
 ): Promise<{ url?: string; error?: string }> {
-  const { supabase, user, error: authError } = await getAdminUser()
-  if (!user) return { error: authError }
+  const { supabase, adminEmployee, error: authError } = await getAdminUser()
+  if (!adminEmployee) return { error: authError ?? 'Unauthorized' }
 
-  // pdfPath stored as 'invoice-pdfs/{id}.pdf' — extract just the filename
+  // pdfPath stored as 'invoice-pdfs/{id}.pdf' — extract just the object key
   const filename = pdfPath.split('/').pop() ?? pdfPath
 
   const { data, error } = await supabase.storage

@@ -47,7 +47,7 @@ CREATE POLICY "ec_admin_all" ON expense_claims FOR ALL
 
 -- ---------------------------------------------------------------------------
 -- Storage: expense-receipts bucket (private)
--- Path convention: {employee_id}/{claim_id}/{filename}
+-- Path convention: {employee_id}/{timestamp}-{filename}
 -- ---------------------------------------------------------------------------
 
 INSERT INTO storage.buckets (id, name, public)
@@ -55,7 +55,7 @@ VALUES ('expense-receipts', 'expense-receipts', false)
 ON CONFLICT (id) DO NOTHING;
 
 -- Employees can upload and read receipts under their own path prefix.
--- (foldername)[1] is the employee_id segment; [2] is the claim_id segment.
+-- (foldername)[1] is the employee_id segment.
 CREATE POLICY "expense_receipts_own_select" ON storage.objects FOR SELECT
   TO authenticated
   USING (

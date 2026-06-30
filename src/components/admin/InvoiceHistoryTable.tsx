@@ -9,20 +9,11 @@ import {
   deleteInvoiceDraft,
   getInvoiceSignedUrl,
 } from '@/app/portal/admin/invoices/actions'
-import { formatPortalDate } from '@/lib/utils'
+import { formatPortalDate, formatCurrency } from '@/lib/utils'
 import styles from './InvoiceHistoryTable.module.scss'
 
 type Props = {
   invoices: AdminInvoice[]
-}
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount)
 }
 
 export default function InvoiceHistoryTable({ invoices }: Props) {

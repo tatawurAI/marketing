@@ -9,20 +9,11 @@ import {
   deletePayrollDraft,
   getPayrollSignedUrl,
 } from '@/app/portal/admin/payroll/actions'
-import { formatPortalDate } from '@/lib/utils'
+import { formatPortalDate, formatCurrency } from '@/lib/utils'
 import styles from './PayrollRunsTable.module.scss'
 
 type Props = {
   runs: AdminPayrollRun[]
-}
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount)
 }
 
 export default function PayrollRunsTable({ runs }: Props) {

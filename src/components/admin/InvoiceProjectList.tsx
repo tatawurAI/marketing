@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import type { ProjectInvoicePreview } from '@/lib/pdf/types'
 import { createInvoiceDraft } from '@/app/portal/admin/invoices/actions'
+import { formatCurrency } from '@/lib/utils'
 import styles from './InvoiceProjectList.module.scss'
 
 type Props = {
@@ -11,15 +12,6 @@ type Props = {
   employeeId: string
   start: string
   end: string
-}
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount)
 }
 
 export default function InvoiceProjectList({ projects, employeeId, start, end }: Props) {

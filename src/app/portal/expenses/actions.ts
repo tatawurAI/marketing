@@ -1,4 +1,5 @@
 'use server'
+import path from 'node:path'
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import type { ExpenseClaim } from '@/lib/types'
@@ -50,12 +51,14 @@ export async function submitExpenseClaim(
   const description  = (formData.get('description') as string)?.trim()
   const receipt_path = (formData.get('receipt_path') as string) || null
 
-  // Reject paths that don't start with the authenticated employee's own prefix
-  if (receipt_path && !receipt_path.startsWith(`${employee.id}/`)) {
-    return { error: 'Invalid receipt path' }
+  // Normalize and validate the receipt path to prevent path traversal
+  if (receipt_path) {
+    const normalized = path.posix.normalize(receipt_path)
+    if (normalized !== receipt_path || !normalized.startsWith(`${employee.id}/`)) {
+      return { error: 'Invalid receipt path' }
+    }
   }
 
-  // Validate inputs
   const amount = parseFloat(amountRaw)
   if (isNaN(amount) || amount <= 0) return { error: 'Amount must be a positive number' }
   if (!description) return { error: 'Description is required' }

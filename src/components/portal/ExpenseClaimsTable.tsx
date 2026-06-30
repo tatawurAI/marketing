@@ -3,20 +3,11 @@
 import { useTransition, useState } from 'react'
 import type { ExpenseClaim } from '@/lib/types'
 import { getMyExpenseReceiptSignedUrl } from '@/app/portal/expenses/actions'
-import { formatPortalDate } from '@/lib/utils'
+import { formatPortalDate, formatCurrency } from '@/lib/utils'
 import styles from './ExpenseClaimsTable.module.scss'
 
 type Props = {
   claims: ExpenseClaim[]
-}
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount)
 }
 
 export default function ExpenseClaimsTable({ claims }: Props) {

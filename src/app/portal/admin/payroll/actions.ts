@@ -1,51 +1,21 @@
 'use server'
-import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { generateInvoicePDF } from '@/lib/pdf/generate-invoice'
 import type { InvoiceData } from '@/lib/pdf/types'
-
-// ---------------------------------------------------------------------------
-// Auth helper
-// ---------------------------------------------------------------------------
-
-async function getAdminUser() {
-  const supabase = createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { supabase, user: null, error: 'Unauthorized' as const }
-  const { data: employee } = await supabase
-    .from('employees')
-    .select('role')
-    .eq('user_id', user.id)
-    .single()
-  if (employee?.role !== 'admin') return { supabase, user: null, error: 'Forbidden' as const }
-  return { supabase, user, error: null }
-}
-
-// ---------------------------------------------------------------------------
-// Payroll actions
-// ---------------------------------------------------------------------------
+import { getAdminUser } from '@/lib/supabase/admin'
 
 export async function createPayrollRun(
   formData: FormData,
 ): Promise<{ id?: string; error?: string }> {
-  const { supabase, user, error: authError } = await getAdminUser()
-  if (!user) return { error: authError }
+  const { supabase, adminEmployee, error: authError } = await getAdminUser()
+  if (!adminEmployee) return { error: authError ?? 'Unauthorized' }
 
   const employee_id  = formData.get('employee_id') as string
   const period_start = formData.get('period_start') as string
   const period_end   = formData.get('period_end') as string
 
-  const { data: adminEmployee } = await supabase
-    .from('employees')
-    .select('id')
-    .eq('user_id', user.id)
-    .single()
-
-  if (!adminEmployee) return { error: 'Employee record not found for this user' }
-
   if (period_start > period_end) return { error: 'Period start must be before or equal to period end' }
 
-  // Fetch salary_rate snapshot and all time entries in parallel
   const [
     { data: targetEmployee, error: employeeError },
     { data: entries,        error: entriesError },
@@ -66,8 +36,12 @@ export async function createPayrollRun(
   if (employeeError || !targetEmployee) return { error: employeeError?.message ?? 'Employee not found' }
   if (entriesError) return { error: entriesError.message }
 
-  const total_hours  = (entries ?? []).reduce((sum, e) => sum + (e.hours as number), 0)
-  const hourly_rate  = targetEmployee.salary_rate as number
+  const hourly_rate = Number(targetEmployee.salary_rate)
+  if (!isFinite(hourly_rate) || hourly_rate <= 0) {
+    return { error: 'This employee has no valid salary rate configured' }
+  }
+
+  const total_hours  = (entries ?? []).reduce((sum, e) => sum + Number(e.hours), 0)
   const total_amount = total_hours * hourly_rate
 
   const { data: inserted, error } = await supabase
@@ -98,10 +72,9 @@ export async function createPayrollRun(
 export async function submitPayrollRun(
   runId: string,
 ): Promise<{ signedUrl?: string; error?: string }> {
-  const { supabase, user, error: authError } = await getAdminUser()
-  if (!user) return { error: authError }
+  const { supabase, adminEmployee, error: authError } = await getAdminUser()
+  if (!adminEmployee) return { error: authError ?? 'Unauthorized' }
 
-  // Fetch payroll run with employee name
   const { data: run, error: runError } = await supabase
     .from('payroll_runs')
     .select('*, employee:employees!employee_id(full_name)')
@@ -114,7 +87,6 @@ export async function submitPayrollRun(
   const employee = run.employee as { full_name: string } | null
   if (!employee) return { error: 'Employee not found for this payroll run' }
 
-  // Fetch all time entries for the employee in this period (all projects)
   const { data: entries, error: entriesError } = await supabase
     .from('time_entries')
     .select('work_date, hours, notes')
@@ -132,10 +104,10 @@ export async function submitPayrollRun(
     endDate:      run.period_end   as string,
     entries: (entries ?? []).map((e) => ({
       work_date: e.work_date as string,
-      hours:     e.hours     as number,
-      notes:     e.notes     as string | null,
+      hours:     Number(e.hours),
+      notes:     e.notes as string | null,
     })),
-    billingRate: run.hourly_rate as number,
+    billingRate: Number(run.hourly_rate),
     generatedAt: new Date().toISOString(),
   }
 
@@ -164,7 +136,11 @@ export async function submitPayrollRun(
     })
     .eq('id', runId)
 
-  if (updateError) return { error: updateError.message }
+  if (updateError) {
+    // Best-effort cleanup — PDF is in storage but DB update failed; remove the orphan
+    await supabase.storage.from('payroll-pdfs').remove([storagePath])
+    return { error: updateError.message }
+  }
 
   const { data: signedData, error: signedError } = await supabase.storage
     .from('payroll-pdfs')
@@ -177,16 +153,8 @@ export async function submitPayrollRun(
 }
 
 export async function markPayrollPaid(runId: string): Promise<{ error?: string }> {
-  const { supabase, user, error: authError } = await getAdminUser()
-  if (!user) return { error: authError }
-
-  const { data: adminEmployee } = await supabase
-    .from('employees')
-    .select('id')
-    .eq('user_id', user.id)
-    .single()
-
-  if (!adminEmployee) return { error: 'Employee record not found for this user' }
+  const { supabase, adminEmployee, error: authError } = await getAdminUser()
+  if (!adminEmployee) return { error: authError ?? 'Unauthorized' }
 
   const { error } = await supabase
     .from('payroll_runs')
@@ -204,16 +172,24 @@ export async function markPayrollPaid(runId: string): Promise<{ error?: string }
 }
 
 export async function deletePayrollDraft(runId: string): Promise<{ error?: string }> {
-  const { supabase, user, error: authError } = await getAdminUser()
-  if (!user) return { error: authError }
+  const { supabase, adminEmployee, error: authError } = await getAdminUser()
+  if (!adminEmployee) return { error: authError ?? 'Unauthorized' }
 
-  const { error } = await supabase
+  const { data: deleted, error } = await supabase
     .from('payroll_runs')
     .delete()
     .eq('id', runId)
     .eq('status', 'draft')
+    .select('employee_id, pdf_path')
+    .maybeSingle()
 
   if (error) return { error: error.message }
+
+  // Clean up any orphaned PDF (possible if a prior submit partially failed)
+  if (deleted?.pdf_path) {
+    await supabase.storage.from('payroll-pdfs').remove([`${deleted.employee_id as string}/${runId}.pdf`])
+  }
+
   revalidatePath('/portal/admin/payroll')
   return {}
 }
@@ -221,8 +197,8 @@ export async function deletePayrollDraft(runId: string): Promise<{ error?: strin
 export async function getPayrollSignedUrl(
   pdfPath: string,
 ): Promise<{ url?: string; error?: string }> {
-  const { supabase, user, error: authError } = await getAdminUser()
-  if (!user) return { error: authError }
+  const { supabase, adminEmployee, error: authError } = await getAdminUser()
+  if (!adminEmployee) return { error: authError ?? 'Unauthorized' }
 
   // pdfPath stored as '{employee_id}/{run_id}.pdf' — use as-is (full object path within bucket)
   const { data, error } = await supabase.storage

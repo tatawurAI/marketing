@@ -9,7 +9,7 @@ import {
   markExpenseReimbursed,
   getExpenseReceiptSignedUrl,
 } from '@/app/portal/admin/expenses/actions'
-import { formatPortalDate } from '@/lib/utils'
+import { formatPortalDate, formatCurrency } from '@/lib/utils'
 import styles from './ExpenseActionsTable.module.scss'
 
 type StatusFilter = 'all' | 'pending' | 'approved' | 'reimbursed' | 'rejected'
@@ -17,15 +17,6 @@ type StatusFilter = 'all' | 'pending' | 'approved' | 'reimbursed' | 'rejected'
 type Props = {
   claims: AdminExpenseClaim[]
   currentStatus: StatusFilter
-}
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount)
 }
 
 const STATUS_TABS: { value: StatusFilter; label: string }[] = [

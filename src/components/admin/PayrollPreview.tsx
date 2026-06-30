@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { createPayrollRun } from '@/app/portal/admin/payroll/actions'
+import { formatCurrency } from '@/lib/utils'
 import styles from './PayrollPreview.module.scss'
 
 type ProjectRow = {
@@ -18,15 +19,6 @@ type Props = {
   hourlyRate: number | null
   totalPay: number | null
   projectBreakdown: ProjectRow[]
-}
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(amount)
 }
 
 export default function PayrollPreview({
