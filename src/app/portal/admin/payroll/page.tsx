@@ -8,11 +8,16 @@ import type { AdminPayrollRun } from '@/lib/types'
 
 type Employee = { id: string; full_name: string }
 
+type StatusFilter = 'all' | 'draft' | 'submitted' | 'paid'
+
+const VALID_STATUSES = new Set<StatusFilter>(['all', 'draft', 'submitted', 'paid'])
+
 type PageProps = {
   searchParams: {
     employeeId?: string
     start?: string
     end?: string
+    status?: string
   }
 }
 
@@ -94,6 +99,12 @@ export default async function PayrollPage({ searchParams }: PageProps) {
     }
   }
 
+  const rawStatus = searchParams.status
+  const currentStatus: StatusFilter =
+    rawStatus && VALID_STATUSES.has(rawStatus as StatusFilter)
+      ? (rawStatus as StatusFilter)
+      : 'all'
+
   // Always fetch payroll run history
   let runsQuery = supabase
     .from('payroll_runs')
@@ -104,16 +115,29 @@ export default async function PayrollPage({ searchParams }: PageProps) {
 
   if (employeeId) {
     runsQuery = runsQuery.eq('employee_id', employeeId)
-  } else {
-    runsQuery = runsQuery.limit(20)
+  }
+  if (currentStatus !== 'all') {
+    runsQuery = runsQuery.eq('status', currentStatus)
   }
 
   const { data: runsData } = await runsQuery
   const runs = (runsData ?? []) as AdminPayrollRun[]
 
+  const { count: unpaidCount } = await supabase
+    .from('payroll_runs')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'submitted')
+
+  const unpaid = unpaidCount ?? 0
+
   return (
     <div className={styles.root}>
-      <h1 className={styles.heading}>Payroll</h1>
+      <div className={styles.headerRow}>
+        <h1 className={styles.heading}>Payroll</h1>
+        {unpaid > 0 && (
+          <span className={styles.pendingBadge}>{unpaid} unpaid</span>
+        )}
+      </div>
 
       <InvoiceForm
         employees={employees}
@@ -139,10 +163,8 @@ export default async function PayrollPage({ searchParams }: PageProps) {
       )}
 
       <div>
-        <h2 className={styles.subheading}>
-          {employeeId ? 'Pay Run History' : 'Recent Pay Runs'}
-        </h2>
-        <PayrollRunsTable runs={runs} />
+        <h2 className={styles.subheading}>Pay Run History</h2>
+        <PayrollRunsTable runs={runs} currentStatus={currentStatus} />
       </div>
     </div>
   )

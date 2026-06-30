@@ -1,0 +1,71 @@
+@use '../../styles/variables' as *;
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: $spacing-6;
+}
+
+.empty {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  padding: $spacing-4 0;
+}
+
+.cardUrgent {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+  padding: $spacing-6;
+  background: $bg-card;
+  border: 1px solid rgba($red-500, 0.3);
+  border-radius: $border-radius-xl;
+  transition: border-color $transition-fast $transition-ease,
+    background-color $transition-fast $transition-ease;
+
+  &:hover {
+    border-color: $red-500;
+    background: rgba($red-500, 0.05);
+  }
+
+  .value {
+    color: $red-500;
+  }
+}
+
+.cardRoutine {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+  padding: $spacing-6;
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-xl;
+  transition: border-color $transition-fast $transition-ease,
+    background-color $transition-fast $transition-ease;
+
+  &:hover {
+    border-color: $secondary;
+    background: rgba($secondary, 0.05);
+  }
+
+  .value {
+    color: $secondary;
+  }
+}
+
+.label {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.value {
+  font-family: $font-mono;
+  font-size: $text-3xl;
+  font-weight: 600;
+  line-height: $leading-tight;
+}

@@ -12,17 +12,30 @@ import {
 import { formatPortalDate, formatCurrency } from '@/lib/utils'
 import styles from './InvoiceHistoryTable.module.scss'
 
+type StatusFilter = 'all' | 'draft' | 'submitted' | 'paid'
+
 type Props = {
   invoices: AdminInvoice[]
+  currentStatus: StatusFilter
 }
 
-export default function InvoiceHistoryTable({ invoices }: Props) {
+const STATUS_TABS: { value: StatusFilter; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'draft', label: 'Draft' },
+  { value: 'submitted', label: 'Submitted' },
+  { value: 'paid', label: 'Paid' },
+]
+
+export default function InvoiceHistoryTable({ invoices, currentStatus }: Props) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [actionError, setActionError] = useState<string | null>(null)
 
-  if (invoices.length === 0) {
-    return <p className={styles.empty}>No invoices found for this employee.</p>
+  function pushStatus(status: StatusFilter) {
+    const params = new URLSearchParams(window.location.search)
+    if (status === 'all') params.delete('status')
+    else params.set('status', status)
+    router.push(`?${params.toString()}`)
   }
 
   function handleSubmit(invoiceId: string) {
@@ -76,6 +89,21 @@ export default function InvoiceHistoryTable({ invoices }: Props) {
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.tabs} role="tablist">
+        {STATUS_TABS.map(({ value, label }) => (
+          <button
+            key={value}
+            type="button"
+            role="tab"
+            aria-selected={currentStatus === value}
+            className={currentStatus === value ? styles.tabActive : styles.tab}
+            onClick={() => pushStatus(value)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
       {actionError && <p className={styles.actionError}>{actionError}</p>}
       <div className={styles.overflow}>
         <table className={styles.table}>
@@ -91,7 +119,14 @@ export default function InvoiceHistoryTable({ invoices }: Props) {
             </tr>
           </thead>
           <tbody>
-            {invoices.map((inv) => (
+            {invoices.length === 0 ? (
+              <tr>
+                <td colSpan={7} className={styles.emptyCell}>
+                  No {currentStatus === 'all' ? '' : `${currentStatus} `}invoices found.
+                </td>
+              </tr>
+            ) : (
+            invoices.map((inv) => (
               <tr key={inv.id} className={styles.tr}>
                 <td className={styles.td}>{inv.project.name}</td>
                 <td className={styles.tdMono}>
@@ -168,7 +203,8 @@ export default function InvoiceHistoryTable({ invoices }: Props) {
                   </div>
                 </td>
               </tr>
-            ))}
+            ))
+            )}
           </tbody>
         </table>
       </div>

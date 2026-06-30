@@ -3,7 +3,46 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: $spacing-3;
+  gap: $spacing-5;
+}
+
+// Filter tabs
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: $spacing-2 $spacing-4;
+  background: transparent;
+  color: $text-muted;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover {
+    border-color: $text-muted;
+    color: $text-main;
+  }
+}
+
+.tabActive {
+  padding: $spacing-2 $spacing-4;
+  background: rgba($secondary, 0.1);
+  color: $secondary;
+  border: 1px solid rgba($secondary, 0.4);
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .overflow {
@@ -20,11 +59,12 @@
   background: rgba($red-500, 0.08);
 }
 
-.empty {
+.emptyCell {
+  padding: $spacing-8 $spacing-4;
+  text-align: center;
   font-family: $font-body;
   font-size: $text-sm;
   color: $text-muted;
-  padding: $spacing-6 0;
 }
 
 .table {

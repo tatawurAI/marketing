@@ -12,17 +12,30 @@ import {
 import { formatPortalDate, formatCurrency } from '@/lib/utils'
 import styles from './PayrollRunsTable.module.scss'
 
+type StatusFilter = 'all' | 'draft' | 'submitted' | 'paid'
+
 type Props = {
   runs: AdminPayrollRun[]
+  currentStatus: StatusFilter
 }
 
-export default function PayrollRunsTable({ runs }: Props) {
+const STATUS_TABS: { value: StatusFilter; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'draft', label: 'Draft' },
+  { value: 'submitted', label: 'Submitted' },
+  { value: 'paid', label: 'Paid' },
+]
+
+export default function PayrollRunsTable({ runs, currentStatus }: Props) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [actionError, setActionError] = useState<string | null>(null)
 
-  if (runs.length === 0) {
-    return <p className={styles.empty}>No payroll runs found.</p>
+  function pushStatus(status: StatusFilter) {
+    const params = new URLSearchParams(window.location.search)
+    if (status === 'all') params.delete('status')
+    else params.set('status', status)
+    router.push(`?${params.toString()}`)
   }
 
   function handleSubmit(runId: string) {
@@ -76,6 +89,21 @@ export default function PayrollRunsTable({ runs }: Props) {
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.tabs} role="tablist">
+        {STATUS_TABS.map(({ value, label }) => (
+          <button
+            key={value}
+            type="button"
+            role="tab"
+            aria-selected={currentStatus === value}
+            className={currentStatus === value ? styles.tabActive : styles.tab}
+            onClick={() => pushStatus(value)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
       {actionError && <p className={styles.actionError}>{actionError}</p>}
       <div className={styles.overflow}>
         <table className={styles.table}>
@@ -92,7 +120,14 @@ export default function PayrollRunsTable({ runs }: Props) {
             </tr>
           </thead>
           <tbody>
-            {runs.map((run) => (
+            {runs.length === 0 ? (
+              <tr>
+                <td colSpan={8} className={styles.emptyCell}>
+                  No {currentStatus === 'all' ? '' : `${currentStatus} `}payroll runs found.
+                </td>
+              </tr>
+            ) : (
+            runs.map((run) => (
               <tr key={run.id} className={styles.tr}>
                 <td className={styles.td}>{run.employee.full_name}</td>
                 <td className={styles.tdMono}>
@@ -168,7 +203,8 @@ export default function PayrollRunsTable({ runs }: Props) {
                   </div>
                 </td>
               </tr>
-            ))}
+            ))
+            )}
           </tbody>
         </table>
       </div>

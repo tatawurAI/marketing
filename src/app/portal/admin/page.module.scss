@@ -14,6 +14,14 @@
   margin: 0;
 }
 
+.subheading {
+  font-family: $font-heading;
+  font-size: $text-lg;
+  font-weight: 600;
+  color: $text-main;
+  margin: 0 0 $spacing-4;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

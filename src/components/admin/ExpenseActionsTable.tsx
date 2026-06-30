@@ -85,11 +85,13 @@ export default function ExpenseActionsTable({ claims, currentStatus }: Props) {
   return (
     <div className={styles.wrapper}>
       {/* Filter tabs */}
-      <div className={styles.tabs}>
+      <div className={styles.tabs} role="tablist">
         {STATUS_TABS.map(({ value, label }) => (
           <button
             key={value}
             type="button"
+            role="tab"
+            aria-selected={currentStatus === value}
             className={currentStatus === value ? styles.tabActive : styles.tab}
             onClick={() => pushStatus(value)}
           >
@@ -118,7 +120,7 @@ export default function ExpenseActionsTable({ claims, currentStatus }: Props) {
             {claims.length === 0 ? (
               <tr>
                 <td colSpan={8} className={styles.emptyCell}>
-                  No expense claims found.
+                  No {currentStatus === 'all' ? '' : `${currentStatus} `}expense claims found.
                 </td>
               </tr>
             ) : (
