@@ -76,3 +76,84 @@ export type AdminTimesheetApproval = TimesheetApproval & {
   employee: { full_name: string }
   reviewer: { full_name: string } | null
 }
+
+// ---------------------------------------------------------------------------
+// Invoices
+// ---------------------------------------------------------------------------
+export type Invoice = {
+  id: string
+  employee_id: string
+  project_id: string
+  period_start: string
+  period_end: string
+  total_hours: number
+  billing_rate: number | null
+  total_amount: number | null
+  status: 'draft' | 'submitted' | 'paid'
+  pdf_path: string | null
+  notes: string | null
+  created_by: string
+  created_at: string
+  submitted_at: string | null
+  paid_at: string | null
+  paid_by: string | null
+}
+
+export type AdminInvoice = Invoice & {
+  employee: { full_name: string }
+  project: { name: string }
+  creator: { full_name: string }
+  payer: { full_name: string } | null
+}
+
+// ---------------------------------------------------------------------------
+// Payroll
+// ---------------------------------------------------------------------------
+export type PayrollRun = {
+  id: string
+  employee_id: string
+  period_start: string
+  period_end: string
+  total_hours: number
+  hourly_rate: number
+  total_amount: number
+  status: 'draft' | 'submitted' | 'paid'
+  pdf_path: string | null
+  notes: string | null
+  created_by: string
+  created_at: string
+  submitted_at: string | null
+  paid_at: string | null
+  paid_by: string | null
+}
+
+export type AdminPayrollRun = PayrollRun & {
+  employee: { full_name: string }
+  creator: { full_name: string }
+  payer: { full_name: string } | null
+}
+
+// ---------------------------------------------------------------------------
+// Expenses
+// ---------------------------------------------------------------------------
+export type ExpenseClaim = {
+  id: string
+  employee_id: string
+  expense_date: string
+  amount: number
+  description: string
+  receipt_path: string | null
+  status: 'pending' | 'approved' | 'reimbursed' | 'rejected'
+  submitted_at: string
+  reviewed_by: string | null
+  reviewed_at: string | null
+  review_comment: string | null
+  reimbursed_at: string | null
+  reimbursed_by: string | null
+}
+
+export type AdminExpenseClaim = ExpenseClaim & {
+  employee: { full_name: string }
+  reviewer: { full_name: string } | null
+  reimbursed_by_emp: { full_name: string } | null
+}

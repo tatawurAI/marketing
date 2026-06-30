@@ -1,0 +1,190 @@
+@use '../../styles/variables' as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+}
+
+.overflow {
+  overflow-x: auto;
+}
+
+.errorMsg {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $red-500;
+  padding: $spacing-2 $spacing-3;
+  border: 1px solid rgba($red-500, 0.3);
+  border-radius: $border-radius-md;
+  background: rgba($red-500, 0.08);
+}
+
+.empty {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  padding: $spacing-6 0;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  padding: $spacing-3 $spacing-4;
+  text-align: left;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+  border-bottom: 1px solid $border-color;
+  white-space: nowrap;
+}
+
+.tr {
+  border-bottom: 1px solid $border-color;
+  transition: background-color $transition-fast $transition-ease;
+
+  &:hover {
+    background: rgba($text-main, 0.03);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.td {
+  padding: $spacing-3 $spacing-4;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+  vertical-align: top;
+}
+
+.tdMono {
+  padding: $spacing-3 $spacing-4;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  color: $text-main;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.tdDesc {
+  padding: $spacing-3 $spacing-4;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+  vertical-align: top;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tdComment {
+  padding: $spacing-3 $spacing-4;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  vertical-align: top;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Status badges
+
+.badgePending {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba($secondary, 0.15);
+  color: $secondary;
+  border: 1px solid rgba($secondary, 0.3);
+}
+
+.badgeApproved {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba($primary, 0.15);
+  color: $primary;
+  border: 1px solid rgba($primary, 0.3);
+}
+
+.badgeReimbursed {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba($green-500, 0.15);
+  color: $green-500;
+  border: 1px solid rgba($green-500, 0.3);
+}
+
+.badgeRejected {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba($red-500, 0.15);
+  color: $red-500;
+  border: 1px solid rgba($red-500, 0.3);
+}
+
+// Receipt button
+
+.receiptBtn {
+  padding: $spacing-1 $spacing-3;
+  background: transparent;
+  color: $text-muted;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    border-color: $secondary;
+    color: $secondary;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.noValue {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+}

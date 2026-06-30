@@ -17,14 +17,26 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   if (employee?.role !== 'admin') redirect('/portal/dashboard')
 
-  const { count: pendingApprovals } = await supabase
-    .from('timesheet_approvals')
-    .select('*', { count: 'exact', head: true })
-    .eq('status', 'pending')
+  const [
+    { count: pendingApprovals },
+    { count: pendingExpenses },
+  ] = await Promise.all([
+    supabase
+      .from('timesheet_approvals')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'pending'),
+    supabase
+      .from('expense_claims')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'pending'),
+  ])
 
   return (
     <div className={styles.shell}>
-      <AdminNav pendingApprovals={pendingApprovals ?? 0} />
+      <AdminNav
+        pendingApprovals={pendingApprovals ?? 0}
+        pendingExpenses={pendingExpenses ?? 0}
+      />
       <main className={styles.content}>{children}</main>
     </div>
   )

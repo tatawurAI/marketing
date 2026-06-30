@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Briefcase, Users, Clock, CalendarCheck, ClipboardCheck, FileText } from 'lucide-react'
+import { LayoutDashboard, Briefcase, Users, Clock, CalendarCheck, ClipboardCheck, FileText, DollarSign, Receipt } from 'lucide-react'
 import styles from './AdminNav.module.scss'
 
 const NAV_ITEMS = [
@@ -11,15 +11,18 @@ const NAV_ITEMS = [
   { label: 'Employees', href: '/portal/admin/employees', icon: Users, exact: false },
   { label: 'Timesheets', href: '/portal/admin/timesheets', icon: Clock, exact: false },
   { label: 'Invoices', href: '/portal/admin/invoices', icon: FileText, exact: false },
+  { label: 'Payroll', href: '/portal/admin/payroll', icon: DollarSign, exact: false },
   { label: 'Weeks', href: '/portal/admin/weeks', icon: CalendarCheck, exact: false },
   { label: 'Approvals', href: '/portal/admin/approvals', icon: ClipboardCheck, exact: false },
+  { label: 'Expenses', href: '/portal/admin/expenses', icon: Receipt, exact: false },
 ] as const
 
 interface AdminNavLinksProps {
   pendingApprovals?: number
+  pendingExpenses?: number
 }
 
-export default function AdminNavLinks({ pendingApprovals }: AdminNavLinksProps) {
+export default function AdminNavLinks({ pendingApprovals, pendingExpenses }: AdminNavLinksProps) {
   const pathname = usePathname()
 
   return (
@@ -36,6 +39,9 @@ export default function AdminNavLinks({ pendingApprovals }: AdminNavLinksProps) 
             <span>{label}</span>
             {label === 'Approvals' && pendingApprovals != null && pendingApprovals > 0 && (
               <span className={styles.badge}>{pendingApprovals}</span>
+            )}
+            {label === 'Expenses' && pendingExpenses != null && pendingExpenses > 0 && (
+              <span className={styles.badge}>{pendingExpenses}</span>
             )}
           </Link>
         )

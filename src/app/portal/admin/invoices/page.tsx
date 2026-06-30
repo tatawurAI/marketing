@@ -2,8 +2,10 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import InvoiceForm from '@/components/admin/InvoiceForm'
 import InvoiceProjectList from '@/components/admin/InvoiceProjectList'
+import InvoiceHistoryTable from '@/components/admin/InvoiceHistoryTable'
 import styles from './page.module.scss'
 import type { ProjectInvoicePreview } from '@/lib/pdf/types'
+import type { AdminInvoice } from '@/lib/types'
 
 export type { ProjectInvoicePreview }
 
@@ -40,6 +42,7 @@ export default async function InvoicesPage({ searchParams }: PageProps) {
   const employees: Employee[] = employeesData ?? []
 
   let projects: ProjectInvoicePreview[] = []
+  let invoices: AdminInvoice[] = []
 
   const { employeeId, start, end } = searchParams
 
@@ -102,6 +105,18 @@ export default async function InvoicesPage({ searchParams }: PageProps) {
     }
   }
 
+  if (employeeId) {
+    const { data: invoicesData } = await supabase
+      .from('invoices')
+      .select(
+        '*, employee:employees!employee_id(full_name), project:projects!project_id(name), creator:employees!created_by(full_name), payer:employees!paid_by(full_name)',
+      )
+      .eq('employee_id', employeeId)
+      .order('created_at', { ascending: false })
+
+    invoices = (invoicesData ?? []) as AdminInvoice[]
+  }
+
   return (
     <div className={styles.root}>
       <h1 className={styles.heading}>Invoice Generator</h1>
@@ -118,6 +133,12 @@ export default async function InvoicesPage({ searchParams }: PageProps) {
           start={start}
           end={end}
         />
+      )}
+      {employeeId && (
+        <div>
+          <h2 className={styles.subheading}>Invoice History</h2>
+          <InvoiceHistoryTable invoices={invoices} />
+        </div>
       )}
     </div>
   )

@@ -1,0 +1,237 @@
+@use '../../styles/variables' as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-3;
+}
+
+.overflow {
+  overflow-x: auto;
+}
+
+.actionError {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $red-500;
+  padding: $spacing-2 $spacing-3;
+  border: 1px solid rgba($red-500, 0.3);
+  border-radius: $border-radius-md;
+  background: rgba($red-500, 0.08);
+}
+
+.empty {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+  padding: $spacing-6 0;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  padding: $spacing-3 $spacing-4;
+  text-align: left;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+  border-bottom: 1px solid $border-color;
+}
+
+.tr {
+  border-bottom: 1px solid $border-color;
+  transition: background-color $transition-fast $transition-ease;
+
+  &:hover {
+    background: rgba($text-main, 0.03);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.td {
+  padding: $spacing-3 $spacing-4;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+  vertical-align: middle;
+}
+
+.tdMono {
+  padding: $spacing-3 $spacing-4;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  color: $text-main;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+// Status badges
+
+.badgeDraft {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba($text-muted, 0.15);
+  color: $text-muted;
+  border: 1px solid rgba($text-muted, 0.3);
+}
+
+.badgeSubmitted {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba($primary, 0.15);
+  color: $primary;
+  border: 1px solid rgba($primary, 0.3);
+}
+
+.badgePaid {
+  display: inline-block;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba($green-500, 0.15);
+  color: $green-500;
+  border: 1px solid rgba($green-500, 0.3);
+}
+
+// Action buttons
+
+.actionBtns {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  flex-wrap: wrap;
+}
+
+.submitBtn {
+  padding: $spacing-1 $spacing-3;
+  background: rgba($primary, 0.1);
+  color: $primary;
+  border: 1px solid rgba($primary, 0.3);
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    background: rgba($primary, 0.2);
+    border-color: $primary;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.deleteBtn {
+  padding: $spacing-1 $spacing-3;
+  background: rgba($red-500, 0.1);
+  color: $red-500;
+  border: 1px solid rgba($red-500, 0.3);
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    background: rgba($red-500, 0.2);
+    border-color: $red-500;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.paidBtn {
+  padding: $spacing-1 $spacing-3;
+  background: rgba($green-500, 0.1);
+  color: $green-500;
+  border: 1px solid rgba($green-500, 0.3);
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    background: rgba($green-500, 0.2);
+    border-color: $green-500;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.pdfBtn {
+  padding: $spacing-1 $spacing-3;
+  background: transparent;
+  color: $text-muted;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all $transition-fast $transition-ease;
+
+  &:hover:not(:disabled) {
+    border-color: $secondary;
+    color: $secondary;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.paidDate {
+  font-family: $font-body;
+  font-size: $text-xs;
+  color: $text-muted;
+  white-space: nowrap;
+}
+
+.noPdf {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-muted;
+}

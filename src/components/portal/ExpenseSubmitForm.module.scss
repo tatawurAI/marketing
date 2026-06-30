@@ -1,0 +1,198 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-5;
+  padding: $spacing-6;
+  background: $bg-card;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-xl;
+}
+
+.formHeading {
+  font-family: $font-heading;
+  font-size: $text-lg;
+  font-weight: 600;
+  color: $text-main;
+  margin: 0;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-4;
+
+  @media (max-width: $breakpoint-sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+}
+
+.fieldFull {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-family: $font-heading;
+  font-size: $text-xs;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $text-muted;
+}
+
+.dateInput,
+.numberInput {
+  padding: $spacing-2 $spacing-3;
+  border-radius: $border-radius-md;
+  border: 1px solid $border-color;
+  background: $bg-elevated;
+  color: $text-main;
+  font-family: $font-mono;
+  font-size: $text-sm;
+  outline: none;
+  transition: border-color $transition-fast $transition-ease;
+
+  &:focus {
+    border-color: $primary;
+  }
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &::-webkit-calendar-picker-indicator {
+    filter: invert(0.6);
+    cursor: pointer;
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    opacity: 0.5;
+  }
+}
+
+.textarea {
+  padding: $spacing-3;
+  border-radius: $border-radius-md;
+  border: 1px solid $border-color;
+  background: $bg-elevated;
+  color: $text-main;
+  font-family: $font-body;
+  font-size: $text-sm;
+  resize: vertical;
+  outline: none;
+  transition: border-color $transition-fast $transition-ease;
+
+  &:focus {
+    border-color: $primary;
+  }
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.fileInput {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $text-main;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &::file-selector-button {
+    padding: $spacing-1 $spacing-3;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+    background: $bg-elevated;
+    color: $text-main;
+    font-family: $font-heading;
+    font-size: $text-xs;
+    font-weight: 500;
+    cursor: pointer;
+    margin-right: $spacing-3;
+    transition: border-color $transition-fast $transition-ease;
+
+    &:hover {
+      border-color: $primary;
+    }
+  }
+}
+
+.fileHint {
+  font-family: $font-body;
+  font-size: $text-xs;
+  color: $text-muted;
+  margin: 0;
+}
+
+.errorMsg {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $red-500;
+  padding: $spacing-2 $spacing-3;
+  border: 1px solid rgba($red-500, 0.3);
+  border-radius: $border-radius-md;
+  background: rgba($red-500, 0.08);
+  margin: 0;
+}
+
+.successMsg {
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $green-500;
+  padding: $spacing-2 $spacing-3;
+  border: 1px solid rgba($green-500, 0.3);
+  border-radius: $border-radius-md;
+  background: rgba($green-500, 0.08);
+  margin: 0;
+}
+
+.submitRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submitBtn {
+  padding: $spacing-2 $spacing-8;
+  background: $primary;
+  color: $text-main;
+  border: none;
+  border-radius: $border-radius-md;
+  font-family: $font-heading;
+  font-size: $text-sm;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: filter $transition-normal $transition-ease;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

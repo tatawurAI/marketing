@@ -1,9 +1,10 @@
-@use '../../../../styles/variables' as *;
+@use '../../../styles/variables' as *;
 
 .root {
   display: flex;
   flex-direction: column;
   gap: $spacing-8;
+  max-width: 900px;
 }
 
 .heading {
