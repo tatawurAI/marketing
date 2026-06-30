@@ -9,6 +9,7 @@ import {
   markExpenseReimbursed,
   getExpenseReceiptSignedUrl,
 } from '@/app/portal/admin/expenses/actions'
+import { formatPortalDate } from '@/lib/utils'
 import styles from './ExpenseActionsTable.module.scss'
 
 type StatusFilter = 'all' | 'pending' | 'approved' | 'reimbursed' | 'rejected'
@@ -25,16 +26,6 @@ function formatCurrency(amount: number): string {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount)
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr + 'T00:00:00Z')
-  return d.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  })
 }
 
 const STATUS_TABS: { value: StatusFilter; label: string }[] = [
@@ -143,7 +134,7 @@ export default function ExpenseActionsTable({ claims, currentStatus }: Props) {
               claims.map((claim) => (
                 <tr key={claim.id} className={styles.tr}>
                   <td className={styles.td}>{claim.employee.full_name}</td>
-                  <td className={styles.tdMono}>{formatDate(claim.expense_date)}</td>
+                  <td className={styles.tdMono}>{formatPortalDate(claim.expense_date)}</td>
                   <td className={styles.tdDesc}>{claim.description}</td>
                   <td className={styles.tdMono}>{formatCurrency(claim.amount)}</td>
                   <td className={styles.td}>
@@ -175,7 +166,7 @@ export default function ExpenseActionsTable({ claims, currentStatus }: Props) {
                       {claim.status.charAt(0).toUpperCase() + claim.status.slice(1)}
                     </span>
                   </td>
-                  <td className={styles.tdMono}>{formatDate(claim.submitted_at)}</td>
+                  <td className={styles.tdMono}>{formatPortalDate(claim.submitted_at)}</td>
                   <td className={styles.td}>
                     <div className={styles.actionBtns}>
                       {claim.status === 'pending' &&

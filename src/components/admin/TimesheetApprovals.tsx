@@ -8,6 +8,7 @@ import {
   denyTimesheet,
   reopenTimesheet,
 } from '@/app/portal/admin/actions'
+import { formatPortalDate } from '@/lib/utils'
 import styles from './TimesheetApprovals.module.scss'
 import TimesheetPreviewModal from './TimesheetPreviewModal'
 
@@ -21,16 +22,6 @@ type Props = {
   approvals: AdminTimesheetApproval[]
   employees: Pick<EmployeeFull, 'id' | 'full_name'>[]
   currentFilters: Filters
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr + 'T00:00:00Z')
-  return d.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  })
 }
 
 export default function TimesheetApprovals({
@@ -224,7 +215,7 @@ export default function TimesheetApprovals({
                         : 'Changes Requested'}
                   </span>
                 </td>
-                <td className={styles.td}>{formatDate(approval.submitted_at)}</td>
+                <td className={styles.td}>{formatPortalDate(approval.submitted_at)}</td>
                 <td className={styles.td}>
                   {approval.reviewer?.full_name ?? '—'}
                 </td>

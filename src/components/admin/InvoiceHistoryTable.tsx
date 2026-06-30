@@ -9,6 +9,7 @@ import {
   deleteInvoiceDraft,
   getInvoiceSignedUrl,
 } from '@/app/portal/admin/invoices/actions'
+import { formatPortalDate } from '@/lib/utils'
 import styles from './InvoiceHistoryTable.module.scss'
 
 type Props = {
@@ -22,16 +23,6 @@ function formatCurrency(amount: number): string {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount)
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr + 'T00:00:00Z')
-  return d.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  })
 }
 
 export default function InvoiceHistoryTable({ invoices }: Props) {
@@ -113,7 +104,7 @@ export default function InvoiceHistoryTable({ invoices }: Props) {
               <tr key={inv.id} className={styles.tr}>
                 <td className={styles.td}>{inv.project.name}</td>
                 <td className={styles.tdMono}>
-                  {formatDate(inv.period_start)} – {formatDate(inv.period_end)}
+                  {formatPortalDate(inv.period_start)} – {formatPortalDate(inv.period_end)}
                 </td>
                 <td className={styles.tdMono}>{inv.total_hours.toFixed(2)}</td>
                 <td className={styles.tdMono}>
@@ -180,7 +171,7 @@ export default function InvoiceHistoryTable({ invoices }: Props) {
                     )}
                     {inv.status === 'paid' && inv.paid_at && (
                       <span className={styles.paidDate}>
-                        Paid {formatDate(inv.paid_at)}
+                        Paid {formatPortalDate(inv.paid_at)}
                       </span>
                     )}
                   </div>

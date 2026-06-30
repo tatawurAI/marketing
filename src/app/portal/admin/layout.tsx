@@ -28,7 +28,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     supabase
       .from('expense_claims')
       .select('*', { count: 'exact', head: true })
-      .eq('status', 'pending'),
+      .in('status', ['pending', 'approved']),
   ])
 
   return (

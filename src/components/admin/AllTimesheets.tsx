@@ -4,6 +4,7 @@ import { useState, useEffect, useTransition, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import type { AdminTimeEntry, EmployeeFull, ProjectFull } from '@/lib/types'
 import { exportTimesheetsCSV } from '@/app/portal/admin/actions'
+import { formatPortalDate } from '@/lib/utils'
 import styles from './AllTimesheets.module.scss'
 
 type Filters = {
@@ -20,16 +21,6 @@ type Props = {
   page: number
   pageSize: number
   currentFilters: Filters
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr + 'T00:00:00Z')
-  return d.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  })
 }
 
 export default function AllTimesheets({
@@ -181,7 +172,7 @@ export default function AllTimesheets({
               <tr key={entry.id} className={styles.tr}>
                 <td className={styles.td}>{entry.employee.full_name}</td>
                 <td className={styles.td}>{entry.project.name}</td>
-                <td className={styles.td}>{formatDate(entry.work_date)}</td>
+                <td className={styles.td}>{formatPortalDate(entry.work_date)}</td>
                 <td className={styles.td}>
                   <span className={styles.hours}>{entry.hours.toFixed(1)}</span>
                 </td>

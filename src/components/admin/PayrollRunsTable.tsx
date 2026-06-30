@@ -9,6 +9,7 @@ import {
   deletePayrollDraft,
   getPayrollSignedUrl,
 } from '@/app/portal/admin/payroll/actions'
+import { formatPortalDate } from '@/lib/utils'
 import styles from './PayrollRunsTable.module.scss'
 
 type Props = {
@@ -22,16 +23,6 @@ function formatCurrency(amount: number): string {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount)
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr + 'T00:00:00Z')
-  return d.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  })
 }
 
 export default function PayrollRunsTable({ runs }: Props) {
@@ -114,7 +105,7 @@ export default function PayrollRunsTable({ runs }: Props) {
               <tr key={run.id} className={styles.tr}>
                 <td className={styles.td}>{run.employee.full_name}</td>
                 <td className={styles.tdMono}>
-                  {formatDate(run.period_start)} – {formatDate(run.period_end)}
+                  {formatPortalDate(run.period_start)} – {formatPortalDate(run.period_end)}
                 </td>
                 <td className={styles.tdMono}>{run.total_hours.toFixed(2)}</td>
                 <td className={styles.tdMono}>{formatCurrency(run.hourly_rate)}</td>
@@ -180,7 +171,7 @@ export default function PayrollRunsTable({ runs }: Props) {
                     )}
                     {run.status === 'paid' && run.paid_at && (
                       <span className={styles.paidDate}>
-                        Paid {formatDate(run.paid_at)}
+                        Paid {formatPortalDate(run.paid_at)}
                       </span>
                     )}
                   </div>
